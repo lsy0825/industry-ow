@@ -1,0 +1,176 @@
+.topStyle{
+    background: #fff;
+    padding: 24px;
+}
+.bottomStyle{
+    background: #fff;
+    padding: 0 36px 12px 16px;
+    margin-top: 10px;
+    .leftTitle{
+        font-size: 16px;
+        font-weight: 600;
+        padding-bottom: 6px;
+    }
+    .rightTitle{
+        font-size: 12px;
+        color: #7f7f7f;
+    }
+    :global{
+        :where(.css-dev-only-do-not-override-12jzuas).ant-spin-nested-loading .ant-spin-container{
+            max-height: 400px;
+            overflow: auto;
+        }
+    }
+}
+.homeStyle{
+    :global{
+        :where(.css-dev-only-do-not-override-12jzuas).ant-carousel .slick-dots-bottom{
+            bottom: 24px;
+        }
+    }
+}
+.detailStyle{
+    margin-top: 24px;
+    .titleColor{
+        height: 35px;
+        background-color: #ecf5ff;
+        margin-bottom: 12px;
+        position: relative;
+        .text{
+            position: absolute;
+            top: 6px;
+            left: 16px;
+        }
+    }
+		.titleStyle{
+			font-size: 20px;
+			font-weight: 600;
+			text-align: center;
+			padding-bottom: 24px;
+		}
+    .infoTitle{
+        // width: 400px;
+        height: 40px;
+        background-color: #409eff;
+        color: #fff;
+        text-align: center;
+        line-height: 40px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    .leftSubTitle{
+        display: inline-block;
+        height: 40px;
+        background-color: #7cb6fb;
+        text-align: center;
+        line-height: 40px;
+        color: #fff;
+        border-radius: 5px;
+        width: 50%;
+    }
+    .deviceList {
+        display: flex;
+        flex-wrap: wrap;
+        width: 50%;
+        gap: 4px;
+      }
+
+      .deviceItem {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 90px;
+        height: 90px;
+        background-color: #f0f4ff;
+        border-radius: 5px;
+      }
+
+      .deviceName{
+        font-size: 14px;
+        color: #1890ff;
+      }
+      .deviceCount {
+        font-size: 18px;
+      }
+      .softItem{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+        height: 60px;
+        background-color: #f0f4ff;
+        border-radius: 5px;
+        margin-left: 5px;
+      }
+}
+
+.commonIcon{
+	width: 40px;
+	height: 40px;
+	margin-left: 20px;
+}
+.industryStyle{
+	background-color: #fff;
+	padding: 24px;
+	.tabTitle{
+		display: block;
+		padding-top: 10px;
+	}
+	.tabIcon1{
+		.commonIcon;
+		background: url('../../../assets/normal1.svg') center/cover no-repeat;
+	}
+	.checkedIcon1{
+		.commonIcon;
+		background: url('../../../assets/selected1.png') center/cover no-repeat;
+	}
+	.tabIcon2{
+		.commonIcon;
+		background: url('../../../assets/normal2.svg') center/cover no-repeat;
+	}
+	.tabIcon3{
+		.commonIcon;
+		background: url('../../../assets/normal3.svg') center/cover no-repeat;
+	}
+	.tabIcon4{
+		.commonIcon;
+		background: url('../../../assets/normal4.svg') center/cover no-repeat;
+	}
+	.tabIcon5{
+		.commonIcon;
+		background: url('../../../assets/normal5.svg') center/cover no-repeat;
+	}
+	:global{
+		:where(.css-dev-only-do-not-override-12jzuas).ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn{
+			background-color: #409eff;
+			padding: 10px;
+			color: #fff;
+			width: 100px;
+			height: 100px;
+		}
+		:where(.css-dev-only-do-not-override-12jzuas).ant-tabs .ant-tabs-tab-btn{
+			background-color: #f2f2f2;
+			color: #409eff;
+			padding: 10px;
+			width: 100px;
+			height: 100px;
+		}
+		:where(.css-dev-only-do-not-override-12jzuas).ant-tabs-left >.ant-tabs-nav .ant-tabs-tab+.ant-tabs-tab{
+			margin: 0;
+		}
+		:where(.css-dev-only-do-not-override-12jzuas).ant-tabs-left >.ant-tabs-content-holder >.ant-tabs-content>.ant-tabs-tabpane{
+			padding: 24px 24px 0 24px;
+		}
+	}
+	.cardTitle{
+		font-size: 16px;
+		font-weight: 600;
+		padding-bottom: 10px;
+	}
+	.cardText{
+		display: flex;
+		justify-content: space-between;
+	}
+}
