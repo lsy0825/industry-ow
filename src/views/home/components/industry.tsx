@@ -82,7 +82,7 @@ export default function IndustryFC() {
 
   const { data } = useRequest(
     async () => {
-      const resp: any = await api.getAreaInfo({ firmId: area?.[0]?.id })
+      const resp: any = await api.getAreaInfo({ firmId: 610000 }) //area?.[0]?.id
       console.log(resp, 'resp')
       return resp
     },
