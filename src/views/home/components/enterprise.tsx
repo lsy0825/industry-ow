@@ -4,6 +4,8 @@ import styles from './index.module.less'
 import Detail from './detail'
 import { useRequest } from 'ahooks'
 import api from '@/api'
+import moment from 'moment'
+import CommonFirmList from './commonFirmList'
 
 interface Option {
   value: string | number
@@ -39,88 +41,6 @@ const aptitudeData = [
   { label: '外资', key: '14' }
 ]
 const amountData = [{ label: '不限', key: '1' }]
-// const data = [
-//   {
-//     title: '隆基绿能科技股份有限公司',
-//     time: '2020-04-12',
-//     amount: '1000',
-//     desc1: '新能源',
-//     desc2: '主版上市',
-//     desc3: '大宗商品'
-//   },
-//   {
-//     title: '北京国沣汇泽科技有限公司',
-//     time: '2020-04-12',
-//     amount: '1000',
-//     desc1: '数字政府',
-//     desc2: '主版上',
-//     desc3: '专精特新'
-//   },
-//   {
-//     title: '中国联合网络通信有限公司北京市分公司昌平北七家营业厅',
-//     time: '2020-04-12',
-//     amount: '1000',
-//     desc1: '新能源',
-//     desc2: '主版上',
-//     desc3: '大宗商品'
-//   },
-//   {
-//     title: '山西嘉鹏佳科技有限公司',
-//     time: '2020-04-12',
-//     amount: '1000',
-//     desc1: '新能源',
-//     desc2: '主版上',
-//     desc3: '大宗商品'
-//   },
-//   {
-//     title: '山西嘉鹏佳科技有限公司',
-//     time: '2020-04-12',
-//     amount: '1000',
-//     desc1: '新能源',
-//     desc2: '主版上',
-//     desc3: '大宗商品'
-//   },
-//   {
-//     title: '山西嘉鹏佳科技有限公司',
-//     time: '2020-04-12',
-//     amount: '1000',
-//     desc1: '新能源',
-//     desc2: '主版上',
-//     desc3: '大宗商品'
-//   },
-//   {
-//     title: '山西嘉鹏佳科技有限公司',
-//     time: '2020-04-12',
-//     amount: '1000',
-//     desc1: '新能源',
-//     desc2: '主版上',
-//     desc3: '大宗商品'
-//   },
-//   {
-//     title: '山西嘉鹏佳科技有限公司',
-//     time: '2020-04-12',
-//     amount: '1000',
-//     desc1: '新能源',
-//     desc2: '主版上',
-//     desc3: '大宗商品'
-//   },
-//   {
-//     title: '山西嘉鹏佳科技有限公司',
-//     time: '2020-04-12',
-//     amount: '1000',
-//     desc1: '新能源',
-//     desc2: '主版上',
-//     desc3: '大宗商品'
-//   },
-//   {
-//     title: '山西嘉鹏佳科技有限公司',
-//     time: '2020-04-12',
-//     amount: '1000',
-//     desc1: '新能源',
-//     desc2: '主版上',
-//     desc3: '大宗商品'
-//   }
-// ]
 
 const options: Option[] = [
   {
@@ -204,7 +124,6 @@ export default function EnterpriseFC() {
   const [selectedFirms, setSelectedFirms] = useState<string[]>(['1'])
   const [selectedApts, setSelectedApts] = useState<string[]>(['1'])
   const [selectedAmount, setSelectedAmount] = useState<string[]>(['1'])
-  const [isModalOpen, setIsModalOpen] = useState<any>({ type: false, record: {} })
 
   const {
     data: dataList,
@@ -213,11 +132,11 @@ export default function EnterpriseFC() {
   } = useRequest(
     async () => {
       const resp: any = await api.getEnterpriseInfo({ ...searchValue })
-      console.log(resp, 'resp')
       return resp.list
     },
     {
-      manual: false
+      manual: false,
+      refreshDeps: [searchValue]
     }
   )
 
@@ -239,10 +158,22 @@ export default function EnterpriseFC() {
     setSelectedAmount(nextSelectedTags)
   }
 
-  const showTotal = (total: number) => `共 ${total} 条`
-
   const showDetail = (record: any) => {
     console.log(record, '====')
+  }
+
+  const handleSearch = () => {
+    const { area, date, industry, minAmount, maxAmount } = form.getFieldsValue()
+    const startTime = moment(new Date(date[0])).format('YYYY-MM-DD')
+    const endTime = moment(new Date(date[1])).format('YYYY-MM-DD')
+    console.log(selectedFirms, selectedApts, selectedAmount, 'date', startTime, endTime)
+  }
+
+  const getAmount = (num: any) => {
+    // 输入金额取消不限按钮高亮
+    if (num) {
+      setSelectedAmount([])
+    }
   }
 
   return (
@@ -286,7 +217,7 @@ export default function EnterpriseFC() {
                   </CheckableTag>
                 ))}
                 <Form.Item style={{ display: 'inline-block', marginLeft: 8 }} name='minAmount'>
-                  <InputNumber placeholder='最低金额' />
+                  <InputNumber placeholder='最低金额' onChange={getAmount} />
                 </Form.Item>
                 <span
                   style={{
@@ -297,11 +228,10 @@ export default function EnterpriseFC() {
                     fontSize: 12
                   }}
                 >
-                  {' '}
-                  至{' '}
+                  至
                 </span>
                 <Form.Item style={{ display: 'inline-block' }} name='maxAmount'>
-                  <InputNumber placeholder='最高金额' />
+                  <InputNumber placeholder='最高金额' onChange={getAmount} />
                 </Form.Item>
                 <span style={{ fontSize: 12, paddingLeft: 8 }}> 万元人民币 </span>
               </Form.Item>
@@ -339,65 +269,16 @@ export default function EnterpriseFC() {
           <div style={{ textAlign: 'right' }}>
             <Space size='small'>
               <Button onClick={() => form.resetFields()}>重置</Button>
-              <Button type='primary'>查询</Button>
+              <Button type='primary' onClick={handleSearch}>
+                查询
+              </Button>
             </Space>
           </div>
         </Form>
       </div>
       <div className={styles.bottomStyle}>
-        <List
-          itemLayout='horizontal'
-          dataSource={dataList}
-          pagination={{
-            onChange: page => {
-              console.log(page)
-            },
-            pageSize: 10,
-            total: dataList?.length,
-            showTotal,
-            showSizeChanger: true,
-            showQuickJumper: true
-          }}
-          renderItem={(item, index) => (
-            <List.Item
-              actions={[
-                <span className={styles.rightTitle}>{`成立时间：${item.dateEstablishment}`}</span>,
-                <span className={styles.rightTitle}>{`注册资本：${item.annualIncome}万元`}</span>
-              ]}
-              onClick={() => setIsModalOpen({ type: true, record: item })}
-            >
-              <List.Item.Meta
-                title={<span className={styles.leftTitle}>{item.name}</span>}
-                description={
-                  <>
-                    {item?.industryClass?.map(i => (
-                      <Tag color='#f50'>{i}</Tag>
-                    ))}
-                    {item?.qualificationsId?.map(i => (
-                      <Tag color='#2db7f5'>{i}</Tag>
-                    ))}
-
-                    {/* <Tag color='#fcb138'>{item.desc3产品}</Tag> */}
-                  </>
-                }
-              />
-            </List.Item>
-          )}
-        />
+        <CommonFirmList dataList={dataList} title='firm' searchValue={searchValue} setSearchValue={setSearchValue} />
       </div>
-      <Modal
-        title={isModalOpen?.record?.title}
-        open={isModalOpen.type}
-        footer={null}
-        onCancel={() => setIsModalOpen({ type: false, record: {} })}
-        width={1200}
-        centered={true}
-      >
-        <Detail isModalOpen={isModalOpen} />
-      </Modal>
     </div>
   )
-}
-function moment(dateEstablishment: any) {
-  throw new Error('Function not implemented.')
 }

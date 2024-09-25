@@ -22,9 +22,10 @@ export default {
     return request.get('/open/Industrial-chain-information/getByFirmId', params)
   },
   // 获取用户信息
-  getUserInfo() {
-    return request.get<User.UserItem>('/users/getUserInfo')
+  getUserInfo(params: any) {
+    return request.get('/system/user/get', params)
   },
+
   // 获取权限列表
   getPermissionList() {
     return request.get<{ buttonList: string[]; menuList: Menu.MenuItem[] }>('/users/getPermissionList')

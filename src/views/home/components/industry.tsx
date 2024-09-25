@@ -82,8 +82,7 @@ export default function IndustryFC() {
 
   const { data } = useRequest(
     async () => {
-      const resp: any = await api.getAreaInfo({ firmId: 610000 }) //area?.[0]?.id
-      console.log(resp, 'resp')
+      const resp: any = await api.getAreaInfo({ firmId: 30 }) //area?.[0]?.id
       return resp
     },
     {
@@ -99,18 +98,18 @@ export default function IndustryFC() {
   const content1 = () => {
     return (
       <Row gutter={[24, 24]}>
-        {contentData1?.map((item, index) => {
+        {data?.map((item:any, index:number) => {
           return (
             <Col span={6} onClick={() => setIsModalOpen({ type: true, record: item })} key={index}>
               <div style={style}>
-                <div className={styles.cardTitle}>{item.title}</div>
+                <div className={styles.cardTitle}>{item?.informationId}</div>
                 <div className={styles.cardText} style={{ paddingBottom: 10 }}>
                   <span>环节</span>
-                  <span>{`${item.circle}个`}</span>
+                  <span>{`${item?.linkNumber}个`}</span>
                 </div>
                 <div className={styles.cardText}>
                   <span>企业</span>
-                  <span>{`${item.firm}家`}</span>
+                  <span>{`${item?.firmNumber}家`}</span>
                 </div>
               </div>
             </Col>
@@ -166,18 +165,18 @@ export default function IndustryFC() {
   return (
     <div className={styles.industryStyle}>
       <Row gutter={[24, 24]}>
-        {contentData1?.map((item, index) => {
+        {data?.map((item:any, index:number) => {
           return (
             <Col span={6} onClick={() => setIsModalOpen({ type: true, record: item })} key={index}>
               <div style={style}>
-                <div className={styles.cardTitle}>{item.title}</div>
+                <div className={styles.cardTitle}>{item?.informationId}</div>
                 <div className={styles.cardText} style={{ paddingBottom: 10 }}>
                   <span>环节</span>
-                  <span>{`${item.circle}个`}</span>
+                  <span>{`${item?.linkNumber}个`}</span>
                 </div>
                 <div className={styles.cardText}>
                   <span>企业</span>
-                  <span>{`${item.firm}家`}</span>
+                  <span>{`${item?.firmNumber}家`}</span>
                 </div>
               </div>
             </Col>

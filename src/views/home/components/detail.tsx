@@ -54,14 +54,14 @@ export default function DetailFC(props: any) {
         <Descriptions.Item label='员工数'>{detailInfo?.numberEmployees}</Descriptions.Item>
         <Descriptions.Item label='所在地'>{detailInfo?.registeredOfficeId}</Descriptions.Item>
         <Descriptions.Item label='所属行业' span={4}>
-          {detailInfo?.industryclassList?.map(tag => (
+          {detailInfo?.industryclassList?.map((tag: string) => (
             <Tag color='#2db7f5' key={tag}>
               {tag}
             </Tag>
           ))}
         </Descriptions.Item>
         <Descriptions.Item label='公司资质' span={4}>
-          {detailInfo?.qualificationsList?.map(tag => (
+          {detailInfo?.qualificationsList?.map((tag: string) => (
             <Tag color='#fcb138' key={tag}>
               {tag}
             </Tag>

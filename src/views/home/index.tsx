@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Layout, Menu, theme } from 'antd'
+import { Button, Dropdown, Layout, Menu, theme } from 'antd'
 import styles from './index.module.less'
 import Logo from '@/assets/logo.gif'
 import Avatar from '@/assets/avatar.svg'
@@ -10,6 +10,8 @@ import Industry from './components/industry'
 import Policy from './components/policy'
 import api from '@/api'
 import { useStore } from '@/store'
+import storage from '@/utils/storage'
+import SearchResult from './components/searchResult'
 
 const { Header, Content } = Layout
 
@@ -19,15 +21,26 @@ enum PageKeys {
   Page3 = '3',
   Page4 = '4',
   Page5 = '5',
-  Page6 = '6'
+  Page6 = '6',
+  Page7 = '7'
 }
+
+const items = [
+  { key: '1', label: '首页' },
+  { key: '2', label: '企业' },
+  { key: '3', label: '产业链' },
+  { key: '4', label: '企业互动数据' },
+  { key: '5', label: '产品流通数据' },
+  { key: '6', label: '政策数据' },
+  { key: '7', label: '', disabled: true }
+]
 
 export default function LoginFC() {
   const {
     token: { borderRadiusLG }
   } = theme.useToken()
-  const [current, setCurrent] = useState('1')
-  const { getAreas } = useStore()
+  const [current, setCurrent] = useState<string>('1')
+  const { getAreas, userInfo } = useStore()
 
   useEffect(() => {
     getAreaData()
@@ -38,26 +51,22 @@ export default function LoginFC() {
   }
 
   const onClick: MenuProps['onClick'] = e => {
-    console.log('click ', e)
     setCurrent(e.key)
   }
 
-  const items = [
-    { key: '1', label: '首页' },
-    { key: '2', label: '企业' },
-    { key: '3', label: '产业链' },
-    { key: '4', label: '企业互动数据' },
-    { key: '5', label: '产品流通数据' },
-    { key: '6', label: '政策数据' }
-  ]
-
   const contentMap = {
-    [PageKeys.Page1]: <Home />,
+    [PageKeys.Page1]: <Home setCurrent={setCurrent} />,
     [PageKeys.Page2]: <Enterprise />,
     [PageKeys.Page3]: <Industry />,
     [PageKeys.Page4]: <div>页面 4 的内容</div>,
     [PageKeys.Page5]: <div>页面 5 的内容</div>,
-    [PageKeys.Page6]: <Policy />
+    [PageKeys.Page6]: <Policy />,
+    [PageKeys.Page7]: <SearchResult />
+  }
+
+  const onClickMenu = () => {
+    storage.remove('token')
+    location.href = '/login?callback=' + encodeURIComponent(location.href)
   }
 
   return (
@@ -76,8 +85,10 @@ export default function LoginFC() {
         />
         <span style={{ display: 'flex', alignItems: 'center' }}>
           <img src={Avatar} width={25} height={25} className={styles.avatarStyle} />
-          <span className={styles.user}>米小宝</span>
-          <span className={styles.logout}>退出</span>
+          <span className={styles.user}>{userInfo?.nickname}</span>
+          <Button type='text' onClick={onClickMenu}>
+            退出
+          </Button>
         </span>
       </Header>
       <Content style={{ padding: '0 48px' }}>

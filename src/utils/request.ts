@@ -5,7 +5,7 @@ import env from '@/config'
 import { Result } from '@/types/api'
 import { message } from './AntdGlobal'
 import { tansParams } from './index'
-console.log('config', env)
+// console.log('config', env)
 // 创建实例
 const instance = axios.create({
   timeout: 8000,
@@ -25,7 +25,7 @@ instance.interceptors.request.use(
       config.headers['Authorization'] = 'Bearer ' + token?.accessToken
     }
     config.headers['tenant-id'] = '1'
-    console.log(config, 'config')
+    // console.log(config, 'config')
 
     if (config?.data) {
       let url = config.url + '?' + tansParams(config.data)
@@ -53,7 +53,7 @@ instance.interceptors.response.use(
     const data: Result = response.data
     hideLoading()
     if (response.config.responseType === 'blob') return response
-    if (data.code === 500001) {
+    if (data.code === 401) {
       message.error(data.msg)
       storage.remove('token')
       location.href = '/login?callback=' + encodeURIComponent(location.href)

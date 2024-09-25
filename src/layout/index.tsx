@@ -11,18 +11,21 @@ import { IAuthLoader } from '@/router/AuthLoader'
 import { searchRoute } from '@/utils'
 import { router } from '@/router'
 import TabsFC from '@/components/Tabs'
+import storage from '@/utils/storage'
 const { Content, Sider } = Layout
 
 const App: React.FC = () => {
-  const { collapsed, userInfo, updateUserInfo } = useStore()
+  const { userInfo, updateUserInfo } = useStore()
+  const token = storage.get('token')
   const { pathname } = useLocation()
-  // useEffect(() => {
-  //   getUserInfo()
-  // }, [])
-  // const getUserInfo = async () => {
-  //   const data = await api.getUserInfo()
-  //   updateUserInfo(data)
-  // }
+  // 获取用户名信息
+  useEffect(() => {
+    getUserInfo()
+  }, [])
+  const getUserInfo = async () => {
+    const data: any = await api.getUserInfo({ id: token?.userId })
+    updateUserInfo(data)
+  }
   // 权限判断
   const data = useRouteLoaderData('layout') as IAuthLoader
   const route = searchRoute(pathname, router)

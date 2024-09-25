@@ -4,37 +4,24 @@ import storage from '@/utils/storage'
 
 export const useStore = create<{
   token: string
-  userInfo: User.UserItem
+  userInfo: any
   collapsed: boolean
   isDark: boolean
   area: any
   updateToken: (token: string) => void
-  updateUserInfo: (userInfo: User.UserItem) => void
+  updateUserInfo: (userInfo: any) => void
   getAreas: (area: any) => void
   updateCollapsed: () => void
   updateTheme: (isDark: boolean) => void
 }>(set => ({
   token: '',
-  userInfo: {
-    _id: '',
-    userId: 0,
-    userName: '',
-    userEmail: '',
-    deptId: '',
-    state: 0,
-    mobile: '',
-    job: '',
-    role: 0,
-    roleList: '',
-    createId: 0,
-    deptName: '',
-    userImg: ''
-  },
+  userInfo: {},
   collapsed: false,
+  area: [],
   isDark: storage.get('isDark') || false,
   updateToken: token => set({ token }),
   updateTheme: isDark => set({ isDark }),
-  updateUserInfo: (userInfo: User.UserItem) => set({ userInfo }),
+  updateUserInfo: (userInfo: any) => set({ userInfo }),
   getAreas: area => set({ area }),
   updateCollapsed: () =>
     set(state => {

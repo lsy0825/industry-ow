@@ -28,16 +28,25 @@ export default function LoginFC() {
     <div className={styles.login}>
       <div className={styles.loginWrapper}>
         <div className={styles.title}>系统登录</div>
-        <Form name='basic' initialValues={{ remember: true }} onFinish={onFinish} autoComplete='off'>
-          <Form.Item name='username' rules={[{ required: true, message: 'Please input your username!' }]}>
+        <Form
+          name='basic'
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          autoComplete='off'
+          labelCol={{ span: 4 }}
+          wrapperCol={{ span: 20 }}
+        >
+          <Form.Item
+            name='username'
+            rules={[{ required: true, message: 'Please input your username!' }]}
+            label='用户名'
+          >
             <Input />
           </Form.Item>
-
-          <Form.Item name='password' rules={[{ required: true, message: 'Please input your password!' }]}>
+          <Form.Item name='password' rules={[{ required: true, message: 'Please input your password!' }]} label='密码'>
             <Input.Password />
           </Form.Item>
-
-          <Form.Item>
+          <Form.Item wrapperCol={{ offset: 4, span: 20 }}>
             <Button type='primary' block htmlType='submit' loading={loading}>
               登录
             </Button>
