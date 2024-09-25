@@ -82,7 +82,7 @@ export default function IndustryFC() {
 
   const { data } = useRequest(
     async () => {
-      const resp: any = await api.getAreaInfo({ firmId: 30 }) //area?.[0]?.id
+      const resp: any = await api.getByAreaCode() //area?.[0]?.id
       return resp
     },
     {
@@ -98,7 +98,7 @@ export default function IndustryFC() {
   const content1 = () => {
     return (
       <Row gutter={[24, 24]}>
-        {data?.map((item:any, index:number) => {
+        {data?.map((item: any, index: number) => {
           return (
             <Col span={6} onClick={() => setIsModalOpen({ type: true, record: item })} key={index}>
               <div style={style}>
@@ -165,7 +165,7 @@ export default function IndustryFC() {
   return (
     <div className={styles.industryStyle}>
       <Row gutter={[24, 24]}>
-        {data?.map((item:any, index:number) => {
+        {data?.map((item: any, index: number) => {
           return (
             <Col span={6} onClick={() => setIsModalOpen({ type: true, record: item })} key={index}>
               <div style={style}>

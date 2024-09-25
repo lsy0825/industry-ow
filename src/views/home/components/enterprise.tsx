@@ -6,6 +6,8 @@ import { useRequest } from 'ahooks'
 import api from '@/api'
 import moment from 'moment'
 import CommonFirmList from './commonFirmList'
+import { addLabelToTree } from '@/utils'
+import { useStore } from '@/store'
 
 interface Option {
   value: string | number
@@ -40,90 +42,15 @@ const aptitudeData = [
   { label: '民营', key: '13' },
   { label: '外资', key: '14' }
 ]
-const amountData = [{ label: '不限', key: '1' }]
-
-const options: Option[] = [
-  {
-    label: '信息技术',
-    value: 'IT',
-    children: [
-      {
-        label: '物联网',
-        value: 'webofthings'
-      },
-      {
-        label: '云计算',
-        value: 'cloudComputing'
-      },
-      {
-        label: '网络安全',
-        value: 'networkSecurity'
-      }
-    ]
-  },
-  {
-    label: '未来产业',
-    value: 'futureIndustry',
-    children: [
-      {
-        label: '人工智能',
-        value: 'AI'
-      },
-      {
-        label: '储能',
-        value: 'storedEnergy'
-      }
-    ]
-  }
-]
-
-const optionsArea: Option[] = [
-  {
-    label: '全国',
-    value: '全国',
-    children: [
-      {
-        label: '陕西省',
-        value: '陕西省',
-        children: [
-          {
-            label: '西安市',
-            value: '西安市',
-            children: [
-              {
-                label: '长安区',
-                value: '长安区'
-              }
-            ]
-          }
-        ]
-      },
-      {
-        label: '广东省',
-        value: '广东省',
-        children: [
-          {
-            label: '广州市',
-            value: '广州市',
-            children: [
-              {
-                label: '天河区',
-                value: '天河区'
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
-]
+const amountData = ['不限']
 
 export default function EnterpriseFC() {
   const [form] = Form.useForm()
   const [searchValue, setSearchValue] = useState({ pageNo: 1, pageSize: 10 })
-  const [selectedFirms, setSelectedFirms] = useState<string[]>(['1'])
-  const [selectedApts, setSelectedApts] = useState<string[]>(['1'])
-  const [selectedAmount, setSelectedAmount] = useState<string[]>(['1'])
+  const [selectedFirms, setSelectedFirms] = useState<string[]>([])
+  const [selectedApts, setSelectedApts] = useState<string[]>([])
+  const [selectedAmount, setSelectedAmount] = useState<string[]>(['不限'])
+  const { area, industryOpts } = useStore()
 
   const {
     data: dataList,
@@ -139,6 +66,30 @@ export default function EnterpriseFC() {
       refreshDeps: [searchValue]
     }
   )
+
+  // 企业状态和资质类别字典
+  const { data: dictList } = useRequest(
+    async () => {
+      const resp: any = await api.getStatusAndQualify()
+      setSelectedFirms(resp?.enterpriseStatus?.[0])
+      setSelectedApts(resp?.companyQualification?.[0])
+      return resp
+    },
+    {
+      manual: false
+    }
+  )
+
+  // 产业字典
+  // const { data: industryData } = useRequest(
+  //   async () => {
+  //     const resp: any = await api.getIndustryOpts()
+  //     return addLabelToTree([resp], 'noId')
+  //   },
+  //   {
+  //     manual: false
+  //   }
+  // )
 
   const handleChange = (tag: string, checked: boolean) => {
     const nextSelectedTags = checked ? [tag] : selectedFirms.filter(t => t !== tag)
@@ -158,9 +109,9 @@ export default function EnterpriseFC() {
     setSelectedAmount(nextSelectedTags)
   }
 
-  const showDetail = (record: any) => {
-    console.log(record, '====')
-  }
+  // const showDetail = (record: any) => {
+  //   console.log(record, '====')
+  // }
 
   const handleSearch = () => {
     const { area, date, industry, minAmount, maxAmount } = form.getFieldsValue()
@@ -181,25 +132,25 @@ export default function EnterpriseFC() {
       <div className={styles.topStyle}>
         <div style={{ marginBottom: 24 }}>
           <span style={{ marginRight: 12 }}>企业状态 :</span>
-          {firmData.map(item => (
+          {dictList?.enterpriseStatus?.map(item => (
             <CheckableTag
-              key={item.key}
-              checked={selectedFirms.indexOf(item.key) > -1}
-              onChange={checked => handleChange(item.key, checked)}
+              key={item}
+              checked={selectedFirms.indexOf(item) > -1}
+              onChange={checked => handleChange(item, checked)}
             >
-              {item.label}
+              {item}
             </CheckableTag>
           ))}
         </div>
         <div style={{ marginBottom: 24 }}>
           <span style={{ marginRight: 12 }}>资质类别 :</span>
-          {aptitudeData.map(item => (
+          {dictList?.companyQualification?.map(item => (
             <CheckableTag
-              key={item.key}
-              checked={selectedApts.indexOf(item.key) > -1}
-              onChange={checked => handleChange2(item.key, checked)}
+              key={item}
+              checked={selectedApts.indexOf(item) > -1}
+              onChange={checked => handleChange2(item, checked)}
             >
-              {item.label}
+              {item}
             </CheckableTag>
           ))}
         </div>
@@ -209,11 +160,11 @@ export default function EnterpriseFC() {
               <Form.Item label='注册资本' style={{ marginBottom: 0 }}>
                 {amountData.map(item => (
                   <CheckableTag
-                    key={item.key}
-                    checked={selectedAmount.indexOf(item.key) > -1}
-                    onChange={checked => handleChange3(item.key, checked)}
+                    key={item}
+                    checked={selectedAmount.indexOf(item) > -1}
+                    onChange={checked => handleChange3(item, checked)}
                   >
-                    {item.label}
+                    {item}
                   </CheckableTag>
                 ))}
                 <Form.Item style={{ display: 'inline-block', marginLeft: 8 }} name='minAmount'>
@@ -240,7 +191,7 @@ export default function EnterpriseFC() {
               <Form.Item name='industry' label='产业'>
                 <Cascader
                   style={{ width: 500 }}
-                  options={options}
+                  options={addLabelToTree([industryOpts], 'noId')}
                   // onChange={onChange}
                   multiple
                   maxTagCount='responsive'
@@ -257,7 +208,7 @@ export default function EnterpriseFC() {
               <Form.Item name='area' label='区域'>
                 <Cascader
                   style={{ width: 500 }}
-                  options={optionsArea}
+                  options={addLabelToTree([area], 'hasId')}
                   // onChange={onChange}
                   multiple
                   maxTagCount='responsive'

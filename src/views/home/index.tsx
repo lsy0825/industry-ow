@@ -40,14 +40,20 @@ export default function LoginFC() {
     token: { borderRadiusLG }
   } = theme.useToken()
   const [current, setCurrent] = useState<string>('1')
-  const { getAreas, userInfo } = useStore()
+  const { getAreas, userInfo, getIndustruOpts } = useStore()
 
   useEffect(() => {
     getAreaData()
+    getIndustryData()
   }, [])
   const getAreaData = async () => {
     const data = await api.getAreaTree()
     getAreas(data)
+  }
+
+  const getIndustryData = async () => {
+    const data = await api.getIndustryOpts()
+    getIndustruOpts(data)
   }
 
   const onClick: MenuProps['onClick'] = e => {

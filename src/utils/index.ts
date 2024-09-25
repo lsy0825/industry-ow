@@ -134,3 +134,16 @@ export function tansParams(params: any) {
   }
   return result
 }
+
+/**
+ * 树形数据处理
+ * @param tree 原数据
+ */
+export function addLabelToTree(tree: any, type: string) {
+  return tree?.map((node: any) => ({
+    ...node,
+    label: node?.name,
+    value: type === 'hasId' ? node?.id : node?.name,
+    children: node?.children ? addLabelToTree(node?.children, type) : []
+  }))
+}

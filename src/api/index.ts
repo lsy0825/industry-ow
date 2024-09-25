@@ -15,15 +15,31 @@ export default {
   },
   // 获取地区树
   getAreaTree() {
-    return request.get('/system/area/tree')
+    return request.get('/open/tree')
   },
-  // 获取产业链信息
+  // 通过企业id查询企业产业链信息
   getAreaInfo(params: any) {
     return request.get('/open/Industrial-chain-information/getByFirmId', params)
+  },
+  // 通过省、市、区区域编号查询企业产业链信息
+  getByAreaCode() {
+    return request.get('/open/Industrial-chain-information/getByAreaCode')
   },
   // 获取用户信息
   getUserInfo(params: any) {
     return request.get('/system/user/get', params)
+  },
+  // 获得企业模块下企业状态和资质类别字典
+  getStatusAndQualify() {
+    return request.get('/open/Enterprise-status-company-qualification/get')
+  },
+  // 获得产业的选择字典
+  getIndustryOpts() {
+    return request.get('/open/Industry_drop_down/get')
+  },
+  // 获得政策数据模块下政策级别、申报类型、政策类型、支持对象、支持行为、支持方式的选择字典
+  getPolicyDic() {
+    return request.get('/open/Policy-data-dic/get')
   },
 
   // 获取权限列表
