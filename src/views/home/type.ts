@@ -8,3 +8,10 @@ export interface ListProps {
   setSearchValue?: any
   title: string
 }
+
+export interface DataType {
+  id: string
+  province: string
+  city: string
+  investedNum: number
+}

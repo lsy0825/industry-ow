@@ -147,3 +147,94 @@ export function addLabelToTree(tree: any, type: string) {
     children: node?.children ? addLabelToTree(node?.children, type) : []
   }))
 }
+
+/**
+ * 计算两端点之间的list数据
+ *@param start 起始值
+ * @param end 结束值
+ * @returns 数组
+ */
+const numList = (start: number, end: number) => {
+  const result = []
+  for (let i = start + 1; i < end; i++) {
+    result.push(i)
+  }
+  return result
+}
+
+/**
+ * 改写起点，终点合并数组（菜单名称）
+ * @param obj 重复次数
+ * @returns 数组
+ */
+const getCompareList = (obj: any) => {
+  const list = []
+  const keys: any = Object.values(obj)
+  let total = 0
+  for (let i = 0; i < keys?.length; i++) {
+    total += keys[i]
+    list.push({
+      start: i === 0 ? 0 : total - keys[i],
+      end: total,
+      span: keys[i]
+    })
+  }
+  return list
+}
+
+/**
+ * 合并表格
+ * @param index 表格索引值
+ * @param data 扁平化数据
+ * @returns 对象
+ */
+export const mergeIdList = (index: number, data: any, sameId: string) => {
+  // 计算重复次数
+  const num = data
+    ?.map((v: any) => v[sameId])
+    ?.reduce((obj: any, key: number) => {
+      if (key in obj) {
+        obj[key]++
+      } else {
+        obj[key] = 1
+      }
+      return obj
+    }, {})
+  const indexList = getCompareList(num)
+  for (let i = 0; i < indexList?.length; i++) {
+    if (index === indexList[i]?.start) {
+      return {
+        rowSpan: indexList[i].span
+      }
+    }
+    if (numList(indexList[i].start, indexList[i].end).includes(index)) {
+      return {
+        rowSpan: 0
+      }
+    }
+  }
+  return {}
+}
+
+/**
+ * 扁平化菜单树
+ * @param data 树形结构数据
+ * @returns 数组
+ */
+export const flattenTree = (data: any[]) => {
+  const obj: any[] = []
+  data?.map((item: any) => {
+    const { children, id, investedNum, ...params } = item
+    if (children) {
+      item.children?.forEach((it: any) => {
+        obj.push({
+          ...it,
+          ...params
+        })
+      })
+    } else {
+      obj.push({ ...item })
+    }
+  })
+  return obj
+}
