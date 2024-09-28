@@ -41,6 +41,22 @@ export default {
   getPolicyDic() {
     return request.get('/open/Policy-data-dic/get')
   },
+  // 获得热点词字典
+  getHotWord() {
+    return request.get('/open/Hot-words/get')
+  },
+  // 首页搜索功能
+  getSearchResult(params: any) {
+    return request.get('/open/Search', params)
+  },
+  // 获得政策数据信息分页
+  getPolicyData(params: any) {
+    return request.get('/open/Policy-data/get', params)
+  },
+  // 获得 地区名称：地区编码 字典
+  getAreaName() {
+    return request.get('/open/AreaName-to-areaCode/get')
+  },
 
   // 获取权限列表
   getPermissionList() {

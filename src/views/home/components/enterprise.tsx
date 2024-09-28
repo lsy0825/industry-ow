@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
-import { Anchor, Button, Cascader, Col, DatePicker, Form, InputNumber, List, Modal, Row, Space, Tag } from 'antd'
+import { useState } from 'react'
+import { Button, Col, DatePicker, Form, InputNumber, Row, Space, Tag, TreeSelect } from 'antd'
 import styles from './index.module.less'
-import Detail from './detail'
 import { useRequest } from 'ahooks'
 import api from '@/api'
 import moment from 'moment'
@@ -9,39 +8,9 @@ import CommonFirmList from './commonFirmList'
 import { addLabelToTree } from '@/utils'
 import { useStore } from '@/store'
 
-interface Option {
-  value: string | number
-  label: string
-  children?: Option[]
-}
-
 const { CheckableTag } = Tag
 const { RangePicker } = DatePicker
-const firmData = [
-  { label: '不限', key: '1' },
-  { label: '存续（在营，开业，在业）', key: '2' },
-  { label: '吊销，未注销', key: '3' },
-  { label: '吊销，已注销', key: '4' },
-  { label: '注销', key: '5' },
-  { label: '撤销', key: '6' },
-  { label: '迁出', key: '7' }
-]
-const aptitudeData = [
-  { label: '不限', key: '1' },
-  { label: '上市企业', key: '2' },
-  { label: '新三版', key: '3' },
-  { label: '国家级专精特新', key: '4' },
-  { label: '省级专精特新', key: '5' },
-  { label: '国家级单项冠军', key: '6' },
-  { label: '省级单项冠军', key: '7' },
-  { label: '高新技术企业', key: '8' },
-  { label: '科技型中小企业', key: '9' },
-  { label: '中国企业500强', key: '10' },
-  { label: '独角兽', key: '11' },
-  { label: '央企', key: '12' },
-  { label: '民营', key: '13' },
-  { label: '外资', key: '14' }
-]
+const { SHOW_PARENT } = TreeSelect
 const amountData = ['不限']
 
 export default function EnterpriseFC() {
@@ -52,14 +21,10 @@ export default function EnterpriseFC() {
   const [selectedAmount, setSelectedAmount] = useState<string[]>(['不限'])
   const { area, industryOpts } = useStore()
 
-  const {
-    data: dataList,
-    loading,
-    run
-  } = useRequest(
+  const { data: dataList } = useRequest(
     async () => {
       const resp: any = await api.getEnterpriseInfo({ ...searchValue })
-      return resp.list
+      return (resp && resp.list) || []
     },
     {
       manual: false,
@@ -71,8 +36,8 @@ export default function EnterpriseFC() {
   const { data: dictList } = useRequest(
     async () => {
       const resp: any = await api.getStatusAndQualify()
-      setSelectedFirms(resp?.enterpriseStatus?.[0])
-      setSelectedApts(resp?.companyQualification?.[0])
+      setSelectedFirms([resp?.enterpriseStatus?.[0] === '不限' ? resp?.enterpriseStatus?.[0] : ''])
+      setSelectedApts([resp?.companyQualification?.[0] === '不限' ? resp?.companyQualification?.[0] : ''])
       return resp
     },
     {
@@ -80,44 +45,48 @@ export default function EnterpriseFC() {
     }
   )
 
-  // 产业字典
-  // const { data: industryData } = useRequest(
-  //   async () => {
-  //     const resp: any = await api.getIndustryOpts()
-  //     return addLabelToTree([resp], 'noId')
-  //   },
-  //   {
-  //     manual: false
-  //   }
-  // )
-
   const handleChange = (tag: string, checked: boolean) => {
     const nextSelectedTags = checked ? [tag] : selectedFirms.filter(t => t !== tag)
-    console.log('111111111 ', nextSelectedTags)
     setSelectedFirms(nextSelectedTags)
   }
 
   const handleChange2 = (tag: string, checked: boolean) => {
     const nextSelectedTags = checked ? [tag] : selectedApts.filter(t => t !== tag)
-    console.log('22222222222 ', nextSelectedTags)
     setSelectedApts(nextSelectedTags)
   }
 
   const handleChange3 = (tag: string, checked: boolean) => {
     const nextSelectedTags = checked ? [tag] : selectedAmount.filter(t => t !== tag)
-    console.log('333333 ', nextSelectedTags)
     setSelectedAmount(nextSelectedTags)
   }
 
-  // const showDetail = (record: any) => {
-  //   console.log(record, '====')
-  // }
-
   const handleSearch = () => {
-    const { area, date, industry, minAmount, maxAmount } = form.getFieldsValue()
-    const startTime = moment(new Date(date[0])).format('YYYY-MM-DD')
-    const endTime = moment(new Date(date[1])).format('YYYY-MM-DD')
-    console.log(selectedFirms, selectedApts, selectedAmount, 'date', startTime, endTime)
+    const { registeredOfficeIdList, date, industryClassTextList, annualIncomeStart, annualIncomeEnd } =
+      form.getFieldsValue()
+    const dateEstablishmentStart = date ? moment(new Date(date?.[0])).format('YYYY-MM-DD HH:mm:ss') : ''
+    const dateEstablishmentEnd = date ? moment(new Date(date?.[1])).format('YYYY-MM-DD HH:mm:ss') : ''
+    const status = selectedFirms?.join(',') === '不限' ? '' : selectedFirms?.join(',')
+    const qualification = selectedApts?.join(',') === '不限' ? '' : selectedApts
+    const params = {
+      registeredOfficeIdList: registeredOfficeIdList ?? [],
+      industryClassTextList:
+        industryClassTextList?.join(',') === '全部' || !industryClassTextList ? [] : industryClassTextList,
+      annualIncomeStart: annualIncomeStart ?? '',
+      annualIncomeEnd: annualIncomeEnd ?? '',
+      dateEstablishmentStart: dateEstablishmentStart ?? '',
+      dateEstablishmentEnd: dateEstablishmentEnd ?? '',
+      statusText: status,
+      qualificationsTextList: qualification
+    }
+    setSearchValue({ ...searchValue, ...params })
+  }
+
+  const handleReset = () => {
+    form.resetFields()
+    setSelectedFirms([dictList?.enterpriseStatus?.[0] === '不限' ? dictList?.enterpriseStatus?.[0] : ''])
+    setSelectedApts([dictList?.companyQualification?.[0] === '不限' ? dictList?.companyQualification?.[0] : ''])
+    setSelectedAmount(['不限'])
+    setSearchValue({ pageNo: 1, pageSize: 10 })
   }
 
   const getAmount = (num: any) => {
@@ -132,7 +101,7 @@ export default function EnterpriseFC() {
       <div className={styles.topStyle}>
         <div style={{ marginBottom: 24 }}>
           <span style={{ marginRight: 12 }}>企业状态 :</span>
-          {dictList?.enterpriseStatus?.map(item => (
+          {dictList?.enterpriseStatus?.map((item: string) => (
             <CheckableTag
               key={item}
               checked={selectedFirms.indexOf(item) > -1}
@@ -144,7 +113,7 @@ export default function EnterpriseFC() {
         </div>
         <div style={{ marginBottom: 24 }}>
           <span style={{ marginRight: 12 }}>资质类别 :</span>
-          {dictList?.companyQualification?.map(item => (
+          {dictList?.companyQualification?.map((item: string) => (
             <CheckableTag
               key={item}
               checked={selectedApts.indexOf(item) > -1}
@@ -158,7 +127,7 @@ export default function EnterpriseFC() {
           <Row>
             <Col span={12}>
               <Form.Item label='注册资本' style={{ marginBottom: 0 }}>
-                {amountData.map(item => (
+                {amountData.map((item: string) => (
                   <CheckableTag
                     key={item}
                     checked={selectedAmount.indexOf(item) > -1}
@@ -167,7 +136,7 @@ export default function EnterpriseFC() {
                     {item}
                   </CheckableTag>
                 ))}
-                <Form.Item style={{ display: 'inline-block', marginLeft: 8 }} name='minAmount'>
+                <Form.Item style={{ display: 'inline-block', marginLeft: 8 }} name='annualIncomeStart'>
                   <InputNumber placeholder='最低金额' onChange={getAmount} />
                 </Form.Item>
                 <span
@@ -181,21 +150,20 @@ export default function EnterpriseFC() {
                 >
                   至
                 </span>
-                <Form.Item style={{ display: 'inline-block' }} name='maxAmount'>
+                <Form.Item style={{ display: 'inline-block' }} name='annualIncomeEnd'>
                   <InputNumber placeholder='最高金额' onChange={getAmount} />
                 </Form.Item>
                 <span style={{ fontSize: 12, paddingLeft: 8 }}> 万元人民币 </span>
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item name='industry' label='产业'>
-                <Cascader
+              <Form.Item name='industryClassTextList' label='产业'>
+                <TreeSelect
+                  treeData={addLabelToTree([industryOpts], 'noId')}
                   style={{ width: 500 }}
-                  options={addLabelToTree([industryOpts], 'noId')}
-                  // onChange={onChange}
-                  multiple
-                  maxTagCount='responsive'
+                  treeCheckable
                   placeholder='请选择产业'
+                  showCheckedStrategy={SHOW_PARENT}
                 />
               </Form.Item>
             </Col>
@@ -205,21 +173,21 @@ export default function EnterpriseFC() {
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item name='area' label='区域'>
-                <Cascader
+              <Form.Item name='registeredOfficeIdList' label='区域'>
+                <TreeSelect
+                  treeData={addLabelToTree([area], 'hasId')}
                   style={{ width: 500 }}
-                  options={addLabelToTree([area], 'hasId')}
-                  // onChange={onChange}
-                  multiple
-                  maxTagCount='responsive'
+                  treeCheckable
                   placeholder='请选择区域'
+                  showCheckedStrategy={SHOW_PARENT}
+                  treeNodeFilterProp='title'
                 />
               </Form.Item>
             </Col>
           </Row>
           <div style={{ textAlign: 'right' }}>
             <Space size='small'>
-              <Button onClick={() => form.resetFields()}>重置</Button>
+              <Button onClick={handleReset}>重置</Button>
               <Button type='primary' onClick={handleSearch}>
                 查询
               </Button>

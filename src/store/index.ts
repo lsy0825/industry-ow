@@ -9,6 +9,8 @@ export const useStore = create<{
   isDark: boolean
   area: any
   industryOpts: any
+  enterValue: string
+  getEnterValue: (enterValue: string) => void
   updateToken: (token: string) => void
   updateUserInfo: (userInfo: any) => void
   getAreas: (area: any) => void
@@ -22,6 +24,8 @@ export const useStore = create<{
   area: [],
   industryOpts: {},
   isDark: storage.get('isDark') || false,
+  enterValue: '',
+  getEnterValue: enterValue => set({ enterValue }),
   updateToken: token => set({ token }),
   updateTheme: isDark => set({ isDark }),
   updateUserInfo: (userInfo: any) => set({ userInfo }),

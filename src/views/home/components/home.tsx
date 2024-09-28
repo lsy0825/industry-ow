@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Button, Carousel, Input } from 'antd'
 import Home1 from '@/assets/home1.jpg'
 import Home2 from '@/assets/home2.jpg'
@@ -7,6 +6,9 @@ import Home4 from '@/assets/home4.jpg'
 import Home5 from '@/assets/home5.jpg'
 import styles from './index.module.less'
 import { HomeProps } from '../type'
+import { useRequest } from 'ahooks'
+import api from '@/api'
+import { useStore } from '@/store'
 
 const { Search } = Input
 
@@ -21,10 +23,26 @@ const contentStyle: React.CSSProperties = {
 }
 
 const HomeFC: React.FC<HomeProps> = ({ setCurrent }) => {
-  const onSearch = (value: string, e: any) => console.log(value)
+  const { getEnterValue } = useStore()
+  // 热点词字典
+  const { data: hotword } = useRequest(
+    async () => {
+      const resp: any = await api.getHotWord()
+      return resp
+    },
+    {
+      manual: false
+    }
+  )
 
-  const handleSearch = () => {
+  const onSearch = (value: string, e: any) => {
     setCurrent('7')
+    getEnterValue(value)
+  }
+
+  const handleSearch = (value: string) => {
+    setCurrent('7')
+    getEnterValue(value)
   }
 
   return (
@@ -43,10 +61,11 @@ const HomeFC: React.FC<HomeProps> = ({ setCurrent }) => {
       </div>
       <div style={{ marginTop: 8, textAlign: 'center' }}>
         <span>热门搜索：</span>
-        <Button type='text' onClick={handleSearch}>
-          西安
-        </Button>
-        <Button type='text'>智能机器人</Button>
+        {hotword?.map((word: string) => (
+          <Button type='text' onClick={() => handleSearch(word)} key={word}>
+            {word}
+          </Button>
+        ))}
       </div>
     </div>
   )

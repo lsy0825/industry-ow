@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { Button, Cascader, Col, Form, List, Modal, Row, Select, Space, Tag } from 'antd'
+import { Button, Col, Form, Row, Space, Tag, TreeSelect } from 'antd'
 import styles from './index.module.less'
-import Detail from '@/assets/policyDetail.png'
 import { useRequest } from 'ahooks'
 import api from '@/api'
 import { addLabelToTree } from '@/utils'
@@ -16,147 +15,17 @@ interface Option {
 }
 
 const { CheckableTag } = Tag
+const { SHOW_PARENT } = TreeSelect
+
 const layout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 20 }
 }
 
-const declareData = [
-  { label: '不限', key: '1' },
-  { label: '非申报类', key: '2' },
-  { label: '申报类', key: '3' }
-]
-const policyLevelData = [
-  { label: '不限', key: '1' },
-  { label: '国家级', key: '2' },
-  { label: '省级', key: '3' },
-  { label: '市级', key: '4' },
-  { label: '区级', key: '5' },
-  { label: '园区级', key: '6' }
-]
-const data = [
-  {
-    title: '隆基绿能科技股份有限公司',
-    time: '2020-04-12',
-    source: '科技合作处（区域创新处）',
-    desc: ['市级', '其他通知', '陕西省', '非申报类']
-  },
-  {
-    title: '北京国沣汇泽科技有限公司',
-    time: '2020-04-12',
-    source: '科技合作处（区域创新处）',
-    desc: ['市级', '其他通知', '陕西省', '非申报类']
-  },
-  {
-    title: '中国联合网络通信有限公司北京市分公司昌平北七家营业厅',
-    time: '2020-04-12',
-    source: '科技合作处（区域创新处）',
-    desc: ['市级', '其他通知', '陕西省', '非申报类']
-  },
-  {
-    title: '山西嘉鹏佳科技有限公司',
-    time: '2020-04-12',
-    source: '科技合作处（区域创新处）',
-    desc: ['市级', '其他通知', '陕西省', '非申报类']
-  }
-]
-
-const options: Option[] = [
-  {
-    label: '信息技术',
-    value: 'IT',
-    children: [
-      {
-        label: '物联网',
-        value: 'webofthings'
-      },
-      {
-        label: '云计算',
-        value: 'cloudComputing'
-      },
-      {
-        label: '网络安全',
-        value: 'networkSecurity'
-      }
-    ]
-  },
-  {
-    label: '未来产业',
-    value: 'futureIndustry',
-    children: [
-      {
-        label: '人工智能',
-        value: 'AI'
-      },
-      {
-        label: '储能',
-        value: 'storedEnergy'
-      }
-    ]
-  }
-]
-
-const optionsArea: Option[] = [
-  {
-    label: '全国',
-    value: '全国',
-    children: [
-      {
-        label: '陕西省',
-        value: '陕西省',
-        children: [
-          {
-            label: '西安市',
-            value: '西安市',
-            children: [
-              {
-                label: '长安区',
-                value: '长安区'
-              }
-            ]
-          }
-        ]
-      },
-      {
-        label: '广东省',
-        value: '广东省',
-        children: [
-          {
-            label: '广州市',
-            value: '广州市',
-            children: [
-              {
-                label: '天河区',
-                value: '天河区'
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
-]
-
-const optionsPolicy: Option[] = [
-  {
-    value: 'jack',
-    label: 'Jack'
-  },
-  {
-    value: 'lucy',
-    label: 'Lucy'
-  },
-  {
-    value: 'tom',
-    label: 'Tom'
-  }
-]
-
 export default function PolicyFC() {
   const [form] = Form.useForm()
   const [selectedDeclare, setSelectedDeclare] = useState<string[]>([])
   const [selectedPolicy, setSelectedPolicy] = useState<string[]>([])
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState({ pageNo: 1, pageSize: 10 })
   const { area, industryOpts } = useStore()
 
@@ -164,8 +33,8 @@ export default function PolicyFC() {
   const { data: dictList } = useRequest(
     async () => {
       const resp: any = await api.getPolicyDic()
-      setSelectedDeclare(resp?.policyLevel?.[0])
-      setSelectedPolicy(resp?.policyDeclarationType?.[0])
+      setSelectedDeclare([resp?.policyLevel?.[0] === '不限' ? resp?.policyLevel?.[0] : ''])
+      setSelectedPolicy([resp?.policyDeclarationType?.[0] === '不限' ? resp?.policyDeclarationType?.[0] : ''])
       return resp
     },
     {
@@ -173,29 +42,72 @@ export default function PolicyFC() {
     }
   )
 
+  // 查询数据
+  const { data: policyData } = useRequest(
+    async () => {
+      const resp: any = await api.getPolicyData({ ...searchValue })
+      return resp.list
+    },
+    {
+      manual: false,
+      refreshDeps: [searchValue]
+    }
+  )
+
   const handleChangeDeclare = (tag: string, checked: boolean) => {
     const nextSelectedTags = checked ? [tag] : selectedDeclare.filter(t => t !== tag)
-    console.log('22222222222 ', nextSelectedTags)
     setSelectedDeclare(nextSelectedTags)
   }
 
   const handleChangePolicy = (tag: string, checked: boolean) => {
     const nextSelectedTags = checked ? [tag] : selectedPolicy.filter(t => t !== tag)
-    console.log('333333 ', nextSelectedTags)
     setSelectedPolicy(nextSelectedTags)
   }
 
-  const showTotal = (total: number) => `共 ${total} 条`
+  const handleSearch = () => {
+    const {
+      policyTypeTextList,
+      supportObjectTextList,
+      supportBehaviorTextList,
+      supportMethodTextList,
+      industryTypeTextList,
+      areaIdList
+    } = form.getFieldsValue()
+    const policyLevel = selectedPolicy?.join(',') === '不限' ? '' : selectedPolicy?.join(',')
+    const declare = selectedDeclare?.join(',') === '不限' ? '' : selectedDeclare?.join(',')
+    const params = {
+      policyLevelText: policyLevel,
+      declarationTypeText: declare,
+      policyTypeTextList: policyTypeTextList?.join(',') === '全部' || !policyTypeTextList ? [] : policyTypeTextList,
+      supportObjectTextList:
+        supportObjectTextList?.join(',') === '全部' || !supportObjectTextList ? [] : supportObjectTextList,
+      supportBehaviorTextList:
+        supportBehaviorTextList?.join(',') === '全部' || !supportBehaviorTextList ? [] : supportBehaviorTextList,
+      supportMethodTextList:
+        supportMethodTextList?.join(',') === '全部' || !supportMethodTextList ? [] : supportMethodTextList,
+      industryTypeTextList:
+        industryTypeTextList?.join(',') === '全部' || !industryTypeTextList ? [] : industryTypeTextList,
+      areaIdList: areaIdList ?? []
+    }
+    setSearchValue({ ...searchValue, ...params })
+  }
+
+  const handleReset = () => {
+    form.resetFields()
+    setSelectedDeclare([dictList?.policyLevel?.[0] === '不限' ? dictList?.policyLevel?.[0] : ''])
+    setSelectedPolicy([dictList?.policyDeclarationType?.[0] === '不限' ? dictList?.policyDeclarationType?.[0] : ''])
+    setSearchValue({ pageNo: 1, pageSize: 10 })
+  }
 
   const commonCase = useCallback(
     (options: any, placeholder: string) => (
-      <Cascader
+      <TreeSelect
+        treeData={options}
         style={{ width: 500 }}
-        options={options}
-        // onChange={onChange}
-        multiple
-        maxTagCount='responsive'
+        treeCheckable
         placeholder={placeholder}
+        showCheckedStrategy={SHOW_PARENT}
+        treeNodeFilterProp='title'
       />
     ),
     [dictList]
@@ -208,7 +120,7 @@ export default function PolicyFC() {
           <Row>
             <Col span={12}>
               <Form.Item label='政策级别' style={{ marginBottom: 0 }}>
-                {dictList?.policyLevel?.map(item => (
+                {dictList?.policyLevel?.map((item: string) => (
                   <CheckableTag
                     key={item}
                     checked={selectedPolicy.indexOf(item) > -1}
@@ -221,7 +133,7 @@ export default function PolicyFC() {
             </Col>
             <Col span={12}>
               <Form.Item label='申报类型'>
-                {dictList?.policyDeclarationType?.map(item => (
+                {dictList?.policyDeclarationType?.map((item: string) => (
                   <CheckableTag
                     key={item}
                     checked={selectedDeclare.indexOf(item) > -1}
@@ -233,46 +145,53 @@ export default function PolicyFC() {
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item name='policyType' label='政策类型'>
+              <Form.Item name='policyTypeTextList' label='政策类型'>
                 {commonCase(addLabelToTree([dictList?.policyType], 'noId'), '请选择政策类型')}
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item name='supportedPerson' label='支持对象'>
+              <Form.Item name='supportObjectTextList' label='支持对象'>
                 {commonCase(addLabelToTree([dictList?.supportObject], 'noId'), '请选择支持对象')}
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item name='supportedAct' label='支持行为'>
+              <Form.Item name='supportBehaviorTextList' label='支持行为'>
                 {commonCase(addLabelToTree([dictList?.supportBehavior], 'noId'), '请选择支持行为')}
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item name='supportedWay' label='支持方式'>
+              <Form.Item name='supportMethodTextList' label='支持方式'>
                 {commonCase(addLabelToTree([dictList?.supportMethod], 'noId'), '请选择支持方式')}
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item name='industry' label='产业'>
+              <Form.Item name='industryTypeTextList' label='产业'>
                 {commonCase(addLabelToTree([industryOpts], 'noId'), '请选择产业')}
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item name='area' label='区域'>
+              <Form.Item name='areaIdList' label='区域'>
                 {commonCase(addLabelToTree([area], 'hasId'), '请选择区域')}
               </Form.Item>
             </Col>
           </Row>
           <div style={{ textAlign: 'right' }}>
             <Space size='small'>
-              <Button onClick={() => form.resetFields()}>重置</Button>
-              <Button type='primary'>查询</Button>
+              <Button onClick={handleReset}>重置</Button>
+              <Button type='primary' onClick={handleSearch}>
+                查询
+              </Button>
             </Space>
           </div>
         </Form>
       </div>
       <div className={styles.bottomStyle}>
-        <CommonPolicyList dataList={data} title='policy' searchValue={searchValue} setSearchValue={setSearchValue} />
+        <CommonPolicyList
+          dataList={policyData}
+          title='policy'
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+        />
       </div>
     </div>
   )

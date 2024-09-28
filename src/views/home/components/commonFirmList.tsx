@@ -13,13 +13,11 @@ const CommonFirmList: React.FC<ListProps> = ({ dataList, title, setSearchValue, 
     <div>
       <List
         itemLayout='horizontal'
-        // loading={loading}
         dataSource={dataList}
         pagination={
           title === 'firm'
             ? {
                 onChange: (page, size) => {
-                  console.log(page, size)
                   setSearchValue({ ...searchValue, pageNo: page, pageSize: size })
                 },
                 pageSize: searchValue?.pageSize,

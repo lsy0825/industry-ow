@@ -4,7 +4,8 @@ import storage from './storage'
 import env from '@/config'
 import { Result } from '@/types/api'
 import { message } from './AntdGlobal'
-import { tansParams } from './index'
+import { queryToString, tansParams } from './index'
+import _ from 'lodash'
 // console.log('config', env)
 // 创建实例
 const instance = axios.create({
@@ -25,7 +26,6 @@ instance.interceptors.request.use(
       config.headers['Authorization'] = 'Bearer ' + token?.accessToken
     }
     config.headers['tenant-id'] = '1'
-    // console.log(config, 'config')
 
     if (config?.data) {
       let url = config.url + '?' + tansParams(config.data)
@@ -80,7 +80,14 @@ interface IConfig {
 }
 export default {
   get<T>(url: string, params?: object, options: IConfig = { showLoading: true, showError: true }): Promise<T> {
-    return instance.get(url, { params, ...options })
+    let finalUrl: any
+    const queryString = _.isEmpty(params) ? '' : queryToString(params)
+    if (queryString) {
+      finalUrl = url + '?' + queryString
+    } else {
+      finalUrl = url
+    }
+    return instance.get(finalUrl)
   },
   post<T>(url: string, params?: object, options: IConfig = { showLoading: true, showError: true }): Promise<T> {
     return instance.post(url, params, options)

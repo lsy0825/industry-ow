@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Card, Col, Descriptions, Input, Row, Table, Tag } from 'antd'
+import { Card, Col, Descriptions, Row, Table, Tag } from 'antd'
 import type { DescriptionsProps } from 'antd'
 import styles from './index.module.less'
 import Icon from '@/assets/detailIcon.svg'
@@ -9,7 +9,7 @@ import api from '@/api'
 import * as echarts from 'echarts'
 import { useCharts } from '@/hook/useCharts'
 import geoJson from '@/assets/geoJson.json'
-import { DataType, TableProps } from '../type'
+import { DataType } from '../type'
 import { flattenTree, mergeIdList } from '@/utils'
 
 const dataList = [
@@ -711,7 +711,7 @@ export default function DetailFC(props: any) {
     }
   ]
 
-  const columns: TableProps<DataType>['columns'] = [
+  const columns: any = [
     {
       title: '省份',
       dataIndex: 'province',
@@ -769,7 +769,7 @@ export default function DetailFC(props: any) {
         <Card>
           <div ref={mapRef} className={styles.itemMap}></div>
         </Card>
-        <Table<DataType>
+        <Table
           columns={columns}
           dataSource={flattenTree(dataSource)}
           bordered

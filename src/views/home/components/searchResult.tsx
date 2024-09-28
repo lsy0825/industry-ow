@@ -1,11 +1,16 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import styles from './index.module.less'
 import { Tabs } from 'antd'
 import FirmIcon from '@/assets/firmIcon.svg'
+import PolicyIcon from '@/assets/policyIcon.svg'
 import CommonFirmList from './commonFirmList'
 import EnterpriseFC from './enterprise'
 import IndustryFC from './industry'
 import PolicyFC from './policy'
+import { useStore } from '@/store'
+import { useRequest } from 'ahooks'
+import api from '@/api'
+import CommonPolicyList from './commonPolicyList'
 
 const tabsList = [
   { label: '全部', key: '1' },
@@ -18,6 +23,19 @@ const tabsList = [
 
 export default function SearchResultFC() {
   const [checked, setChecked] = useState('1')
+  const { enterValue } = useStore()
+
+  // 搜索结果
+  const { data: resultData } = useRequest(
+    async () => {
+      const resp: any = await api.getSearchResult({ keywords: enterValue })
+      return resp
+    },
+    {
+      manual: false,
+      refreshDeps: [enterValue]
+    }
+  )
 
   const onChange = (key: string) => {
     setChecked(key)
@@ -30,10 +48,16 @@ export default function SearchResultFC() {
           <img src={FirmIcon} style={{ paddingTop: 4 }} width='30px' height='30px' />
           <span className={styles.text}>企业</span>
         </div>
-        <CommonFirmList dataList={[]} title='result' />
+        <CommonFirmList dataList={resultData?.informationRespOpenVOList} title='result' />
+
+        <div className={styles.titleColor}>
+          <img src={PolicyIcon} style={{ paddingTop: 6 }} width='30px' height='30px' />
+          <span className={styles.text}>政策</span>
+        </div>
+        <CommonPolicyList dataList={resultData?.policyDataRespVOList} title='result' />
       </div>
     )
-  }, [])
+  }, [resultData])
 
   const content2 = useMemo(() => {
     return (

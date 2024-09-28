@@ -136,14 +136,26 @@ export function tansParams(params: any) {
 }
 
 /**
+ * get请求参数处理
+ * @param query 参数
+ */
+export function queryToString(query: Record<string, any> = {}) {
+  const encode = encodeURIComponent
+  return Object.keys(query)
+    .map(key => `${encode(key)}=${encode(query[key])}`)
+    .join('&')
+}
+
+/**
  * 树形数据处理
  * @param tree 原数据
  */
 export function addLabelToTree(tree: any, type: string) {
   return tree?.map((node: any) => ({
     ...node,
-    label: node?.name,
+    title: node?.name,
     value: type === 'hasId' ? node?.id : node?.name,
+    key: type === 'hasId' ? node?.id : node?.name,
     children: node?.children ? addLabelToTree(node?.children, type) : []
   }))
 }
@@ -237,4 +249,16 @@ export const flattenTree = (data: any[]) => {
     }
   })
   return obj
+}
+
+/**
+ * 根据地区编码查找地区名称
+ * @param obj 地区编码数据
+ * @param val 需要匹配的地区编码
+ * @returns 匹配的地区名称
+ */
+export const getName = (obj: Record<string, number>, val: number) => {
+  const keys = Object.keys(obj)
+  const key = keys.find(k => obj[k] === val)
+  return key
 }
