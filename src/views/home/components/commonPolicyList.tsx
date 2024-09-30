@@ -3,21 +3,11 @@ import { List, Tag } from 'antd'
 import styles from './index.module.less'
 import moment from 'moment'
 import { ListProps } from '../type'
-import { useRequest } from 'ahooks'
-import api from '@/api'
 import { getName } from '@/utils'
+import { useStore } from '@/store'
 
 const CommonPolicyList: React.FC<ListProps> = ({ dataList, title, setSearchValue, searchValue }) => {
-  // 地区字典接口
-  const { data: areaNames } = useRequest(
-    async () => {
-      const resp: any = await api.getAreaName()
-      return resp
-    },
-    {
-      manual: false
-    }
-  )
+  const { areaNames } = useStore()
 
   const jumpUrl = (item: any) => {
     window.open(item.url, '_blank')

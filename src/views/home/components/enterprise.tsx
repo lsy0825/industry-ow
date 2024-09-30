@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Button, Col, DatePicker, Form, InputNumber, Row, Space, Tag, TreeSelect } from 'antd'
+import type { InputNumberProps } from 'antd'
 import styles from './index.module.less'
 import { useRequest } from 'ahooks'
 import api from '@/api'
@@ -7,6 +8,7 @@ import moment from 'moment'
 import CommonFirmList from './commonFirmList'
 import { addLabelToTree } from '@/utils'
 import { useStore } from '@/store'
+import { FirmAndQuaDict, RespProps } from '../type'
 
 const { CheckableTag } = Tag
 const { RangePicker } = DatePicker
@@ -23,8 +25,8 @@ export default function EnterpriseFC() {
 
   const { data: dataList } = useRequest(
     async () => {
-      const resp: any = await api.getEnterpriseInfo({ ...searchValue })
-      return (resp && resp.list) || []
+      const resp: RespProps = (await api.getEnterpriseInfo({ ...searchValue })) as RespProps
+      return (resp && resp?.list) || []
     },
     {
       manual: false,
@@ -35,7 +37,7 @@ export default function EnterpriseFC() {
   // 企业状态和资质类别字典
   const { data: dictList } = useRequest(
     async () => {
-      const resp: any = await api.getStatusAndQualify()
+      const resp: FirmAndQuaDict = (await api.getStatusAndQualify()) as FirmAndQuaDict
       setSelectedFirms([resp?.enterpriseStatus?.[0] === '不限' ? resp?.enterpriseStatus?.[0] : ''])
       setSelectedApts([resp?.companyQualification?.[0] === '不限' ? resp?.companyQualification?.[0] : ''])
       return resp
@@ -89,7 +91,7 @@ export default function EnterpriseFC() {
     setSearchValue({ pageNo: 1, pageSize: 10 })
   }
 
-  const getAmount = (num: any) => {
+  const getAmount: InputNumberProps['onChange'] = num => {
     // 输入金额取消不限按钮高亮
     if (num) {
       setSelectedAmount([])

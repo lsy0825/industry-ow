@@ -7,6 +7,7 @@ import { addLabelToTree } from '@/utils'
 import { useCallback } from 'react'
 import { useStore } from '@/store'
 import CommonPolicyList from './commonPolicyList'
+import { OptionsProps, PolicyDict, RespProps } from '../type'
 
 interface Option {
   value: string | number
@@ -32,7 +33,7 @@ export default function PolicyFC() {
   // 字典
   const { data: dictList } = useRequest(
     async () => {
-      const resp: any = await api.getPolicyDic()
+      const resp: PolicyDict = (await api.getPolicyDic()) as PolicyDict
       setSelectedDeclare([resp?.policyLevel?.[0] === '不限' ? resp?.policyLevel?.[0] : ''])
       setSelectedPolicy([resp?.policyDeclarationType?.[0] === '不限' ? resp?.policyDeclarationType?.[0] : ''])
       return resp
@@ -45,8 +46,8 @@ export default function PolicyFC() {
   // 查询数据
   const { data: policyData } = useRequest(
     async () => {
-      const resp: any = await api.getPolicyData({ ...searchValue })
-      return resp.list
+      const resp: RespProps = (await api.getPolicyData({ ...searchValue })) as RespProps
+      return resp?.list
     },
     {
       manual: false,
@@ -100,7 +101,7 @@ export default function PolicyFC() {
   }
 
   const commonCase = useCallback(
-    (options: any, placeholder: string) => (
+    (options: OptionsProps[], placeholder: string) => (
       <TreeSelect
         treeData={options}
         style={{ width: 500 }}

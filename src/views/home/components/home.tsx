@@ -27,7 +27,7 @@ const HomeFC: React.FC<HomeProps> = ({ setCurrent }) => {
   // 热点词字典
   const { data: hotword } = useRequest(
     async () => {
-      const resp: any = await api.getHotWord()
+      const resp: string[] = (await api.getHotWord()) as string[]
       return resp
     },
     {
@@ -35,7 +35,7 @@ const HomeFC: React.FC<HomeProps> = ({ setCurrent }) => {
     }
   )
 
-  const onSearch = (value: string, e: any) => {
+  const onSearch = (value: string) => {
     setCurrent('7')
     getEnterValue(value)
   }

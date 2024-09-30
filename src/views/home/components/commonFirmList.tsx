@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import { List, Modal, Tag } from 'antd'
 import styles from './index.module.less'
 import moment from 'moment'
-import { ListProps } from '../type'
+import { IsOpenProps, ListProps } from '../type'
 import Detail from './detail'
 
 const CommonFirmList: React.FC<ListProps> = ({ dataList, title, setSearchValue, searchValue }) => {
-  const [isModalOpen, setIsModalOpen] = useState<any>({ type: false, record: {} })
+  const [isModalOpen, setIsModalOpen] = useState<IsOpenProps>({ type: false, record: {} })
   const showTotal = (total: number) => `共 ${total} 条`
 
   return (
@@ -28,7 +28,7 @@ const CommonFirmList: React.FC<ListProps> = ({ dataList, title, setSearchValue, 
               }
             : false
         }
-        renderItem={(item: any, index) => (
+        renderItem={(item: Record<string, any>, index) => (
           <List.Item
             actions={[
               <span className={styles.rightTitle} key={index}>{`成立时间：${moment(item.dateEstablishment).format(
@@ -43,13 +43,13 @@ const CommonFirmList: React.FC<ListProps> = ({ dataList, title, setSearchValue, 
               description={
                 <>
                   {/* 产业链 */}
-                  {item?.industryClass?.map((i: any) => (
+                  {item?.industryClass?.map((i: string) => (
                     <Tag color='#f50' key={i}>
                       {i}
                     </Tag>
                   ))}
                   {/* 资质类别 */}
-                  {item?.qualificationsId?.map((i: any) => (
+                  {item?.qualificationsId?.map((i: string) => (
                     <Tag color='#2db7f5' key={i}>
                       {i}
                     </Tag>

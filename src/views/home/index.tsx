@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Dropdown, Layout, Menu, theme } from 'antd'
+import { useEffect, useState } from 'react'
+import { Button, Layout, Menu, theme } from 'antd'
 import styles from './index.module.less'
 import Logo from '@/assets/logo.gif'
 import Avatar from '@/assets/avatar.svg'
@@ -40,11 +40,12 @@ export default function LoginFC() {
     token: { borderRadiusLG }
   } = theme.useToken()
   const [current, setCurrent] = useState<string>('1')
-  const { getAreas, userInfo, getIndustruOpts } = useStore()
+  const { getAreas, userInfo, getIndustruOpts, getAreaNames } = useStore()
 
   useEffect(() => {
     getAreaData()
     getIndustryData()
+    getAreaList()
   }, [])
   const getAreaData = async () => {
     const data = await api.getAreaTree()
@@ -54,6 +55,11 @@ export default function LoginFC() {
   const getIndustryData = async () => {
     const data = await api.getIndustryOpts()
     getIndustruOpts(data)
+  }
+
+  const getAreaList = async () => {
+    const data = await api.getAreaName()
+    getAreaNames(data)
   }
 
   const onClick: MenuProps['onClick'] = e => {

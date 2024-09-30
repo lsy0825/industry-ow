@@ -3,14 +3,15 @@ import { Card, Col, Descriptions, Row, Table, Tag } from 'antd'
 import type { DescriptionsProps } from 'antd'
 import styles from './index.module.less'
 import Icon from '@/assets/detailIcon.svg'
-import Patent from '@/assets/patent.png'
 import { useRequest } from 'ahooks'
 import api from '@/api'
 import * as echarts from 'echarts'
 import { useCharts } from '@/hook/useCharts'
 import geoJson from '@/assets/geoJson.json'
-import { DataType } from '../type'
-import { flattenTree, mergeIdList } from '@/utils'
+import { DetailProps } from '../type'
+import { flattenTree, getName, mergeIdList } from '@/utils'
+import moment from 'moment'
+import { useStore } from '@/store'
 
 const dataList = [
   {
@@ -175,8 +176,9 @@ const items: DescriptionsProps['items'] = [
   }
 ]
 
-export default function DetailFC(props: any) {
+export default function DetailFC(props: DetailProps) {
   const { isModalOpen } = props
+  const { areaNames } = useStore()
   // 初始化条形图
   const [lineRef, lineChart] = useCharts()
   // 初始化地图
@@ -649,17 +651,16 @@ export default function DetailFC(props: any) {
 
   const { data: detailInfo } = useRequest(
     async () => {
-      const resp: any = await api.getEnterpriseDetail({ id: isModalOpen?.record?.id })
+      const resp: Record<string, any> = (await api.getEnterpriseDetail({ id: isModalOpen?.record?.id })) as Record<
+        string,
+        any
+      >
       return resp
     },
     {
       manual: false
     }
   )
-  console.log(isModalOpen, 'isModalOpen', detailInfo)
-
-  const industries = ['非金属矿物', '数字经济', '光伏', '物联网']
-  const qualifications = ['中国企业500强', '高新技术企业', '民营', '国家级单项冠军', '上市企业', '主板上市']
   const devices = [
     { name: '减速器', count: 59 },
     { name: '伺服电机', count: 117 },
@@ -727,6 +728,48 @@ export default function DetailFC(props: any) {
     }
   ]
 
+  const columnsPatent: any = [
+    {
+      title: '序号',
+      dataIndex: 'index',
+      render: (text: unknown, row: unknown, index: number) => index + 1
+    },
+    {
+      title: '专利名称',
+      dataIndex: 'investedNum'
+    },
+    {
+      title: '专利类型',
+      dataIndex: 'investedNum'
+    },
+    {
+      title: '状态',
+      dataIndex: 'status'
+    },
+    {
+      title: '公告号',
+      dataIndex: 'investedNum'
+    },
+    {
+      title: '申请日',
+      dataIndex: 'investedNum'
+    },
+    {
+      title: '公告日',
+      dataIndex: 'investedNum'
+    },
+    {
+      title: '申请（专利权）人',
+      dataIndex: 'investedNum'
+    },
+    {
+      title: '价值评分',
+      dataIndex: 'age',
+      // defaultSortOrder: 'descend',
+      sorter: (a: any, b: any) => a.age - b.age
+    }
+  ]
+
   return (
     <div className={styles.detailStyle}>
       <div className={styles.titleColor}>
@@ -734,10 +777,12 @@ export default function DetailFC(props: any) {
         <span className={styles.text}>基本信息</span>
       </div>
       <Descriptions title={null} column={4} style={{ marginBottom: 16 }}>
-        <Descriptions.Item label='成立日'>{detailInfo?.dateEstablishment}</Descriptions.Item>
-        <Descriptions.Item label='注册额'>{detailInfo?.annualIncome}</Descriptions.Item>
+        <Descriptions.Item label='成立日'>
+          {moment(detailInfo?.dateEstablishment).format('YYYY-MM-DD')}
+        </Descriptions.Item>
+        <Descriptions.Item label='注册额'>{`${detailInfo?.annualIncome}万元`}</Descriptions.Item>
         <Descriptions.Item label='员工数'>{detailInfo?.numberEmployees}</Descriptions.Item>
-        <Descriptions.Item label='所在地'>{detailInfo?.registeredOfficeId}</Descriptions.Item>
+        <Descriptions.Item label='所在地'>{getName(areaNames, detailInfo?.registeredOfficeId)}</Descriptions.Item>
         <Descriptions.Item label='所属行业' span={4}>
           {detailInfo?.industryclassList?.map((tag: string) => (
             <Tag color='#2db7f5' key={tag}>
@@ -793,7 +838,14 @@ export default function DetailFC(props: any) {
         <img src={Icon} style={{ paddingTop: 8 }} />
         <span className={styles.text}>专利信息</span>
       </div>
-      <img src={Patent} width='100%' height='100%' style={{ marginBottom: 10 }} />
+      <Table
+        columns={columnsPatent}
+        dataSource={[]}
+        bordered
+        rowKey='id'
+        pagination={false}
+        style={{ width: '100%', marginBottom: 16 }}
+      />
       <div className={styles.titleColor}>
         <img src={Icon} style={{ paddingTop: 8 }} />
         <span className={styles.text}>产业链信息</span>

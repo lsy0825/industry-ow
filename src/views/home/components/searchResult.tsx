@@ -11,6 +11,7 @@ import { useStore } from '@/store'
 import { useRequest } from 'ahooks'
 import api from '@/api'
 import CommonPolicyList from './commonPolicyList'
+import { SearchResultProps } from '../type'
 
 const tabsList = [
   { label: '全部', key: '1' },
@@ -28,7 +29,7 @@ export default function SearchResultFC() {
   // 搜索结果
   const { data: resultData } = useRequest(
     async () => {
-      const resp: any = await api.getSearchResult({ keywords: enterValue })
+      const resp: SearchResultProps = (await api.getSearchResult({ keywords: enterValue })) as SearchResultProps
       return resp
     },
     {
@@ -95,7 +96,7 @@ export default function SearchResultFC() {
     )
   }, [])
 
-  const contentRender: any = {
+  const contentRender: Record<string, any> = {
     '1': content1,
     '2': content2,
     '3': content3,
