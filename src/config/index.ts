@@ -18,7 +18,7 @@ const env = (document.documentElement.dataset.env as ENV) || 'stg'
 const config = {
   dev: {
     baseApi: '/admin-api',
-    uploadApi: 'http://112.74.162.77',
+    uploadApi: 'http://140.210.78.20',
     cdn: 'http://xxx.aliyun.com',
     mock: false,
     mockApi: 'https://www.fastmock.site/mock/5841b82d5672783b6fd62bb2a06aeb1f/api'

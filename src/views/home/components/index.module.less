@@ -29,8 +29,21 @@
     }
   }
 }
+.topBtn{
+	display: flex;
+	justify-content: space-between;
+	background: #fff;
+	margin-bottom: 16px;
+  padding: 12px 24px;
+	.detailText{
+		font-size: 16px;
+		font-weight: 600;
+	}
+}
 .detailStyle {
-  margin-top: 24px;
+	background: #fff;
+  padding: 24px;
+
   .titleColor {
     height: 35px;
     background-color: #ecf5ff;
@@ -53,6 +66,10 @@
     justify-content: space-between;
     margin-bottom: 16px;
   }
+	.rdText{
+		font-size: 16px;
+		font-weight: 600;
+	}
   .pieChart {
     display: flex;
   }
@@ -63,8 +80,9 @@
   }
   .itemChart {
     height: 400px;
-    width: 500px;
+    width: 700px;
   }
+
   .itemMap {
     height: 600px;
     width: 600px;
@@ -136,7 +154,9 @@
   background-color: #fff;
   padding: 24px;
   .tabTitle {
-    display: block;
+    display: flex;
+		flex-direction: column;
+		align-items: center;
     padding-top: 10px;
   }
   .tabIcon1 {
@@ -187,6 +207,9 @@
       > .ant-tabs-tabpane {
       padding: 24px 24px 0 24px;
     }
+		:where(.css-dev-only-do-not-override-12jzuas).ant-tabs .ant-tabs-tab .anticon{
+			margin-right: 0;
+		}
   }
   .cardTitle {
     font-size: 16px;
@@ -197,6 +220,16 @@
     display: flex;
     justify-content: space-between;
   }
+	.colStyle{
+		padding: 8px 24px;
+    height: 110px;
+    border: 1px solid #d7d7d7;
+    border-radius: 5px;
+    cursor: pointer;
+		&:hover{
+			box-shadow: 0px 10px 16px 0px rgba(20,66,204,0.1);
+		}
+	}
 }
 
 .searchResult {

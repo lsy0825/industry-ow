@@ -6,6 +6,7 @@ export interface ListProps {
   dataList: any
   searchValue?: any
   setSearchValue?: any
+	setCurrent?: any
   title: string
 }
 
@@ -59,7 +60,8 @@ export type SearchResultProps = {
 }
 
 export type DetailProps = {
-  isModalOpen: any
+  record: any
+	setCurrent:any
 }
 
 export interface EnterpriseParams {

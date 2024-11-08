@@ -12,6 +12,7 @@ import api from '@/api'
 import { useStore } from '@/store'
 import storage from '@/utils/storage'
 import SearchResult from './components/searchResult'
+import FirmDetail from './components/detail'
 
 const { Header, Content } = Layout
 
@@ -22,7 +23,8 @@ enum PageKeys {
   Page4 = '4',
   Page5 = '5',
   Page6 = '6',
-  Page7 = '7'
+  Page7 = '7',
+  Page8 = '8'
 }
 
 const items = [
@@ -32,7 +34,8 @@ const items = [
   { key: '4', label: '企业互动数据' },
   { key: '5', label: '产品流通数据' },
   { key: '6', label: '政策数据' },
-  { key: '7', label: '', disabled: true }
+  { key: '7', label: '', disabled: true },
+  { key: '8', label: '', disabled: true }
 ]
 
 export default function LoginFC() {
@@ -40,7 +43,7 @@ export default function LoginFC() {
     token: { borderRadiusLG }
   } = theme.useToken()
   const [current, setCurrent] = useState<string>('1')
-  const { getAreas, userInfo, getIndustruOpts, getAreaNames } = useStore()
+  const { getAreas, userInfo, getIndustruOpts, getAreaNames, rowFirm } = useStore()
 
   useEffect(() => {
     getAreaData()
@@ -68,12 +71,13 @@ export default function LoginFC() {
 
   const contentMap = {
     [PageKeys.Page1]: <Home setCurrent={setCurrent} />,
-    [PageKeys.Page2]: <Enterprise />,
+    [PageKeys.Page2]: <Enterprise setCurrent={setCurrent}/>,
     [PageKeys.Page3]: <Industry />,
     [PageKeys.Page4]: <div>页面 4 的内容</div>,
     [PageKeys.Page5]: <div>页面 5 的内容</div>,
     [PageKeys.Page6]: <Policy />,
-    [PageKeys.Page7]: <SearchResult />
+    [PageKeys.Page7]: <SearchResult />,
+    [PageKeys.Page8]: <FirmDetail record={rowFirm} setCurrent={setCurrent}/>
   }
 
   const onClickMenu = () => {
