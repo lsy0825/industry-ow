@@ -13,6 +13,8 @@ import { useStore } from '@/store'
 import storage from '@/utils/storage'
 import SearchResult from './components/searchResult'
 import FirmDetail from './components/detail'
+import IndustryDetail from './components/industryDetail'
+import Infomation from './components/infomation'
 
 const { Header, Content } = Layout
 
@@ -24,27 +26,36 @@ enum PageKeys {
   Page5 = '5',
   Page6 = '6',
   Page7 = '7',
-  Page8 = '8'
+  Page8 = '8',
+  Page9 = 'info'
 }
 
 const items = [
   { key: '1', label: '平台概况' },
-  { key: 'data', label: '数据', children: [
-          { label: '企业', key: '2' },
-          { label: '产业链', key: '3' },
-          { label: '政策', key: '6' },
-        ] },
-  { key: 'dimension', label: '全维智链分析', children: [
-          { label: '产业链全景分析', key: 'industry' },
-          { label: '区域经济与资源整合', key: 'areaEco' },
-          { label: '产品市场与竞争分析', key: 'product' },
-          { label: '企业综合竞争力评估', key: 'enterprise' },
-        ] },
+  {
+    key: 'data',
+    label: '数据',
+    children: [
+      { label: '企业', key: '2' },
+      { label: '产业链', key: '3' },
+      { label: '政策', key: '6' }
+    ]
+  },
+  {
+    key: 'dimension',
+    label: '全维智链分析',
+    children: [
+      { label: '产业链全景分析', key: 'industry' },
+      { label: '区域经济与资源整合', key: 'areaEco' },
+      { label: '产品市场与竞争分析', key: 'product' },
+      { label: '企业综合竞争力评估', key: 'enterprise' }
+    ]
+  },
   { key: '4', label: '分析工具' },
   { key: '5', label: '研究报告与白皮书' },
   { key: 'info', label: '政策与咨讯' },
-  { key: '7', label: '', disabled: true },//产业链详情页
-  { key: '8', label: '', disabled: true }//企业详情页
+  { key: '7', label: '', disabled: true }, //产业链详情页
+  { key: '8', label: '', disabled: true } //企业详情页
 ]
 
 export default function LoginFC() {
@@ -52,7 +63,7 @@ export default function LoginFC() {
     token: { borderRadiusLG }
   } = theme.useToken()
   const [current, setCurrent] = useState<string>('1')
-  const { getAreas, userInfo, getIndustruOpts, getAreaNames, rowFirm } = useStore()
+  const { getAreas, userInfo, getIndustruOpts, getAreaNames, rowFirm, rowIndustry } = useStore()
 
   useEffect(() => {
     getAreaData()
@@ -80,13 +91,14 @@ export default function LoginFC() {
 
   const contentMap = {
     [PageKeys.Page1]: <Home setCurrent={setCurrent} />,
-    [PageKeys.Page2]: <Enterprise setCurrent={setCurrent}/>,
-    [PageKeys.Page3]: <Industry />,
+    [PageKeys.Page2]: <Enterprise setCurrent={setCurrent} />,
+    [PageKeys.Page3]: <Industry setCurrent={setCurrent} />,
     [PageKeys.Page4]: <div>敬请期待...</div>,
     [PageKeys.Page5]: <div>敬请期待...</div>,
     [PageKeys.Page6]: <Policy />,
-    [PageKeys.Page7]: <SearchResult />,
-    [PageKeys.Page8]: <FirmDetail record={rowFirm} setCurrent={setCurrent}/>
+    [PageKeys.Page7]: <IndustryDetail record={rowIndustry} setCurrent={setCurrent} />,
+    [PageKeys.Page8]: <FirmDetail record={rowFirm} setCurrent={setCurrent} />,
+    [PageKeys.Page9]: <Infomation />
   }
 
   const onClickMenu = () => {
@@ -113,8 +125,8 @@ export default function LoginFC() {
           <Button type='text' onClick={onClickMenu}>
             <span>{userInfo?.nickname}</span>【退出】
           </Button>
-					<span className={styles.user}>互动反馈</span>
-					<span>中英文</span>
+          <span className={styles.user}>互动反馈</span>
+          <span>中英文</span>
         </span>
       </Header>
       <Content style={{ padding: '0 48px' }}>

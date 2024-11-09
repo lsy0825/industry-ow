@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Col, Modal, Row,Tabs } from 'antd'
+import { Col, Modal, Row, Tabs } from 'antd'
 import styles from './index.module.less'
 import CommonDetail from './commonDetail'
 import Normal1 from '@/assets/normal1.svg'
@@ -7,7 +7,15 @@ import { useRequest } from 'ahooks'
 import classNames from 'classnames'
 import api from '@/api'
 import { IsOpenProps } from '../type'
-import { AppstoreOutlined, ClusterOutlined, HighlightOutlined, RedoOutlined, SlidersOutlined, SoundOutlined } from '@ant-design/icons'
+import {
+  AppstoreOutlined,
+  ClusterOutlined,
+  HighlightOutlined,
+  RedoOutlined,
+  SlidersOutlined,
+  SoundOutlined
+} from '@ant-design/icons'
+import { useStore } from '@/store'
 
 const tabsList = [
   { label: '产业链数据', key: '1' },
@@ -26,18 +34,19 @@ const tabsList = [
 // }
 
 const iconStyle = {
-	onPointerEnterCapture:undefined,
-	onPointerLeaveCapture:undefined,
-	style:{fontSize:24}
+  onPointerEnterCapture: undefined,
+  onPointerLeaveCapture: undefined,
+  rev: undefined,
+  style: { fontSize: 24 }
 }
 
-const icon:any = {
-  '1': <ClusterOutlined  {...iconStyle} />,
+const icon: any = {
+  '1': <ClusterOutlined {...iconStyle} />,
   '2': <SoundOutlined {...iconStyle} />,
   '3': <SlidersOutlined {...iconStyle} />,
   '4': <HighlightOutlined {...iconStyle} />,
   '5': <RedoOutlined {...iconStyle} />,
-	'6':<AppstoreOutlined {...iconStyle} />
+  '6': <AppstoreOutlined {...iconStyle} />
 }
 
 const iconCheckedStyle: Record<string, string> = {
@@ -91,9 +100,11 @@ const contentData1 = [
   }
 ]
 
-export default function IndustryFC() {
+export default function IndustryFC(props: any) {
+  const { setCurrent } = props
   const [isModalOpen, setIsModalOpen] = useState<IsOpenProps>({ type: false, record: {} })
-	const [checked, setChecked] = useState('1')
+  const [checked, setChecked] = useState('1')
+  const { getRowIndustry } = useStore()
 
   const { data } = useRequest(
     async () => {
@@ -110,11 +121,16 @@ export default function IndustryFC() {
     height: 110,
     border: '1px solid #d7d7d7',
     borderRadius: 5,
-    cursor: 'pointer',
+    cursor: 'pointer'
   }
 
-	const onChange = (key: string) => {
+  const onChange = (key: string) => {
     setChecked(key)
+  }
+
+  const handleClick = (item: any) => {
+    setCurrent('7')
+    getRowIndustry(item)
   }
 
   const content1 = () => {
@@ -122,7 +138,7 @@ export default function IndustryFC() {
       <Row gutter={[24, 24]}>
         {contentData1?.map((item, index) => {
           return (
-            <Col span={6} onClick={() => setIsModalOpen({ type: true, record: item })} key={index}>
+            <Col span={6} onClick={() => handleClick(item)} key={index}>
               <div className={styles.colStyle}>
                 <div className={styles.cardTitle}>{item.title}</div>
                 <div className={styles.cardText} style={{ paddingBottom: 10 }}>
@@ -198,24 +214,24 @@ export default function IndustryFC() {
           )
         })}
       </Row> */}
-			<Tabs
-					defaultActiveKey="1"
-					tabPosition='left'
-					onChange={onChange}
-					items={tabsList?.map((item) => {
-						return {
-							label: (
-								<span className={styles.tabTitle}>
-									{/* <div className={classNames([styles[iconStyle[item.key]],styles[iconCheckedStyle[checked]]])}/> */}
-									<div style={{marginBottom:8}}>{icon[item.key]}</div>
-									{item.label}
-								</span>
-							),
-							key: item.key,
-							children: contentRender[item.key],
-						};
-					})}
-			/>
+      <Tabs
+        defaultActiveKey='1'
+        tabPosition='left'
+        onChange={onChange}
+        items={tabsList?.map(item => {
+          return {
+            label: (
+              <span className={styles.tabTitle}>
+                {/* <div className={classNames([styles[iconStyle[item.key]],styles[iconCheckedStyle[checked]]])}/> */}
+                <div style={{ marginBottom: 8 }}>{icon[item.key]}</div>
+                {item.label}
+              </span>
+            ),
+            key: item.key,
+            children: contentRender[item.key]
+          }
+        })}
+      />
       <Modal
         title={null}
         open={isModalOpen.type}

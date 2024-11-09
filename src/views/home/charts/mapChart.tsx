@@ -141,21 +141,21 @@ import geoJson from '@/assets/geoJson.json'
 //   }
 // ]
 
-export default function DetailFC(props:any) {
-	const {dataList} = props
-	// 初始化地图
+export default function DetailFC(props: any) {
+  const { dataList } = props
+  // 初始化地图
   const [mapRef, mapChart] = useCharts()
 
   useEffect(() => {
     echarts.registerMap('china', geoJson as any)
     renderMapChart()
-  }, [dataList])
+  }, [mapRef, mapChart, dataList])
 
-	//企业交易数据-表格
-	const corDealColumns: any = [
+  //企业交易数据-表格
+  const corDealColumns: any = [
     {
       title: '排行',
-      dataIndex: 'rank',
+      dataIndex: 'rank'
     },
     {
       title: '区域',
@@ -165,14 +165,14 @@ export default function DetailFC(props:any) {
       title: '企业',
       dataIndex: 'investedNum'
     },
-		{
+    {
       title: '产业链类别',
       dataIndex: 'investedNum'
     },
-		{
+    {
       title: '上下游',
       dataIndex: 'investedNum'
-    },
+    }
   ]
 
   // 加载地图数据
@@ -266,18 +266,18 @@ export default function DetailFC(props:any) {
   }
 
   return (
-		<div className={styles.chart}>
-			<Card>
-				<div ref={mapRef} className={styles.itemMap}></div>
-			</Card>
-			<Table
-				columns={corDealColumns}
-				dataSource={[]}
-				bordered
-				rowKey='id'
-				pagination={false}
-				style={{ width: '100%', marginLeft: 24 }}
-			/>
-		</div>
+    <div className={styles.chart}>
+      <Card>
+        <div ref={mapRef} className={styles.itemMap}></div>
+      </Card>
+      <Table
+        columns={corDealColumns}
+        dataSource={[]}
+        bordered
+        rowKey='id'
+        pagination={false}
+        style={{ width: '100%', marginLeft: 24 }}
+      />
+    </div>
   )
 }

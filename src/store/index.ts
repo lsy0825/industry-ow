@@ -7,8 +7,10 @@ export const useStore = create<{
   areaNames: any
   industryOpts: any
   enterValue: string
-	rowFirm:any
-	getRowFirm:(rowFirm: any) => void
+  rowFirm: any
+  rowIndustry: any
+  getRowIndustry: (rowIndustry: any) => void
+  getRowFirm: (rowFirm: any) => void
   getEnterValue: (enterValue: string) => void
   updateToken: (token: string) => void
   updateUserInfo: (userInfo: any) => void
@@ -22,8 +24,10 @@ export const useStore = create<{
   areaNames: {},
   industryOpts: {},
   enterValue: '',
-	rowFirm:{},
-	getRowFirm: rowFirm => set({ rowFirm }),
+  rowFirm: {},
+  rowIndustry: {},
+  getRowIndustry: rowIndustry => set({ rowIndustry }),
+  getRowFirm: rowFirm => set({ rowFirm }),
   getEnterValue: enterValue => set({ enterValue }),
   updateToken: token => set({ token }),
   updateUserInfo: (userInfo: any) => set({ userInfo }),
