@@ -15,6 +15,7 @@ import SearchResult from './components/searchResult'
 import FirmDetail from './components/detail'
 import IndustryDetail from './components/industryDetail'
 import Infomation from './components/infomation'
+import WhitePaper from './components/whitePaper'
 
 const { Header, Content } = Layout
 
@@ -94,7 +95,7 @@ export default function LoginFC() {
     [PageKeys.Page2]: <Enterprise setCurrent={setCurrent} />,
     [PageKeys.Page3]: <Industry setCurrent={setCurrent} />,
     [PageKeys.Page4]: <div>敬请期待...</div>,
-    [PageKeys.Page5]: <div>敬请期待...</div>,
+    [PageKeys.Page5]: <WhitePaper />,
     [PageKeys.Page6]: <Policy />,
     [PageKeys.Page7]: <IndustryDetail record={rowIndustry} setCurrent={setCurrent} />,
     [PageKeys.Page8]: <FirmDetail record={rowFirm} setCurrent={setCurrent} />,

@@ -5,21 +5,19 @@ import styles from './index.module.less'
 import { useCharts } from '@/hook/useCharts'
 // import { DetailProps } from '../type'
 
-export default function DetailFC(props:any) {
-	const {data} = props
+export default function DetailFC(props: any) {
+  const { data } = props
 
-	// 初始化链状图
+  // 初始化链状图
   const [chainRef, chainChart] = useCharts()
 
   useEffect(() => {
-		console.log(data,'data');
+    console.log(data, 'data')
 
-		renderChainChart()
-  }, [data, chainRef])
+    renderChainChart()
+  }, [data, chainRef, chainChart])
 
-
-
-	// 链状图数据
+  // 链状图数据
   const renderChainChart = () => {
     if (!chainChart) return
     // const data = await api.getLineData()
@@ -28,29 +26,29 @@ export default function DetailFC(props:any) {
         trigger: 'item',
         triggerOn: 'mousemove'
       },
-			// legend: {
-			// 	bottom: '2%',
-			// 	left: '3%',
-			// 	orient: 'vertical',
-			// 	data: [
-			// 		{
-			// 			name: '业务领域覆盖',
-			// 			icon: 'circle'
-			// 		},
-			// 		{
-			// 			name: '暂无业务布局',
-			// 			// icon: 'rectangle'
-			// 		},
-			// 	],
-			// 	borderColor: '#c23531'
-			// },
+      // legend: {
+      // 	bottom: '2%',
+      // 	left: '3%',
+      // 	orient: 'vertical',
+      // 	data: [
+      // 		{
+      // 			name: '业务领域覆盖',
+      // 			icon: 'circle'
+      // 		},
+      // 		{
+      // 			name: '暂无业务布局',
+      // 			// icon: 'rectangle'
+      // 		},
+      // 	],
+      // 	borderColor: '#c23531'
+      // },
       series: [
         {
           type: 'tree',
-					name: '业务领域覆盖',
+          name: '业务领域覆盖',
           data: [data],
           top: '1%',
-          left: '7%',
+          left: '18%',
           bottom: '1%',
           right: '20%',
           symbolSize: 7,
@@ -73,12 +71,10 @@ export default function DetailFC(props:any) {
           expandAndCollapse: true,
           animationDuration: 550,
           animationDurationUpdate: 750
-        },
+        }
       ]
     })
   }
 
-  return (
-			<div ref={chainRef} className={styles.itemChart1}></div>
-  )
+  return <div ref={chainRef} className={styles.itemChart1}></div>
 }

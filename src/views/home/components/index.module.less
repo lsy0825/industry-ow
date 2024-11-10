@@ -289,6 +289,104 @@
       }
     }
   }
+  .area {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+    .itemArea {
+      // .commonItem;
+      max-height: 600px;
+      overflow-y: auto;
+      .itemTitle {
+        // border-bottom: 1px solid #d7d7d7;
+        border-radius: 8px;
+        height: 48px;
+        width: 100%;
+        line-height: 48px;
+        text-align: center;
+        background-color: #409eff;
+        color: #fff;
+        font-size: 20px;
+        font-weight: 600;
+      }
+      .itemText {
+        border: 2px dashed #409eff;
+        border-radius: 25px;
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .commonText {
+          width: 90%;
+          border-radius: 8px;
+          height: 36px;
+          line-height: 36px;
+          text-align: center;
+          margin-bottom: 10px;
+        }
+        .text1 {
+          .commonText;
+          background: #9ccbf7;
+          margin-top: 10px;
+          font-size: 16px;
+          font-weight: 600;
+        }
+        .text2 {
+          .commonText;
+          background: #dbeaf8;
+        }
+        .commomText3 {
+          display: grid;
+          gap: 10px;
+          width: 90%;
+          margin-bottom: 10px;
+        }
+        .text3 {
+          .commomText3;
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .text4 {
+          border-radius: 8px;
+          height: 36px;
+          line-height: 36px;
+          text-align: center;
+          background: #f2f7fb;
+          width: 100%;
+        }
+        .text5 {
+          .commomText3;
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    }
+  }
+  .bigDataArea {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+    .itemArea {
+      // max-height: 600px;
+      // overflow-y: auto;
+      .itemTitle {
+        border-radius: 8px;
+        height: 48px;
+        width: 100%;
+        line-height: 48px;
+        text-align: center;
+        background-color: #ecf1f5;
+        color: #8b8c8d;
+        font-size: 20px;
+        font-weight: 600;
+      }
+      .itemChain {
+        border: 1px solid #d7d7d7;
+        border-radius: 8px;
+        margin-top: 3px;
+      }
+    }
+  }
 }
 
 .commonIcon {
