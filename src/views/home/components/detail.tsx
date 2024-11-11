@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Card, Col, Descriptions, Row, Table, Tag, Tabs, Button } from 'antd'
 import type { DescriptionsProps } from 'antd'
 import styles from './index.module.less'
@@ -181,8 +181,6 @@ const dataList = [
 
 export default function DetailFC(props: DetailProps) {
   const { record, setCurrent } = props
-  console.log(record, 'record')
-
   const { areaNames } = useStore()
   // 财务数据-营收-条形图
   const [revenueRef, revenueChart] = useCharts()
@@ -190,6 +188,14 @@ export default function DetailFC(props: DetailProps) {
   const [rdInvestRef, rdInvestChart] = useCharts()
   // 产品流通-折线图
   const [productsRef, productsChart] = useCharts()
+  // 专利信息的分页
+  const [patentPage, setPatentPage] = useState({
+    pageNo: 1,
+    pageSize: 10
+  })
+  const [patentTotal, setPatentTotal] = useState(0)
+  // 产业链名称
+  const [industrialName, setIndustrialName] = useState([])
   // 初始化地图
   // const [mapRef, mapChart] = useCharts()
   // 初始化链状图
@@ -200,6 +206,30 @@ export default function DetailFC(props: DetailProps) {
   // const [pieRef1, pieChart1] = useCharts()
   // 初始化雷达图
   // const [radarRef, radarChart] = useCharts()
+
+  // 获取关联产业链数据
+  const { data: allIndustrialChain } = useRequest(
+    async () => {
+      const resp: any = await api.getAllIndustrialChain()
+      const names = resp?.children?.map((item: any) => item.name)
+      setIndustrialName(names)
+      return resp
+    },
+    {
+      manual: false
+    }
+  )
+
+  // 获取产品流通信息
+  // const { data: productionData } = useRequest(
+  //   async () => {
+  //     const resp: any = await api.getProductionData({ firmId: record?.id })
+  //     return resp
+  //   },
+  //   {
+  //     manual: false
+  //   }
+  // )
 
   useEffect(() => {
     echarts.registerMap('china', geoJson as any)
@@ -393,7 +423,7 @@ export default function DetailFC(props: DetailProps) {
   // 产品流通--折线图数据
   const renderProductsChart = async () => {
     if (!productsChart) return
-    // const data = await api.getLineData()
+    const productionData: any = await api.getProductionData({ firmId: record?.id })
     productsChart?.setOption({
       tooltip: { trigger: 'axis' },
       // legend: {data: ['研发费用','研发投入占比']},
@@ -403,7 +433,7 @@ export default function DetailFC(props: DetailProps) {
           axisTick: {
             alignWithLabel: true
           },
-          data: ['2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018']
+          data: productionData?.map((item: any) => item.years)
         }
       ],
       yAxis: { type: 'value' },
@@ -412,360 +442,11 @@ export default function DetailFC(props: DetailProps) {
           name: '产品流通信息',
           type: 'line',
           smooth: true,
-          data: [1, 3, 7, 8, 17, 47, 36, 42, 17, 28]
+          data: productionData?.map((item: any) => item.revenue)
         }
       ]
     })
   }
-
-  // 加载地图数据
-  // const renderMapChart = async () => {
-  //   if (!mapChart) return
-  //   // const data = await api.getLineData()
-  //   mapChart?.setOption({
-  //     title: '',
-  //     // 提示框
-  //     tooltip: {
-  //       trigger: 'item',
-  //       showDelay: 0,
-  //       transitionDuration: 0.2,
-  //       formatter: (params: any) => {
-  //         const { data = {} } = params
-  //         const { value = 0 } = data
-  //         return `${params.name}<br/>数量: ${value}`
-  //       }
-  //     },
-  //     // 工具导航
-  //     // toolbox: {
-  //     //   show: true,
-  //     //   left: 'left',
-  //     //   top: 'top',
-  //     //   feature: {
-  //     //     // dataView: { readOnly: false },
-  //     //     restore: {},
-  //     //     saveAsImage: {}
-  //     //   }
-  //     // },
-  //     // 地图数据
-  //     dataset: {
-  //       source: dataList
-  //     },
-  //     series: {
-  //       type: 'map',
-  //       map: 'china',
-  //       data: dataList,
-  //       roam: true, // 地图拖动、缩放
-  //       top: '10%', // 距离顶部距离
-  //       zoom: 1.2, // 当前视角的缩放比例
-  //       scaleLimit: {
-  //         max: 2,
-  //         min: 1 // 设置默认缩放效果
-  //       },
-  //       // 文本标签，地区名, 控制样式，位置等等，可以是数组，多个
-  //       label: {
-  //         show: true, // 默认状态下，显示省市名称
-  //         position: [1, 100], // 相对的百分比
-  //         fontSize: 12,
-  //         offset: [2, 0],
-  //         align: 'left'
-  //       },
-  //       itemStyle: {
-  //         areaColor: '#e5f7ff' // 地图图形颜色 #fff
-  //         // borderColor: "#a0d4e7", // 地图边框线色
-  //         // borderWidth: 1, // 地图边框线宽
-  //       },
-  //       // 高亮状态下的多边形和文本样式，鼠标悬浮在地图块上的效果
-  //       emphasis: {
-  //         itemStyle: {
-  //           areaColor: '#ccc',
-  //           borderColor: '#4aacd9'
-  //         }
-  //       }
-  //     },
-  //     // 视觉映射组件
-  //     visualMap: {
-  //       type: 'continuous',
-  //       left: 'left',
-  //       min: 0,
-  //       max: 218,
-  //       inRange: {
-  //         color: [
-  //           '#e5f7ff',
-  //           '#096dd9'
-  //           // "#fedeb5",
-  //           // "#f96a35",
-  //           // "#c3380e",
-  //           // "#942005",
-  //           // "#5b1305",
-  //         ]
-  //       },
-  //       text: [`最大值：218`, 0],
-  //       textStyle: {
-  //         color: '#000'
-  //       }
-  //       // calculable: true
-  //     }
-  //   })
-  // }
-
-  const data = {
-    name: 'flare',
-    children: [
-      {
-        name: 'data',
-        children: [
-          {
-            name: 'converters',
-            children: [
-              { name: 'Converters', value: 721 },
-              { name: 'DelimitedTextConverter', value: 4294 }
-            ]
-          },
-          {
-            name: 'DataUtil',
-            value: 3322
-          }
-        ]
-      },
-      {
-        name: 'display',
-        children: [
-          { name: 'DirtySprite', value: 8833 },
-          { name: 'LineSprite', value: 1732 },
-          { name: 'RectSprite', value: 3623 }
-        ]
-      },
-      {
-        name: 'flex',
-        children: [{ name: 'FlareVis', value: 4116 }]
-      },
-      {
-        name: 'query',
-        children: [
-          { name: 'AggregateExpression', value: 1616 },
-          { name: 'And', value: 1027 },
-          { name: 'Arithmetic', value: 3891 },
-          { name: 'Average', value: 891 },
-          { name: 'BinaryExpression', value: 2893 },
-          { name: 'Comparison', value: 5103 },
-          { name: 'CompositeExpression', value: 3677 },
-          { name: 'Count', value: 781 },
-          { name: 'DateUtil', value: 4141 },
-          { name: 'Distinct', value: 933 },
-          { name: 'Expression', value: 5130 },
-          { name: 'ExpressionIterator', value: 3617 },
-          { name: 'Fn', value: 3240 },
-          { name: 'If', value: 2732 },
-          { name: 'IsA', value: 2039 },
-          { name: 'Literal', value: 1214 },
-          { name: 'Match', value: 3748 },
-          { name: 'Maximum', value: 843 },
-          {
-            name: 'methods',
-            children: [
-              { name: 'add', value: 593 },
-              { name: 'and', value: 330 },
-              { name: 'average', value: 287 },
-              { name: 'count', value: 277 },
-              { name: 'distinct', value: 292 },
-              { name: 'div', value: 595 },
-              { name: 'eq', value: 594 },
-              { name: 'fn', value: 460 },
-              { name: 'gt', value: 603 },
-              { name: 'gte', value: 625 },
-              { name: 'iff', value: 748 },
-              { name: 'isa', value: 461 },
-              { name: 'lt', value: 597 },
-              { name: 'lte', value: 619 },
-              { name: 'max', value: 283 },
-              { name: 'min', value: 283 },
-              { name: 'mod', value: 591 },
-              { name: 'mul', value: 603 },
-              { name: 'neq', value: 599 },
-              { name: 'not', value: 386 },
-              { name: 'or', value: 323 },
-              { name: 'orderby', value: 307 },
-              { name: 'range', value: 772 },
-              { name: 'select', value: 296 },
-              { name: 'stddev', value: 363 },
-              { name: 'sub', value: 600 },
-              { name: 'sum', value: 280 },
-              { name: 'update', value: 307 },
-              { name: 'variance', value: 335 },
-              { name: 'where', value: 299 },
-              { name: 'xor', value: 354 },
-              { name: '_', value: 264 }
-            ]
-          },
-          { name: 'Minimum', value: 843 },
-          { name: 'Not', value: 1554 },
-          { name: 'Or', value: 970 },
-          { name: 'Query', value: 13896 },
-          { name: 'Range', value: 1594 },
-          { name: 'StringUtil', value: 4130 },
-          { name: 'Sum', value: 791 },
-          { name: 'Variable', value: 1124 },
-          { name: 'Variance', value: 1876 },
-          { name: 'Xor', value: 1101 }
-        ]
-      },
-      {
-        name: 'scale',
-        children: [
-          { name: 'IScaleMap', value: 2105 },
-          { name: 'LinearScale', value: 1316 },
-          { name: 'LogScale', value: 3151 },
-          { name: 'OrdinalScale', value: 3770 },
-          { name: 'QuantileScale', value: 2435 },
-          { name: 'QuantitativeScale', value: 4839 },
-          { name: 'RootScale', value: 1756 },
-          { name: 'Scale', value: 4268 },
-          { name: 'ScaleType', value: 1821 },
-          { name: 'TimeScale', value: 5833 }
-        ]
-      }
-    ]
-  }
-
-  // 链状图数据
-  // const renderChainChart = async () => {
-  //   if (!chainChart) return
-  //   // const data = await api.getLineData()
-  //   chainChart?.setOption({
-  //     tooltip: {
-  //       trigger: 'item',
-  //       triggerOn: 'mousemove'
-  //     },
-  // 		// legend: {
-  // 		// 	bottom: '2%',
-  // 		// 	left: '3%',
-  // 		// 	orient: 'vertical',
-  // 		// 	data: [
-  // 		// 		{
-  // 		// 			name: '业务领域覆盖',
-  // 		// 			icon: 'circle'
-  // 		// 		},
-  // 		// 		{
-  // 		// 			name: '暂无业务布局',
-  // 		// 			// icon: 'rectangle'
-  // 		// 		},
-  // 		// 	],
-  // 		// 	borderColor: '#c23531'
-  // 		// },
-  //     series: [
-  //       {
-  //         type: 'tree',
-  // 				name: '业务领域覆盖',
-  //         data: [data],
-  //         top: '1%',
-  //         left: '7%',
-  //         bottom: '1%',
-  //         right: '20%',
-  //         symbolSize: 7,
-  //         label: {
-  //           position: 'left',
-  //           verticalAlign: 'middle',
-  //           align: 'right',
-  //           fontSize: 9
-  //         },
-  //         leaves: {
-  //           label: {
-  //             position: 'right',
-  //             verticalAlign: 'middle',
-  //             align: 'left'
-  //           }
-  //         },
-  //         emphasis: {
-  //           focus: 'descendant'
-  //         },
-  //         expandAndCollapse: true,
-  //         animationDuration: 550,
-  //         animationDurationUpdate: 750
-  //       },
-  //     ]
-  //   })
-  // }
-
-  // 加载条形图数据
-  // const renderLineChart = async () => {
-  //   if (!lineChart) return
-  //   // const data = await api.getLineData()
-  //   lineChart?.setOption({
-  //     title: {
-  //       text: '订单和流水走势图'
-  //     },
-  //     tooltip: {
-  //       trigger: 'axis'
-  //     },
-  //     legend: {
-  //       data: ['订单']
-  //     },
-  //     xAxis: {
-  //       data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] //data.label
-  //     },
-  //     yAxis: {
-  //       name: '企业数量（家）',
-  //       type: 'value'
-  //     },
-  //     series: [
-  //       {
-  //         name: '订单',
-  //         type: 'bar',
-  //         data: [23, 24, 18, 25, 27, 28, 25], //data.order
-  //         barWidth: '30%'
-  //       }
-  //     ]
-  //   })
-  // }
-
-  // 加载饼图1
-  // const renderPieChart = async () => {
-  //   if (!pieChart1) return
-  //   // const data = await api.getPieCityData()
-  //   pieChart1?.setOption({
-  //     title: {
-  //       text: '司机城市分布',
-  //       left: 'center'
-  //     },
-  //     tooltip: {
-  //       trigger: 'item'
-  //     },
-  //     legend: {
-  //       orient: 'vertical',
-  //       x: 'left',
-  //       data: ['A', 'B', 'C', 'D', 'E']
-  //     },
-  //     series: [
-  //       {
-  //         // name: '城市分布',
-  //         type: 'pie',
-  //         radius: ['50%', '70%'],
-  //         avoidLabelOverlap: false,
-  //         label: {
-  //           show: false,
-  //           position: 'center'
-  //         },
-  //         labelLine: {
-  //           show: false
-  //         },
-  //         emphasis: {
-  //           label: {
-  //             show: true,
-  //             fontSize: '30',
-  //             fontWeight: 'bold'
-  //           }
-  //         },
-  //         data: [
-  //           { value: 335, name: 'A' },
-  //           { value: 310, name: 'B' },
-  //           { value: 234, name: 'C' },
-  //           { value: 135, name: 'D' },
-  //           { value: 1548, name: 'E' }
-  //         ]
-  //       }
-  //     ]
-  //   })
-  // }
 
   const mytextStyle = {
     color: '#333', //文字颜色
@@ -774,280 +455,6 @@ export default function DetailFC(props: DetailProps) {
     // fontFamily:"sans-serif",   //字体系列
     fontSize: 12 //字体大小
   }
-
-  // 加载雷达图
-  // const renderRadarChart = async () => {
-  //   if (!radarChart) return
-  //   // const data = await api.getRadarData()
-  //   radarChart?.setOption(
-  //     {
-  //       title: {
-  //         text: '司机模型诊断'
-  //       },
-  //       //点击提示标签
-  //       tooltip: {},
-  //       legend: {
-  //         //图例文字展示
-  //         data: [{ name: '今日更新投诉量' }],
-  //         //图例显示在底部
-  //         bottom: 0,
-  //         //图例背景颜色
-  //         backgroundColor: 'transparent',
-  //         // 图例标记的图形宽度。[ default: 25 ]
-  //         itemWidth: 12,
-  //         // 图例标记的图形高度。[ default: 14 ]
-  //         itemHeight: 9,
-  //         //图例文字样式设置
-  //         textStyle: mytextStyle
-  //       },
-  //       radar: {
-  //         //雷达图绘制类型，支持 'polygon' 和 'circle' [ default: 'polygon' ]
-  //         shape: 'polygon',
-  //         splitNumber: 5,
-  //         center: ['50%', '50%'],
-  //         radius: '65%',
-  //         //指示器名称和指示器轴的距离。[ default: 15 ]
-  //         nameGap: 5,
-  //         triggerEvent: true,
-  //         name: {
-  //           textStyle: {
-  //             color: '#999',
-  //             backgroundColor: 'transparent'
-  //             // borderRadius: 3,
-  //             // padding: [3, 5]
-  //           },
-  //           formatter: function (value: any, indicator: any) {
-  //             value = value.replace(/\S{4}/g, function (match: any) {
-  //               return match + '\n'
-  //             })
-  //             // value = value + '\n' + indicator.value;
-  //             return '{a|' + value + '}' + '\n' + '{b|' + indicator.value + '}'
-  //           },
-  //           //富文本编辑 修改文字展示样式
-  //           rich: {
-  //             a: {
-  //               color: '#999',
-  //               fontSize: 12,
-  //               align: 'center'
-  //             },
-  //             b: {
-  //               color: '#333',
-  //               fontSize: 17,
-  //               align: 'center'
-  //             }
-  //           }
-  //         },
-  //         // 设置雷达图中间射线的颜色
-  //         axisLine: {
-  //           lineStyle: {
-  //             color: '#ddd'
-  //           }
-  //         },
-  //         // axisLabel: {
-  //         //   show: true
-  //         // },
-  //         indicator: [
-  //           { name: '车辆已售', value: '99%', max: 100 },
-  //           { name: '商家冒充个人', value: '89%', max: 100 },
-  //           { name: '商家服务态度差', value: '80%', max: 100 },
-  //           { name: '电话无法接通', value: '98%', max: 100 },
-  //           { name: '走私套牌抵押车', value: '70%', max: 100 }
-  //         ],
-  //         //雷达图背景的颜色，在这儿随便设置了一个颜色，完全不透明度为0，就实现了透明背景
-  //         splitArea: {
-  //           show: false,
-  //           areaStyle: {
-  //             color: 'rgba(255,0,0,0)' // 图表背景的颜色
-  //           }
-  //         }
-  //       },
-  //       series: [
-  //         {
-  //           name: '投诉统计',
-  //           type: 'radar',
-  //           //显示雷达图选中背景
-  //           areaStyle: { normal: {} },
-  //           data: [
-  //             {
-  //               value: [99, 89, 80, 98, 70],
-  //               // 设置区域边框和区域的颜色
-  //               itemStyle: {
-  //                 normal: {
-  //                   //雷达图背景渐变设置
-  //                   color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-  //                     {
-  //                       offset: 0.5,
-  //                       color: 'rgba(48,107, 231, 1)'
-  //                     },
-  //                     {
-  //                       offset: 1,
-  //                       color: 'rgba(73,168, 255, 0.7)'
-  //                     }
-  //                   ]),
-  //                   //去除刻度
-  //                   opacity: 0,
-  //                   //雷达图边线样式
-  //                   lineStyle: {
-  //                     width: 0,
-  //                     color: '#306BE7'
-  //                   }
-  //                 }
-  //               }
-  //               // name: '今日更新投诉量',
-  //               // id: 'jintian'
-  //             }
-  //             // {
-  //             //   value: [10, 250, 100, 370, 80, 500, 190, 400],
-  //             //   // 设置区域边框和区域的颜色
-  //             //   itemStyle: {
-  //             //     normal: {
-  //             //       color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-  //             //         {
-  //             //           offset: 0.5,
-  //             //           color: 'rgba(139,241, 134, 0.7)'
-  //             //         },
-  //             //         {
-  //             //           offset: 1,
-  //             //           color: 'rgba(0,208, 131, 1)'
-  //             //         }
-  //             //       ]),
-  //             //       opacity: 0,
-  //             //       lineStyle: {
-  //             //         width: 0,
-  //             //         color: '#8BF186'
-  //             //       }
-  //             //     }
-  //             //   },
-  //             //   name: '昨日更新投诉量',
-  //             //   id: 'zuotian'
-  //             // }
-  //           ]
-  //         }
-  //       ]
-  //     }
-  //     // 	{
-  //     //   title: {
-  //     //     text: '司机模型诊断',
-  //     //     left: 'center'
-  //     //   },
-  //     //   legend: {
-  //     //     data: ['司机模型诊断'],
-  //     //     //图例显示在底部
-  //     //     bottom: 0,
-  //     //     //图例背景颜色
-  //     //     backgroundColor: 'transparent',
-  //     //     // 图例标记的图形宽度。[ default: 25 ]
-  //     //     itemWidth: 12,
-  //     //     // 图例标记的图形高度。[ default: 14 ]
-  //     //     itemHeight: 9,
-  //     //     //图例文字样式设置
-  //     //     textStyle: {
-  //     //       color: '#333', //文字颜色
-  //     //       fontStyle: 'normal', //italic斜体  oblique倾斜
-  //     //       fontWeight: 'normal', //文字粗细bold bolder lighter  100 | 200 | 300 | 400...
-  //     //       // fontFamily:"sans-serif",   //字体系列
-  //     //       fontSize: 12 //字体大小
-  //     //     }
-  //     //   },
-  //     //   radar: {
-  //     //     //雷达图绘制类型，支持 'polygon' 和 'circle' [ default: 'polygon' ]
-  //     //     shape: 'polygon',
-  //     //     splitNumber: 5,
-  //     //     center: ['50%', '50%'],
-  //     //     radius: '65%',
-  //     //     //指示器名称和指示器轴的距离。[ default: 15 ]
-  //     //     nameGap: 5,
-  //     //     triggerEvent: true,
-  //     //     name: {
-  //     //       textStyle: {
-  //     //         color: '#999',
-  //     //         backgroundColor: 'transparent'
-  //     //         // borderRadius: 3,
-  //     //         // padding: [3, 5]
-  //     //       },
-  //     //       // formatter: function (value: any, indicator: any) {
-  //     //       //   value = value.replace(/\S{4}/g, function (match) {
-  //     //       //     return match + '\n'
-  //     //       //   })
-  //     //       //   // value = value + '\n' + indicator.value;
-  //     //       //   return '{a|' + value + '}' + '\n' + '{b|' + indicator.value + '}'
-  //     //       // },
-  //     //       // 富文本编辑 修改文字展示样式
-  //     //       rich: {
-  //     //         a: {
-  //     //           color: '#999',
-  //     //           fontSize: 12,
-  //     //           align: 'center'
-  //     //         },
-  //     //         b: {
-  //     //           color: '#333',
-  //     //           fontSize: 17,
-  //     //           align: 'center'
-  //     //         }
-  //     //       }
-  //     //     },
-  //     //     // 设置雷达图中间射线的颜色
-  //     //     axisLine: {
-  //     //       lineStyle: {
-  //     //         color: '#ddd'
-  //     //       }
-  //     //     },
-  //     //     indicator: [
-  //     //       { name: '车辆已售', value: 99, max: 100 },
-  //     //       { name: '商家冒充个人', value: 80, max: 100 },
-  //     //       { name: '商家服务态度差', value: 70, max: 100 },
-  //     //       { name: '电话无法接通', value: 88, max: 100 },
-  //     //       { name: '走私套牌抵押车', value: 100, max: 100 }
-  //     //     ],
-  //     //     //雷达图背景的颜色，在这儿随便设置了一个颜色，完全不透明度为0，就实现了透明背景
-  //     //     splitArea: {
-  //     //       show: false,
-  //     //       areaStyle: {
-  //     //         color: 'rgba(255,0,0,0)' // 图表背景的颜色
-  //     //       }
-  //     //     }
-  //     //   },
-  //     //   series: [
-  //     //     {
-  //     //       name: '模型诊断',
-  //     //       type: 'radar',
-  //     //       //显示雷达图选中背景
-  //     //       areaStyle: { normal: {} },
-  //     //       data: [
-  //     //         {
-  //     //           value: [99, 80, 70, 88, 100],
-  //     //           // 设置区域边框和区域的颜色
-  //     //           itemStyle: {
-  //     //             normal: {
-  //     //               //雷达图背景渐变设置
-  //     //               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-  //     //                 {
-  //     //                   offset: 0.5,
-  //     //                   color: 'rgba(48,107, 231, 1)'
-  //     //                 },
-  //     //                 {
-  //     //                   offset: 1,
-  //     //                   color: 'rgba(73,168, 255, 0.7)'
-  //     //                 }
-  //     //               ]),
-  //     //               //去除刻度
-  //     //               opacity: 0,
-  //     //               //雷达图边线样式
-  //     //               lineStyle: {
-  //     //                 width: 0,
-  //     //                 color: '#306BE7'
-  //     //               }
-  //     //             }
-  //     //           }
-  //     //           // name: '今日更新投诉量',
-  //     //           // id: 'jintian'
-  //     //         }
-  //     //       ]
-  //     //     }
-  //     //   ]
-  //     // }
-  //   )
-  // }
 
   const { data: detailInfo } = useRequest(
     async () => {
@@ -1058,86 +465,36 @@ export default function DetailFC(props: DetailProps) {
       manual: false
     }
   )
-  const devices = [
-    { name: '减速器', count: 59 },
-    { name: '伺服电机', count: 117 },
-    { name: '控制器', count: 1562 },
-    { name: '传感器', count: 442 }
-  ]
-  const softwares = [
-    { name: '人工智能', count: 59 },
-    { name: '操作系统', count: 117 },
-    { name: 'SLAM', count: 1562 }
-  ]
-  const dataSource = [
-    {
-      province: '陕西省',
-      investedNum: 40,
-      id: '1',
-      children: [
-        { city: '西安市', investedNum: 31, id: '1-1' },
-        { city: '咸阳市', investedNum: 4, id: '1-2' },
-        { city: '铜川市', investedNum: 3, id: '1-3' },
-        { city: '榆林市', investedNum: 1, id: '1-4' },
-        { city: '宝鸡市', investedNum: 1, id: '1-5' }
-      ]
-    },
-    {
-      province: '宁夏回族自治区',
-      investedNum: 15,
-      id: '2',
-      children: [
-        { city: '银川市', investedNum: 8, id: '2-1' },
-        { city: '吴忠市', investedNum: 3, id: '2-2' },
-        { city: '中卫市', investedNum: 3, id: '2-3' },
-        { city: '石嘴山市', investedNum: 1, id: '2-4' }
-      ]
-    },
-    {
-      province: '山东省',
-      investedNum: 24,
-      id: '3',
-      children: [
-        { city: '济宁市', investedNum: 7, id: '3-1' },
-        { city: '潍坊市', investedNum: 6, id: '3-2' },
-        { city: '济南市', investedNum: 2, id: '3-3' },
-        { city: '菏泽市', investedNum: 2, id: '3-4' },
-        { city: '德州市', investedNum: 2, id: '3-4' },
-        { city: '东营市', investedNum: 1, id: '3-4' },
-        { city: '聊城市', investedNum: 1, id: '3-4' }
-      ]
-    }
-  ]
 
-  const columns: any = [
-    {
-      title: '省份',
-      dataIndex: 'province',
-      onCell: (_: unknown, index: number) => mergeIdList(index, flattenTree(dataSource), 'province')
+  // 获取专利信息数据
+  const { data: patentList } = useRequest(
+    async () => {
+      const resp: any = await api.getPatentList({
+        firmId: record?.id,
+        pageNo: patentPage.pageNo,
+        pageSize: patentPage.pageSize
+      })
+      setPatentTotal(resp?.total)
+      return resp
     },
     {
-      title: '市级',
-      dataIndex: 'city'
-    },
-    {
-      title: '投资企业数',
-      dataIndex: 'investedNum'
+      manual: false
     }
-  ]
+  )
 
   const columnsPatent: any = [
     {
       title: '序号',
       dataIndex: 'index',
-      render: (text: unknown, row: unknown, index: number) => index + 1
+      render: (text: unknown, row: unknown, index: number) => index + 1 + (patentPage.pageNo - 1) * patentPage.pageSize
     },
     {
       title: '专利名称',
-      dataIndex: 'investedNum'
+      dataIndex: 'patentName'
     },
     {
       title: '专利类型',
-      dataIndex: 'investedNum'
+      dataIndex: 'patentType'
     },
     {
       title: '状态',
@@ -1145,27 +502,29 @@ export default function DetailFC(props: DetailProps) {
     },
     {
       title: '公告号',
-      dataIndex: 'investedNum'
+      dataIndex: 'announcementNumber'
     },
     {
       title: '申请日',
-      dataIndex: 'investedNum'
+      dataIndex: 'applyDate'
     },
     {
       title: '公告日',
-      dataIndex: 'investedNum'
+      dataIndex: 'announcementDate'
     },
     {
       title: '申请（专利权）人',
-      dataIndex: 'investedNum'
+      dataIndex: 'applicant'
     },
     {
       title: '价值评分',
-      dataIndex: 'age',
+      dataIndex: 'valueScoring',
       // defaultSortOrder: 'descend',
-      sorter: (a: any, b: any) => a.age - b.age
+      sorter: (a: any, b: any) => a.valueScoring - b.valueScoring
     }
   ]
+
+  const showTotal = (total: number) => `总共 ${total} 条数据`
 
   return (
     <div className={styles.detail}>
@@ -1267,10 +626,24 @@ export default function DetailFC(props: DetailProps) {
         </div>
         <Table
           columns={columnsPatent}
-          dataSource={[]}
+          dataSource={patentList?.list}
           bordered
           rowKey='id'
-          pagination={false}
+          pagination={{
+            current: patentPage.pageNo,
+            pageSize: patentPage.pageSize,
+            total: patentTotal,
+            showSizeChanger: true,
+            showQuickJumper: true,
+            showTotal,
+            onChange: (pageNo: number, pageSize: number) => {
+              setPatentPage({
+                ...patentPage,
+                pageNo,
+                pageSize
+              })
+            }
+          }}
           style={{ width: '100%', marginBottom: 16 }}
         />
         {/* 关联产业链数据 */}
@@ -1279,15 +652,14 @@ export default function DetailFC(props: DetailProps) {
           <span className={styles.text}>关联产业链数据</span>
         </div>
         <Tabs
-          // defaultActiveKey="1"
           type='card'
           style={{ height: 600 }}
-          items={new Array(30).fill(null).map((_, i) => {
-            const id = String(i)
+          items={industrialName?.map((name: string) => {
+            const chainData = allIndustrialChain?.children?.filter((item: any) => item.name === name)[0]
             return {
-              label: `Tab-${id}`,
-              key: id,
-              children: <ChainChart data={data} />
+              label: name,
+              key: name,
+              children: <ChainChart data={chainData} />
             }
           })}
         />

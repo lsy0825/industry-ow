@@ -12,8 +12,6 @@ export default function DetailFC(props: any) {
   const [chainRef, chainChart] = useCharts()
 
   useEffect(() => {
-    console.log(data, 'data')
-
     renderChainChart()
   }, [data, chainRef, chainChart])
 

@@ -6,7 +6,7 @@ export interface ListProps {
   dataList: any
   searchValue?: any
   setSearchValue?: any
-	setCurrent?: any
+  setCurrent?: any
   title: string
 }
 
@@ -61,7 +61,7 @@ export type SearchResultProps = {
 
 export type DetailProps = {
   record: any
-	setCurrent:any
+  setCurrent: any
 }
 
 export interface EnterpriseParams {
@@ -83,6 +83,12 @@ export type EnterpriseDetailParams = {
 
 export type SearchResultParams = {
   keywords: string
+}
+
+export type PatentParams = {
+  firmId: number
+  pageNo: number
+  pageSize: number
 }
 
 export interface PolicyParams {

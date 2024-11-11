@@ -1,0 +1,219 @@
+﻿<!--
+	此示例下载自 https://echarts.apache.org/examples/zh/editor.html?c=bar-label-rotation&code=MYewdgzgLgBADiCAZAltGBeGBtAUDGAcgBsBTAMykIBp8iAnFAcwAsraDCoQ4a7CARiCjcAtn04pIKACakJRKRFmkAKjwWElKpBXb9tcgErM2mw6QBCwseelz1cXZTvKHPE632T7VmyFFnb0VfaxEAzzNcAF0AblwAQzg4ADpQMHJmAAUE-gTRUihSeghMGABvOnphBKKALgq6AlEpBoBaAE4ABg4CGFEEgA8G7roAX16E4mYwBsq-mB4oFHAIOaa-skoGkj0FBeBSMCL6HcPj4v2-xi8dm6iFsfHegDdi5eApgEFpplnGhZLFaQdYLAjcOA7CFXZqyGRkHYtGTw-S9BZCcKiHYY2wbJ4ECZ0BDKZbgUF9IGrBrE1DQFL0UgyACuhwAFOQmWBgKSwDBWQM4NR4IgAJQAsEC7DE6JlYnxMEwBlQJn0XkC-V9CYVMYi550GRoKAJLmkcmw_49DYDYYwACMXS641wY3iSVS6UyTDK80VNXqMG6k1-_12Lle7xQn2IPxmiLhZAUxJQPJ2FjCtl6BugxsODVtAFZeuAAMIsY1MU0wDlcnl8sU-gjpdDEBICUjEADycFrWAb1z9lbdaXAnvpA7RfSmsZgQ49zBSU7-E4Ib3oH2-wYas5H89X6-jweXwpJwK3yWHGXnSZ5R6zRpNZ_dO6YKTvOdIeI1zQAnqXclAUggQoux5Vk-wIIDGFINYcA2BZwLBFs22IBokPbEDgTgzUjwIBCFjQlCYAIjDwCwgkcPFBUCAI1DW3Q7tMKomBCSYvDNjowjiIY0imPxMFojxEUNSeF1cCbWAuJ7cUIBYEAAHcGigegmVIXpr1PGdzznF91PATNDXfR8L1HN8TSDadt0vF9FzAcM10jDcLK058Uj3ByDxmXpqiNf1LNHbzalUuhyBAegBhEYodnKYAxlwsB8lIAAfcoEjGMYFBC44AGUUAAL0rW0ADYvMjFgzRgeKCjmPiRPiSleV7OhuBAYhlkhSiYCU5gK1OIghjQK5-ogLIQCkE5yvBb84ErQgZISGR5MIPE9Wo0gKzAGRypkWoEgabBCEAbPlABS9QA5jMASzSaCIQB8V0AcrlzsuwhAEsnQBBW3uoVCEAID1AC51QAAdMAIRt7oE8impAFqhBtPsZPkxTlKCwEoOOHY3KjK4tigO5TGCcEeDOI4TiuchSFqFVKwQgZ6AAazmGAoYUzrYeY28doANRQUg6fKGnZLppSVKFBl5o7MBiG_BpyCmIDGawgYmEjVQptJrnofpvnOoVvaSCkVEiAEXIHuzYAKcIGUWLBBloFCxXaZhlSpYVCAEjeL4IAASRlq3uZt0hmOW4GCEGL5BjQPaNgQqB1aIT4iiYULvxhGcg4gVRIypiolbp8XiEl02Fm2o0NYAJi6W0C4eovbQAZjL4uABZq4LevCuN32YGiXpv0D4PYPgrDw-mpGphUpbHjoNu6EgtmYLwHuFUqmbjre3uI8EPWj11-gAHEkgaS0FRooiOJI2ysNIUQ4DLZQYLYkLgCZGDZuKSfh7BHO-jz3acArouhQrr-f-Ln-Fca4_26EDbCocsJzx2LdReCo-4zXXvHfeklgRHlPufBIl8Jp9BvnfHYE9oLP0eEzfOOAC7fztAADgLkKW0HRbRCgLkAxhoC8QTgQlAogL1YFgngdiVeWFkGH24sfBU6CL5d2viAW-98CEQCIeAhU789oFh6DAJhND1EALtPmYBdpWHEIgbPBKOxvr_R4QsPhOsBF7w4rRZCR80FnwkVfMiVZpF4KIHIhRfswTKJwB0ShQoADswTaHaI6B0IUNcuhgIJKPZ0sQgA
+	⚠ 请注意，该图表不是 Apache ECharts 官方示例，而是由用户代码生成的。请注意鉴别其内容。
+-->
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+<head>
+  <meta charset="utf-8">
+</head>
+<body style="height: 100%; margin: 0">
+  <div id="container" style="height: 100%"></div>
+
+  
+  <script type="text/javascript" src="https://registry.npmmirror.com/echarts/5.5.1/files/dist/echarts.min.js"></script>
+  
+  <!-- Uncomment this line if you want to dataTool extension
+  <script type="text/javascript" src="https://registry.npmmirror.com/echarts/5.5.1/files/dist/extension/dataTool.min.js"></script>
+  -->
+  <!-- Uncomment this line if you want to use gl extension
+  <script type="text/javascript" src="https://registry.npmmirror.com/echarts-gl/2/files/dist/echarts-gl.min.js"></script>
+  -->
+  <!-- Uncomment this line if you want to echarts-stat extension
+  <script type="text/javascript" src="https://registry.npmmirror.com/echarts-stat/latest/files/dist/ecStat.min.js"></script>
+  -->
+  <!-- Uncomment this line if you want to echarts-graph-modularity extension
+  <script type="text/javascript" src="https://registry.npmmirror.com/echarts-graph-modularity/2/files/dist/echarts-graph-modularity.min.js"></script>
+  -->
+  <!-- Uncomment this line if you want to use map
+  <script type="text/javascript" src="https://registry.npmmirror.com/echarts/4.9.0/files/map/js/world.js"></script>
+  -->
+  <!-- Uncomment these two lines if you want to use bmap extension
+  <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=YOUR_API_KEY"></script>
+  <script type="text/javascript" src="https://registry.npmmirror.com/echarts/5.5.1/files/dist/extension/bmap.min.js"></script>
+  -->
+
+  <script type="text/javascript">
+    var dom = document.getElementById('container');
+    var myChart = echarts.init(dom, null, {
+      renderer: 'canvas',
+      useDirtyRect: false
+    });
+    var app = {};
+    
+    var option;
+
+    const posList = [
+  'left',
+  'right',
+  'top',
+  'bottom',
+  'inside',
+  'insideTop',
+  'insideLeft',
+  'insideRight',
+  'insideBottom',
+  'insideTopLeft',
+  'insideTopRight',
+  'insideBottomLeft',
+  'insideBottomRight'
+];
+app.configParameters = {
+  rotate: {
+    min: -90,
+    max: 90
+  },
+  align: {
+    options: {
+      left: 'left',
+      center: 'center',
+      right: 'right'
+    }
+  },
+  verticalAlign: {
+    options: {
+      top: 'top',
+      middle: 'middle',
+      bottom: 'bottom'
+    }
+  },
+  position: {
+    options: posList.reduce(function (map, pos) {
+      map[pos] = pos;
+      return map;
+    }, {})
+  },
+  distance: {
+    min: 0,
+    max: 100
+  }
+};
+app.config = {
+  rotate: 90,
+  align: 'left',
+  verticalAlign: 'middle',
+  position: 'insideBottom',
+  distance: 15,
+  onChange: function () {
+    const labelOption = {
+      rotate: app.config.rotate,
+      align: app.config.align,
+      verticalAlign: app.config.verticalAlign,
+      position: app.config.position,
+      distance: app.config.distance
+    };
+    myChart.setOption({
+      series: [
+        {
+          label: labelOption
+        },
+        {
+          label: labelOption
+        },
+        {
+          label: labelOption
+        },
+        {
+          label: labelOption
+        }
+      ]
+    });
+  }
+};
+const labelOption = {
+  show: true,
+  position: app.config.position,
+  distance: app.config.distance,
+  align: app.config.align,
+  verticalAlign: app.config.verticalAlign,
+  rotate: app.config.rotate,
+  formatter: '{c}  {name|{a}}',
+  fontSize: 16,
+  rich: {
+    name: {}
+  }
+};
+option = {
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'shadow'
+    }
+  },
+  legend: {
+    data: ['供应风险', '生产风险', '物流风险', '市场需求风险']
+  },
+  toolbox: {
+    show: true,
+    orient: 'vertical',
+    left: 'right',
+    top: 'center',
+    feature: {
+      mark: { show: true },
+      dataView: { show: true, readOnly: false },
+      magicType: { show: true, type: ['line', 'bar', 'stack'] },
+      restore: { show: true },
+      saveAsImage: { show: true }
+    }
+  },
+  xAxis: [
+    {
+      type: 'category',
+      axisTick: { show: false },
+      data: ['2020', '2021', '2022', '2023', '2024']
+    }
+  ],
+  yAxis: [
+    {
+      type: 'value'
+    }
+  ],
+  series: [
+    {
+      name: '供应风险',
+      type: 'bar',
+      barGap: 0,
+      label: labelOption,
+      emphasis: {
+        focus: 'series'
+      },
+      data: [320, 332, 301, 334, 390]
+    },
+    {
+      name: '生产风险',
+      type: 'bar',
+      label: labelOption,
+      emphasis: {
+        focus: 'series'
+      },
+      data: [220, 182, 191, 234, 290]
+    },
+    {
+      name: '物流风险',
+      type: 'bar',
+      label: labelOption,
+      emphasis: {
+        focus: 'series'
+      },
+      data: [150, 232, 201, 154, 190]
+    },
+    {
+      name: '市场需求风险',
+      type: 'bar',
+      label: labelOption,
+      emphasis: {
+        focus: 'series'
+      },
+      data: [98, 77, 101, 99, 40]
+    }
+  ]
+};
+
+    if (option && typeof option === 'object') {
+      myChart.setOption(option);
+    }
+
+    window.addEventListener('resize', myChart.resize);
+  </script>
+</body>
+</html>

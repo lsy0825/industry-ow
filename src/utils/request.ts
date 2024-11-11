@@ -111,5 +111,24 @@ export default {
       document.body.removeChild(link)
       window.URL.revokeObjectURL(link.href)
     })
+  },
+  getDownloadFile(url: string, fileName = 'fileName.docx') {
+    instance({
+      url,
+      method: 'get',
+      responseType: 'blob'
+    }).then(response => {
+      const blob = new Blob([response.data], {
+        type: response.data.type
+      })
+      const name = (response.headers['file-name'] as string) || fileName
+      const link = document.createElement('a')
+      link.download = decodeURIComponent(name)
+      link.href = URL.createObjectURL(blob)
+      document.body.append(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(link.href)
+    })
   }
 }

@@ -42,7 +42,7 @@ export default function BarChartFC(props: any) {
       ],
       series: [
         {
-          name: 'Direct',
+          name: '产业内其他企业(家)',
           type: 'bar',
           stack: 'Ad',
           barWidth: '30%',
@@ -52,7 +52,7 @@ export default function BarChartFC(props: any) {
           data: ydata1
         },
         {
-          name: 'Email',
+          name: '产业内重点企业(家)',
           type: 'bar',
           stack: 'Ad',
           barWidth: '30%',

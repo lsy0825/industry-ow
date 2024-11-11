@@ -1,0 +1,72 @@
+.industryAnalyse {
+  background: #fff;
+  padding: 24px;
+  .commonStyle {
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    font-size: 16px;
+  }
+  .leftTitle {
+    .commonStyle;
+    background-color: #3f67f8;
+    color: #fff;
+    font-weight: 600;
+    margin-right: 24px;
+    width: 90px;
+  }
+  .rightText {
+    display: inline-block;
+    .commonStyle;
+    background-color: #ebeefa;
+    margin: 0 12px 12px 0;
+    padding: 0 16px;
+  }
+  .atlasArea {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    .itemArea {
+      // .commonItem;
+      max-height: 600px;
+      overflow-y: auto;
+      .itemTitle {
+        // border-bottom: 1px solid #d7d7d7;
+        border-radius: 8px;
+        height: 48px;
+        width: 100%;
+        line-height: 48px;
+        text-align: center;
+        background-color: #409eff;
+        color: #fff;
+        font-size: 20px;
+        font-weight: 600;
+      }
+      .itemText {
+        border: 2px dashed #409eff;
+        border-radius: 25px;
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 10px;
+        .commonText {
+          width: 90%;
+          border-radius: 8px;
+          height: 36px;
+          line-height: 36px;
+          text-align: center;
+          margin-bottom: 10px;
+        }
+        .text {
+          .commonText;
+          background: #dbeaf8;
+        }
+        .textSpecial {
+          .commonText;
+          background: #f7dc0e;
+        }
+      }
+    }
+  }
+}

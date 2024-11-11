@@ -4,8 +4,9 @@ import Icon from '@/assets/detailIcon.svg'
 import ChainChart from '../charts/chainChart'
 import BarChart from '../charts/barChart'
 import MuchBarChart from '../charts/muchBarChart'
+import api from '@/api'
 
-const { Title, Paragraph, Text, Link } = Typography
+const { Paragraph, Text } = Typography
 const data = {
   name: '储能',
   children: [
@@ -185,9 +186,8 @@ const aixdata = ['2019', '2020', '2021', '2022', '2023']
 const aiydata = [269, 312.6, 433.9, 493.2, 531.2, 584.2]
 
 export default function WhitePaperFC() {
-  const confirm = (e: any) => {
-    console.log(e)
-    message.success('Click on Yes')
+  const confirm = (name: string) => {
+    api.getDownloadFile(name)
   }
 
   return (
@@ -249,7 +249,13 @@ export default function WhitePaperFC() {
       <Paragraph style={{ textIndent: '2em' }}>
         从产业链生态图谱来看，在中游的产业金融平台中，银行主体的代表性企业有中国银行、工商银行、建设银行等，保险主体的代表性企业有中国人保、中国平安、中国太保等，融资租赁主体的代表性企业有渤海租赁、江苏金租、国银金租等，财务公司的代表性企业有中油财务、中国电财、上汽财务等。
       </Paragraph>
-      <Popconfirm title='' description='是否需要下载文档?' onConfirm={confirm} okText='是' cancelText='否'>
+      <Popconfirm
+        title=''
+        description='是否需要下载文档?'
+        onConfirm={() => confirm('2024年产业金融产业链研究分析报告.doc')}
+        okText='是'
+        cancelText='否'
+      >
         <Button style={{ marginBottom: 24 }}>更多金融资讯，请点击查看</Button>
       </Popconfirm>
       {/* 宠物行业产业链 */}
@@ -316,7 +322,13 @@ export default function WhitePaperFC() {
       <Paragraph style={{ textIndent: '2em' }}>
         从我国宠物产业链企业区域分布来看，宠物产业链企业主要分布在沿海地区，尤其是江苏、广东和山东省，其次是在浙江、河北等地。
       </Paragraph>
-      <Popconfirm title='' description='是否需要下载文档?' onConfirm={confirm} okText='是' cancelText='否'>
+      <Popconfirm
+        title=''
+        description='是否需要下载文档?'
+        onConfirm={() => confirm('2024年宠物行业产业链梳理及区域热力地图.doc')}
+        okText='是'
+        cancelText='否'
+      >
         <Button style={{ marginBottom: 24 }}>更多宠物行业资讯，请点击查看</Button>
       </Popconfirm>
       {/* 储能电池行业产业链 */}
@@ -348,7 +360,13 @@ export default function WhitePaperFC() {
       <Paragraph style={{ textIndent: '2em' }}>
         通常来讲，储能电池是指电池包，即电池组和BMS等部件PACK组装后的成品储能电池系统。但结合多家企业产品及市场来看，电芯、电池(模)组、电池包均属于储能电池产品。
       </Paragraph>
-      <Popconfirm title='' description='是否需要下载文档?' onConfirm={confirm} okText='是' cancelText='否'>
+      <Popconfirm
+        title=''
+        description='是否需要下载文档?'
+        onConfirm={() => confirm('2024年中国储能电池行业产业链研究分析.doc')}
+        okText='是'
+        cancelText='否'
+      >
         <Button style={{ marginBottom: 24 }}>更多储能电池行业资讯，请点击查看</Button>
       </Popconfirm>
       {/* 大数据行业产业链 */}
@@ -415,7 +433,13 @@ export default function WhitePaperFC() {
       </Paragraph>
       <BarChart xdata={xdata} ydata={ydata} yname='企业数量（家）' />
       <Paragraph style={{ textIndent: '2em' }}>数据来源:启信数据-启信产业大脑</Paragraph>
-      <Popconfirm title='' description='是否需要下载文档?' onConfirm={confirm} okText='是' cancelText='否'>
+      <Popconfirm
+        title=''
+        description='是否需要下载文档?'
+        onConfirm={() => confirm('2024年中国大数据产业研究报告.doc')}
+        okText='是'
+        cancelText='否'
+      >
         <Button style={{ marginBottom: 24 }}>更多大数据行业资讯，请点击查看</Button>
       </Popconfirm>
       {/* 低空经济行业产业链 */}
@@ -443,7 +467,13 @@ export default function WhitePaperFC() {
       <Paragraph style={{ textIndent: '2em' }}>
         以深圳为例，无人机外卖已经在龙岗、龙华、南山等区铺设了数十条固定航线，用户下单后最快约10分钟就能拿到货。而在海南，无人机公共货运物流跨海飞行的成功实现，更是将生鲜运输的时间由原先的十几个小时缩短到了不到3小时，极大地提升了物流效率和服务质量。这一降本增效的创新模式，为城市物流配送提供了新的解决方案。
       </Paragraph>
-      <Popconfirm title='' description='是否需要下载文档?' onConfirm={confirm} okText='是' cancelText='否'>
+      <Popconfirm
+        title=''
+        description='是否需要下载文档?'
+        onConfirm={() => confirm('2024年中国低空经济产业研究报告.doc')}
+        okText='是'
+        cancelText='否'
+      >
         <Button style={{ marginBottom: 24 }}>更多低空经济行业资讯，请点击查看</Button>
       </Popconfirm>
       {/* 光伏电池产业链 */}
@@ -462,7 +492,13 @@ export default function WhitePaperFC() {
       </Paragraph>
       <BarChart xdata={pvxdata} ydata={pvydata} title='2021-2024年中国光伏硅片名义产能预测趋势图' yname='GW' />
       <Paragraph style={{ textIndent: '2em' }}>数据来源：中商产业研究院整理</Paragraph>
-      <Popconfirm title='' description='是否需要下载文档?' onConfirm={confirm} okText='是' cancelText='否'>
+      <Popconfirm
+        title=''
+        description='是否需要下载文档?'
+        onConfirm={() => confirm('2024年中国光伏电池产业链研究分析.doc')}
+        okText='是'
+        cancelText='否'
+      >
         <Button style={{ marginBottom: 24 }}>更多光伏电池行业资讯，请点击查看</Button>
       </Popconfirm>
       {/* 新材料产业链 */}
@@ -490,7 +526,13 @@ export default function WhitePaperFC() {
       </Paragraph>
       <BarChart xdata={materialsxdata} ydata={materialsydata} title='2019-2024年中国粗钢产量统计情况' yname='亿吨' />
       <Paragraph style={{ textIndent: '2em' }}>数据来源：中商产业研究院数据库</Paragraph>
-      <Popconfirm title='' description='是否需要下载文档?' onConfirm={confirm} okText='是' cancelText='否'>
+      <Popconfirm
+        title=''
+        description='是否需要下载文档?'
+        onConfirm={() => confirm('2024年中国新材料产业链研究分析.doc')}
+        okText='是'
+        cancelText='否'
+      >
         <Button style={{ marginBottom: 24 }}>更多新材料行业资讯，请点击查看</Button>
       </Popconfirm>
       {/* 智能制造产业链 */}
@@ -527,7 +569,13 @@ export default function WhitePaperFC() {
       <Paragraph style={{ textIndent: '2em' }}>
         目前，32位MCU技术壁垒较高，国内市场仍以海外厂商为主，意法半导体、恩智浦、英飞凌、瑞萨电子、微芯科技5家企业市场份额合计达到了69.50%。国内企业中，极海半导体、兆易创新、华大半导体市场份额分别为5.5%、4.8%和2.6%。
       </Paragraph>
-      <Popconfirm title='' description='是否需要下载文档?' onConfirm={confirm} okText='是' cancelText='否'>
+      <Popconfirm
+        title=''
+        description='是否需要下载文档?'
+        onConfirm={() => confirm('2024年中国智能制造产业链研究分析.docx')}
+        okText='是'
+        cancelText='否'
+      >
         <Button style={{ marginBottom: 24 }}>更多智能制造行业资讯，请点击查看</Button>
       </Popconfirm>
     </div>

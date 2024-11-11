@@ -27,16 +27,17 @@ const contentStyle: React.CSSProperties = {
 
 const HomeFC: React.FC<HomeProps> = ({ setCurrent }) => {
   const { getEnterValue } = useStore()
-  // 热点词字典
-  // const { data: hotword } = useRequest(
-  //   async () => {
-  //     const resp: string[] = (await api.getHotWord()) as string[]
-  //     return resp
-  //   },
-  //   {
-  //     manual: false
-  //   }
-  // )
+
+  // 数据动态
+  const { data: dataDynamics } = useRequest(
+    async () => {
+      const resp: any[] = (await api.getDataDynamics()) as any[]
+      return resp
+    },
+    {
+      manual: false
+    }
+  )
 
   const onSearch = (value: string) => {
     if (value?.includes('产业链')) {
@@ -79,21 +80,20 @@ const HomeFC: React.FC<HomeProps> = ({ setCurrent }) => {
       <div style={{ marginTop: 24, display: 'flex' }}>
         <div>
           <div style={{ width: 590 }}>
-            <span className={styles.link1}>产业链全景分析</span>
-            <span className={styles.link}>区域经济与资源整合</span>
+            <span className={styles.link1}>产业链全景与多维分析</span>
+            <span className={styles.link}>区域经济动态与资源整合</span>
           </div>
           <div style={{ width: 590 }}>
-            <span className={styles.link2}>产品市场与竞争分析</span>
-            <span className={styles.link}>企业综合竞争力评估</span>
+            <span className={styles.link2}>产品市场竞争与供应链流向</span>
+            <span className={styles.link}>企业竞争力与上下游协同</span>
           </div>
         </div>
         <div className={styles.dataAct}>
           <div className={styles.dataTitle}>数据动态</div>
           <div className={styles.dataText}>
-            月度跟踪：钢铁产业链数据全景及传导逻辑分析 供应链管理协会（ASCM）确定了 2024 年大模型产业链分布专题
-            医疗器械产业链分布高峰论坛在京举办月度跟踪：钢铁产业链数据全景及传导逻辑分析 供应链管理协会（ASCM）确定了
-            2024 年大模型产业链分布专题 医疗器械产业链分布高峰论坛在京举办月度跟踪：钢铁产业链数据全景及传导逻辑分析
-            供应链管理协会（ASCM）确定了 2024 年大模型产业链分布专题 医疗器械产业链分布高峰论坛在京举办
+            {dataDynamics?.map((item: any) => (
+              <div>{`${item.dataDynamicsDate} ${item.remark} ${item.dataDynamicsNum} 条记录`}</div>
+            ))}
           </div>
         </div>
       </div>
