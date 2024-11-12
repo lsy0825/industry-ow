@@ -1,6 +1,12 @@
 import request from '@/utils/request'
 import { Login } from '@/types/api'
-import { EnterpriseDetailParams, EnterpriseParams, PolicyParams, SearchResultParams } from '@/views/home/type'
+import {
+  EnterpriseDetailParams,
+  EnterpriseParams,
+  PolicyParams,
+  SearchResultParams,
+  PatentParams
+} from '@/views/home/type'
 export default {
   // 登录
   login(params: Login.params) {
@@ -57,5 +63,53 @@ export default {
   // 获得 地区名称：地区编码 字典
   getAreaName() {
     return request.get('/open/AreaName-to-areaCode/get')
+  },
+  //获得企业专利信息分页
+  getPatentList(params: PatentParams) {
+    return request.get('/open/Patent-information/get', params)
+  },
+  // 获得首页动态数据统计信息
+  getDataDynamics() {
+    return request.get('/open/Main-data-dynamics/get')
+  },
+  // 获得所有产业链图表
+  getAllIndustrialChain() {
+    return request.get('/open/IndustrialChain-picture/getAll')
+  },
+  //通过企业id查询财务数据和研发投入数据,按日期升序
+  getFinancial(params: { firmId: number }) {
+    return request.get('/open/Financial-information/getByFirmId', params)
+  },
+  //通过企业id查询企业交易数据，按企业数降序
+  getTransactionData(params: { firmId: number }) {
+    return request.get('/open/Enterprise-transaction-data/getByFirmId', params)
+  },
+  //通过企业id查询产品流通信息，按日期升序
+  getProductionData(params: { firmId: number }) {
+    return request.get('/open/Product-Circulation-Information/getByFirmId', params)
+  },
+  // 获得产业链左侧导航信息
+  getChainNav() {
+    return request.get('/open/Chain-details-navigation/get')
+  },
+  //通过产业链导航关键字获取内容
+  getChainInfo(params: { chainNav: string }) {
+    return request.get('/open/Chain-Details-Information/getByNavKey', params)
+  },
+  // 白皮书下载文件流
+  getDownloadFile(fileName: string) {
+    return request.getDownloadFile(`/open/Download?fileName=${fileName}`, fileName)
+  },
+  //通过企业id获得分页的推荐相关政策
+  getPolicyInfo(params: PatentParams) {
+    return request.get('/open/Recommended-Policy/getByFirmId', params)
+  },
+  //通过企业id查询企业交易数据，按企业数降序
+  getProvinceFirm(params: { firmId: number }) {
+    return request.get('/open/Enterprise-transaction-data/getByFirmId', params)
+  },
+  //获取企业资质分布的企业数,默认为企业数量降序
+  getFirmQualification() {
+    return request.get('/open/Firm-Qualification/get')
   }
 }

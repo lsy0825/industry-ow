@@ -10,7 +10,7 @@ const CommonPolicyList: React.FC<ListProps> = ({ dataList, title, setSearchValue
   const { areaNames } = useStore()
 
   const jumpUrl = (item: any) => {
-    window.open(item.url, '_blank')
+    window.open(item.policyUrl, '_blank')
   }
 
   const showTotal = (total: number) => `共 ${total} 条`
@@ -28,7 +28,7 @@ const CommonPolicyList: React.FC<ListProps> = ({ dataList, title, setSearchValue
                   setSearchValue({ ...searchValue, pageNo: page, pageSize: size })
                 },
                 pageSize: 10,
-                total: dataList?.length,
+                total: dataList?.total,
                 showTotal,
                 showSizeChanger: true,
                 showQuickJumper: true
@@ -39,18 +39,18 @@ const CommonPolicyList: React.FC<ListProps> = ({ dataList, title, setSearchValue
           <List.Item
             actions={[
               <span className={styles.rightTitle}>{`时间：${moment(item?.createTime).format('YYYY-MM-DD')}`}</span>,
-              <span className={styles.rightTitle}>{`来源：${item?.urlSource}`}</span>
+              <span className={styles.rightTitle}>{`来源：${item?.issuingAuthority}`}</span>
             ]}
             onClick={() => jumpUrl(item)}
           >
             <List.Item.Meta
-              title={<span className={styles.leftTitle}>{item?.urlText}</span>}
+              title={<span className={styles.leftTitle}>{item?.policyName}</span>}
               description={
                 <>
-                  {item?.policyLevelText && <Tag color='orange'>{item?.policyLevelText}</Tag>}
-                  {item?.policyTypeText && <Tag color='orange'>{item?.policyTypeText}</Tag>}
-                  {item?.provincialRegion && <Tag color='orange'>{getName(areaNames, item?.provincialRegion)}</Tag>}
-                  {item?.declarationTypeText && <Tag color='orange'>{item?.declarationTypeText}</Tag>}
+                  {item?.involveIndustrialChain && <Tag color='orange'>{item?.involveIndustrialChain}</Tag>}
+                  {item?.policyType && <Tag color='orange'>{item?.policyType}</Tag>}
+                  {item?.area && <Tag color='orange'>{item?.area}</Tag>}
+                  {item?.policyContentSummary && <Tag color='orange'>{item?.policyContentSummary}</Tag>}
                 </>
               }
             />

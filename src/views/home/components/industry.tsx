@@ -1,17 +1,48 @@
-import { useState } from 'react'
-import { Col, Modal, Row } from 'antd'
+import { useCallback, useEffect, useState } from 'react'
+import { Col, Modal, Row, Tabs } from 'antd'
 import styles from './index.module.less'
 import CommonDetail from './commonDetail'
 import { useRequest } from 'ahooks'
 import api from '@/api'
 import { IsOpenProps } from '../type'
+import {
+  AlertOutlined,
+  AppstoreOutlined,
+  BranchesOutlined,
+  ClusterOutlined,
+  HighlightOutlined,
+  RedoOutlined,
+  SlidersOutlined,
+  SoundOutlined
+} from '@ant-design/icons'
+import { useStore } from '@/store'
 
-export default function IndustryFC() {
-  const [isModalOpen, setIsModalOpen] = useState<IsOpenProps>({ type: false, record: {} })
+const iconStyle = {
+  onPointerEnterCapture: undefined,
+  onPointerLeaveCapture: undefined,
+  rev: undefined,
+  style: { fontSize: 24 }
+}
 
-  const { data } = useRequest(
+const icon: any = {
+  '1': <ClusterOutlined {...iconStyle} />,
+  '2': <SoundOutlined {...iconStyle} />,
+  '3': <SlidersOutlined {...iconStyle} />,
+  '4': <HighlightOutlined {...iconStyle} />,
+  '5': <RedoOutlined {...iconStyle} />,
+  '6': <AlertOutlined {...iconStyle} />,
+  '7': <BranchesOutlined {...iconStyle} />,
+  '8': <AppstoreOutlined {...iconStyle} />
+}
+
+export default function IndustryFC(props: any) {
+  const { setCurrent } = props
+  const { getRowIndustry } = useStore()
+
+  // 获取左侧产业链导航数据
+  const { data: navData } = useRequest(
     async () => {
-      const resp: any[] = (await api.getByAreaCode()) as any[]
+      const resp: string[] = (await api.getChainNav()) as string[]
       return resp
     },
     {
@@ -19,45 +50,72 @@ export default function IndustryFC() {
     }
   )
 
-  const style: React.CSSProperties = {
-    padding: '8px 24px',
-    height: 110,
-    border: '1px solid #d7d7d7',
-    borderRadius: 5,
-    cursor: 'pointer'
+  // 获取右侧产业链内容
+  const { data: infoData, run: getInfo } = useRequest(
+    async chainNav => {
+      const resp = await api.getChainInfo({ chainNav })
+      return resp
+    },
+    {
+      manual: true
+    }
+  )
+
+  useEffect(() => {
+    navData?.length && getInfo(navData?.[0])
+  }, [navData])
+
+  const onChange = (key: string) => {
+    getInfo(key)
   }
 
-  return (
-    <div className={styles.industryStyle}>
+  const handleClick = (item: any) => {
+    setCurrent('7')
+    getRowIndustry(item)
+  }
+
+  const rightContent = useCallback((data: any[]) => {
+    return (
       <Row gutter={[24, 24]}>
-        {data?.map((item: Record<string, any>, index: number) => {
+        {data?.map((item, index) => {
           return (
-            <Col span={6} onClick={() => setIsModalOpen({ type: true, record: item })} key={index}>
-              <div style={style}>
-                <div className={styles.cardTitle}>{item?.informationId}</div>
+            <Col span={6} onClick={() => handleClick(item)} key={index}>
+              <div className={styles.colStyle}>
+                <div className={styles.cardTitle}>{item.chainName}</div>
                 <div className={styles.cardText} style={{ paddingBottom: 10 }}>
                   <span>环节</span>
-                  <span>{`${item?.linkNumber}个`}</span>
+                  <span>{`${item.linkNum} 个`}</span>
                 </div>
                 <div className={styles.cardText}>
                   <span>企业</span>
-                  <span>{`${item?.firmNumber}家`}</span>
+                  <span>{`${item.firmNum} 家`}</span>
                 </div>
               </div>
             </Col>
           )
         })}
       </Row>
-      <Modal
-        title={null}
-        open={isModalOpen.type}
-        footer={null}
-        onCancel={() => setIsModalOpen({ type: false, record: {} })}
-        width={1200}
-        centered={true}
-      >
-        <CommonDetail />
-      </Modal>
+    )
+  }, [])
+
+  return (
+    <div className={styles.industryStyle}>
+      <Tabs
+        tabPosition='left'
+        onChange={onChange}
+        items={navData?.map((item: string, index: number) => {
+          return {
+            label: (
+              <span className={styles.tabTitle}>
+                <div style={{ marginBottom: 8 }}>{icon[index + 1]}</div>
+                {item}
+              </span>
+            ),
+            key: item,
+            children: rightContent(infoData as any[])
+          }
+        })}
+      />
     </div>
   )
 }

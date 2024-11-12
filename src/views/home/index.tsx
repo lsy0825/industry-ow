@@ -12,6 +12,11 @@ import api from '@/api'
 import { useStore } from '@/store'
 import storage from '@/utils/storage'
 import SearchResult from './components/searchResult'
+import FirmDetail from './components/detail'
+import IndustryDetail from './components/industryDetail'
+import Infomation from './components/infomation'
+import WhitePaper from './components/whitePaper'
+import IndustryAnalyse from './fullDimension/industryAnalyse'
 
 const { Header, Content } = Layout
 
@@ -22,17 +27,38 @@ enum PageKeys {
   Page4 = '4',
   Page5 = '5',
   Page6 = '6',
-  Page7 = '7'
+  Page7 = '7',
+  Page8 = '8',
+  Page9 = 'info',
+  Page10 = 'industry'
 }
 
 const items = [
-  { key: '1', label: '首页' },
-  { key: '2', label: '企业' },
-  { key: '3', label: '产业链' },
-  { key: '4', label: '企业互动数据' },
-  { key: '5', label: '产品流通数据' },
-  { key: '6', label: '政策数据' },
-  { key: '7', label: '', disabled: true }
+  { key: '1', label: '平台概况' },
+  {
+    key: 'data',
+    label: '数据',
+    children: [
+      { label: '企业', key: '2' },
+      { label: '产业链', key: '3' },
+      { label: '政策', key: '6' }
+    ]
+  },
+  {
+    key: 'dimension',
+    label: '全维智链分析',
+    children: [
+      { label: '产业链全景与多维分析', key: 'industry' },
+      { label: '区域经济动态与资源整合', key: 'areaEco' },
+      { label: '产品市场竞争与供应链流向', key: 'product' },
+      { label: '企业竞争力与上下游协同', key: 'enterprise' }
+    ]
+  },
+  { key: '4', label: '分析工具' },
+  { key: '5', label: '研究报告与白皮书' },
+  { key: 'info', label: '政策与咨讯' },
+  { key: '7', label: '', disabled: true }, //产业链详情页
+  { key: '8', label: '', disabled: true } //企业详情页
 ]
 
 export default function LoginFC() {
@@ -40,7 +66,7 @@ export default function LoginFC() {
     token: { borderRadiusLG }
   } = theme.useToken()
   const [current, setCurrent] = useState<string>('1')
-  const { getAreas, userInfo, getIndustruOpts, getAreaNames } = useStore()
+  const { getAreas, userInfo, getIndustruOpts, getAreaNames, rowFirm, rowIndustry } = useStore()
 
   useEffect(() => {
     getAreaData()
@@ -68,12 +94,15 @@ export default function LoginFC() {
 
   const contentMap = {
     [PageKeys.Page1]: <Home setCurrent={setCurrent} />,
-    [PageKeys.Page2]: <Enterprise />,
-    [PageKeys.Page3]: <Industry />,
-    [PageKeys.Page4]: <div>页面 4 的内容</div>,
-    [PageKeys.Page5]: <div>页面 5 的内容</div>,
+    [PageKeys.Page2]: <Enterprise setCurrent={setCurrent} />,
+    [PageKeys.Page3]: <Industry setCurrent={setCurrent} />,
+    [PageKeys.Page4]: <div>敬请期待...</div>,
+    [PageKeys.Page5]: <WhitePaper />,
     [PageKeys.Page6]: <Policy />,
-    [PageKeys.Page7]: <SearchResult />
+    [PageKeys.Page7]: <IndustryDetail record={rowIndustry} setCurrent={setCurrent} />,
+    [PageKeys.Page8]: <FirmDetail record={rowFirm} setCurrent={setCurrent} />,
+    [PageKeys.Page9]: <Infomation />,
+    [PageKeys.Page10]: <IndustryAnalyse />
   }
 
   const onClickMenu = () => {
@@ -96,18 +125,19 @@ export default function LoginFC() {
           selectedKeys={[current]}
         />
         <span style={{ display: 'flex', alignItems: 'center' }}>
-          <img src={Avatar} width={25} height={25} className={styles.avatarStyle} />
-          <span className={styles.user}>{userInfo?.nickname}</span>
+          {/* <img src={Avatar} width={25} height={25} className={styles.avatarStyle} /> */}
           <Button type='text' onClick={onClickMenu}>
-            退出
+            <span>{userInfo?.nickname}</span>【退出】
           </Button>
+          <span className={styles.user}>互动反馈</span>
+          <span>中英文</span>
         </span>
       </Header>
       <Content style={{ padding: '0 48px' }}>
         <div
           style={{
-            minHeight: 742,
-            padding: 24,
+            // minHeight: 742,
+            padding: '24px 0',
             borderRadius: borderRadiusLG
           }}
         >

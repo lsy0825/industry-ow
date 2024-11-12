@@ -15,7 +15,8 @@ const { RangePicker } = DatePicker
 const { SHOW_PARENT } = TreeSelect
 const amountData = ['不限']
 
-export default function EnterpriseFC() {
+export default function EnterpriseFC(props:any) {
+	const {setCurrent} = props
   const [form] = Form.useForm()
   const [searchValue, setSearchValue] = useState({ pageNo: 1, pageSize: 10 })
   const [selectedFirms, setSelectedFirms] = useState<string[]>([])
@@ -198,7 +199,7 @@ export default function EnterpriseFC() {
         </Form>
       </div>
       <div className={styles.bottomStyle}>
-        <CommonFirmList dataList={dataList} title='firm' searchValue={searchValue} setSearchValue={setSearchValue} />
+        <CommonFirmList dataList={dataList} title='firm' searchValue={searchValue} setSearchValue={setSearchValue} setCurrent={setCurrent}/>
       </div>
     </div>
   )

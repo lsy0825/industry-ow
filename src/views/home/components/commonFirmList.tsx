@@ -4,10 +4,17 @@ import styles from './index.module.less'
 import moment from 'moment'
 import { IsOpenProps, ListProps } from '../type'
 import Detail from './detail'
+import { useStore } from '@/store'
 
-const CommonFirmList: React.FC<ListProps> = ({ dataList, title, setSearchValue, searchValue }) => {
+const CommonFirmList: React.FC<ListProps> = ({ dataList, title, setSearchValue, searchValue, setCurrent }) => {
   const [isModalOpen, setIsModalOpen] = useState<IsOpenProps>({ type: false, record: {} })
+  const { getRowFirm } = useStore()
   const showTotal = (total: number) => `共 ${total} 条`
+  const handleClick = (item: any) => {
+    getRowFirm(item)
+    setCurrent('8')
+  }
+  console.log(dataList, 'dataList')
 
   return (
     <div>
@@ -36,22 +43,22 @@ const CommonFirmList: React.FC<ListProps> = ({ dataList, title, setSearchValue, 
               )}`}</span>,
               <span className={styles.rightTitle} key={index}>{`注册资本：${item.annualIncome}万元`}</span>
             ]}
-            onClick={() => setIsModalOpen({ type: true, record: item })}
+            onClick={() => handleClick(item)}
           >
             <List.Item.Meta
               title={<span className={styles.leftTitle}>{item.name}</span>}
               description={
                 <>
                   {/* 产业链 */}
-                  {item?.industryClass?.map((i: string) => (
-                    <Tag color='#f50' key={i}>
-                      {i}
+                  {item?.industryclassRespVOS?.map((i: any) => (
+                    <Tag color='#f50' key={i?.industryChainType}>
+                      {i?.industryChainType}
                     </Tag>
                   ))}
                   {/* 资质类别 */}
-                  {item?.qualificationsId?.map((i: string) => (
-                    <Tag color='#2db7f5' key={i}>
-                      {i}
+                  {item?.informationQualificationsDOS?.map((i: any) => (
+                    <Tag color='#2db7f5' key={i?.qualificationName}>
+                      {i?.qualificationName}
                     </Tag>
                   ))}
 
@@ -62,16 +69,16 @@ const CommonFirmList: React.FC<ListProps> = ({ dataList, title, setSearchValue, 
           </List.Item>
         )}
       />
-      <Modal
+      {/* <Modal
         title={isModalOpen?.record?.title}
         open={isModalOpen.type}
         footer={null}
         onCancel={() => setIsModalOpen({ type: false, record: {} })}
-        width={1200}
+        width={1400}
         centered={true}
       >
         <Detail isModalOpen={isModalOpen} />
-      </Modal>
+      </Modal> */}
     </div>
   )
 }

@@ -7,7 +7,7 @@ export default defineConfig({
     host: 'localhost',
     port: 8080,
     proxy: {
-      '/admin-api': 'http://112.74.162.77:48080'
+      '/admin-api': 'http://140.210.78.20:48080'
     }
   },
   resolve: {
