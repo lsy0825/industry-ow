@@ -99,5 +99,17 @@ export default {
   // 白皮书下载文件流
   getDownloadFile(fileName: string) {
     return request.getDownloadFile(`/open/Download?fileName=${fileName}`, fileName)
+  },
+  //通过企业id获得分页的推荐相关政策
+  getPolicyInfo(params: PatentParams) {
+    return request.get('/open/Recommended-Policy/getByFirmId', params)
+  },
+  //通过企业id查询企业交易数据，按企业数降序
+  getProvinceFirm(params: { firmId: number }) {
+    return request.get('/open/Enterprise-transaction-data/getByFirmId', params)
+  },
+  //获取企业资质分布的企业数,默认为企业数量降序
+  getFirmQualification() {
+    return request.get('/open/Firm-Qualification/get')
   }
 }

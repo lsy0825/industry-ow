@@ -7,6 +7,8 @@ import { useCharts } from '@/hook/useCharts'
 import geoJson from '@/assets/geoJson.json'
 import { DetailProps } from '../type'
 import MapChart from '../charts/mapChart'
+import { useRequest } from 'ahooks'
+import api from '@/api'
 
 const dataList = [
   {
@@ -269,6 +271,17 @@ export default function DetailFC(props: DetailProps) {
   // 初始实心饼图
   const [pieRef2, pieChart2] = useCharts()
 
+  // 获取业资质数据
+  const { data: qualifyData } = useRequest(
+    async () => {
+      const resp: any = await api.getFirmQualification()
+      return resp
+    },
+    {
+      manual: false
+    }
+  )
+
   useEffect(() => {
     echarts.registerMap('china', geoJson as any)
     renderLineChart()
@@ -489,7 +502,7 @@ export default function DetailFC(props: DetailProps) {
   return (
     <div className={styles.detail}>
       <div className={styles.topBtn}>
-        <div className={styles.detailText}>{record?.title}</div>
+        <div className={styles.detailText}>{record?.chainName}</div>
         <Button onClick={() => setCurrent('3')}>返回</Button>
       </div>
       <div className={styles.detailStyle}>
@@ -503,9 +516,9 @@ export default function DetailFC(props: DetailProps) {
             <div className={styles.itemTitle}>全国专精特新企业产业分布</div>
             <div className={styles.textArea}>
               <Descriptions column={1} size='small' bordered>
-                {items?.map((item: any) => (
-                  <Descriptions.Item label={item.label} key={item.key}>
-                    {item.children}
+                {qualifyData?.resultList?.map((item: any) => (
+                  <Descriptions.Item label={item.qualificationName} key={item.qualificationName}>
+                    {item.firmCount}
                   </Descriptions.Item>
                 ))}
               </Descriptions>
