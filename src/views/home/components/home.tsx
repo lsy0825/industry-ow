@@ -80,7 +80,9 @@ const HomeFC: React.FC<HomeProps> = ({ setCurrent }) => {
       <div style={{ marginTop: 24, display: 'flex' }}>
         <div>
           <div style={{ width: 590 }}>
-            <span className={styles.link1}>产业链全景与多维分析</span>
+            <span className={styles.link1} onClick={() => setCurrent('industry')}>
+              产业链全景与多维分析
+            </span>
             <span className={styles.link}>区域经济动态与资源整合</span>
           </div>
           <div style={{ width: 590 }}>

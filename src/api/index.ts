@@ -111,5 +111,41 @@ export default {
   //获取企业资质分布的企业数,默认为企业数量降序
   getFirmQualification() {
     return request.get('/open/Firm-Qualification/get')
+  },
+  //获取等级企业分布统计,默认为企业数量降序
+  getFirmLevel() {
+    return request.get('/open/Firm-Level/get')
+  },
+  //分页获取地区分布的企业数统计，粒度：省（直辖市）,默认为企业数量降序
+  getProvinceData() {
+    return request.get('/open/Province-Firm-Sum/get')
+  },
+  //获取年限企业分布统计,默认为企业数量降序
+  getYearsData() {
+    return request.get('/open/Firm-Years/get')
+  },
+  //获取注册金额企业分布统计,默认为企业数量降序
+  getRegisterData() {
+    return request.get('/open/Firm-Register-Money/get')
+  },
+  //分页获取专利数排行, 按专利数逆序
+  getPatentSort() {
+    return request.get('/open/Patent-Sum-Sort/get')
+  },
+  //分页获取企业潜力排行, 按国际级>国家级>省级>市级排序
+  getPotentialSort() {
+    return request.get('/open/Information-Potential-Sort/get')
+  },
+  //分页获取专利评分排行, 按专利平分总数逆序
+  getRateSort() {
+    return request.get('/open/Patent-Rate-Sort/get')
+  },
+  //分页获取产业链相关政策
+  getIndustrialPolicy(params: { industrialChain: string }) {
+    return request.get('/open/Industrial-Chain-Policy/get', params)
+  },
+  //对某个产业链在国内的区域分组的企业数量进行排行, 按企业数量逆序
+  getIndustrialArea(params: { industrialChain: string }) {
+    return request.get('/open/IndustrialChain-Area-Firm-Sort/get', params)
   }
 }

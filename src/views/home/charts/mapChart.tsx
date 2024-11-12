@@ -142,7 +142,7 @@ const dataList1 = [
 ]
 
 export default function DetailFC(props: any) {
-  const { dataList } = props
+  const { dataList, type } = props
   // 初始化地图
   const [mapRef, mapChart] = useCharts()
 
@@ -175,10 +175,39 @@ export default function DetailFC(props: any) {
     }
   ]
 
+  const chainColumns: any = [
+    {
+      title: '排行',
+      dataIndex: 'index',
+      render: (text: unknown, row: unknown, index: number) => index + 1
+    },
+    {
+      title: '区域',
+      dataIndex: 'registeredProvince'
+    },
+    {
+      title: '企业',
+      dataIndex: 'count'
+    },
+    {
+      title: '产业链类别',
+      dataIndex: 'industryChainType'
+    },
+    {
+      title: '级别',
+      dataIndex: 'level'
+    }
+  ]
+
   // 加载地图数据
   const renderMapChart = async () => {
     if (!mapChart) return
-    const newData = dataList?.map((item: any) => ({ name: item.area, value: Number(item.informationSum) }))
+    let newData
+    if (type === 'firm') {
+      newData = dataList?.map((item: any) => ({ name: item.area, value: Number(item.informationSum) }))
+    } else {
+      newData = dataList?.map((item: any) => ({ name: item.registeredProvince, value: Number(item.count) }))
+    }
     if (newData?.length) {
       mapChart?.setOption({
         title: '',
@@ -193,17 +222,6 @@ export default function DetailFC(props: any) {
             return `${params.name}<br/>数量: ${value}`
           }
         },
-        // 工具导航
-        // toolbox: {
-        //   show: true,
-        //   left: 'left',
-        //   top: 'top',
-        //   feature: {
-        //     // dataView: { readOnly: false },
-        //     restore: {},
-        //     saveAsImage: {}
-        //   }
-        // },
         // 地图数据
         dataset: {
           source: newData
@@ -273,10 +291,10 @@ export default function DetailFC(props: any) {
         <div ref={mapRef} className={styles.itemMap}></div>
       </Card>
       <Table
-        columns={corDealColumns}
+        columns={type === 'firm' ? corDealColumns : chainColumns}
         dataSource={dataList}
         bordered
-        rowKey='id'
+        rowKey={'id' || 'registeredProvince'}
         pagination={false}
         style={{ width: '100%', marginLeft: 24 }}
       />

@@ -205,63 +205,22 @@ const items = [
 
 const news = [
   {
-    text: '发哈客户发德哈卡哈尔发的富士康国际氨基酸佛爱回复啊附加费用价格反弹就会发光的肺结核v与解封',
-    time: '2002'
+    text: '30余家投资机构齐聚调研 隆平高科技举行专精特新种业板块专题交...',
+    time: '2024-11-02'
   },
   {
-    text: '发哈客户发德哈卡哈尔发的富士康国际氨基酸佛爱回复啊',
-    time: '2002'
+    text: '北京市专精特新小巨人企业三元基因大涨超25%：聚焦生物医药',
+    time: '2024-10-31'
   },
   {
-    text: '发哈客户发德哈卡哈尔发的富士康国际氨基酸佛爱回复啊',
-    time: '2002'
-  },
-  {
-    text: '发哈客户发德哈卡哈尔发的富士康国际氨基酸佛爱回复啊',
-    time: '2002'
-  },
-  {
-    text: '发哈客户发德哈卡哈尔发的富士康国际氨基酸佛爱回复啊',
-    time: '2002'
-  },
-  {
-    text: '发哈客户发德哈卡哈尔发的富士康国际氨基酸佛爱回复啊',
-    time: '2002'
-  },
-  {
-    text: '发哈客户发德哈卡哈尔发的富士康国际氨基酸佛爱回复啊',
-    time: '2002'
-  },
-  {
-    text: '发哈客户发德哈卡哈尔发的富士康国际氨基酸佛爱回复啊',
-    time: '2002'
-  },
-  {
-    text: '发哈客户发德哈卡哈尔发的富士康国际氨基酸佛爱回复啊',
-    time: '2002'
-  },
-  {
-    text: '发哈客户发德哈卡哈尔发的富士康国际氨基酸佛爱回复啊',
-    time: '2002'
-  },
-  {
-    text: '发哈客户发德哈卡哈尔发的富士康国际氨基酸佛爱回复啊',
-    time: '2002'
-  },
-  {
-    text: '发哈客户发德哈卡哈尔发的富士康国际氨基酸佛爱回复啊',
-    time: '2002'
-  },
-  {
-    text: '发哈客户发德哈卡哈尔发的富士康国际氨基酸佛爱回复啊',
-    time: '2002'
+    text: '“湖北专精特新企业上云”专项计划启动 助力企业数字化转型',
+    time: '2024-10-30'
   }
 ]
 
 export default function DetailFC(props: DetailProps) {
   const { record, setCurrent } = props
   const Wwidth = document.body.clientWidth
-  console.log(record, 'record', Wwidth)
   // 初始化条形图
   const [lineRef, lineChart] = useCharts()
   // 初始化金字塔图
@@ -271,10 +230,21 @@ export default function DetailFC(props: DetailProps) {
   // 初始实心饼图
   const [pieRef2, pieChart2] = useCharts()
 
-  // 获取业资质数据
+  // 获取企业资质数据
   const { data: qualifyData } = useRequest(
     async () => {
       const resp: any = await api.getFirmQualification()
+      return resp
+    },
+    {
+      manual: false
+    }
+  )
+
+  // 获取产业链企业数据
+  const { data: provinceChainData } = useRequest(
+    async () => {
+      const resp: any = await api.getIndustrialArea({ industrialChain: record?.chainName })
       return resp
     },
     {
@@ -288,16 +258,17 @@ export default function DetailFC(props: DetailProps) {
     renderPyramidChart()
     renderPieChart()
     renderSolidPieChart()
-  }, [lineRef, lineChart, pyramidRef, pieRef1, pieRef2])
+  }, [lineRef, lineChart, pyramidChart, pieRef1, pieRef2])
 
   // 金字塔图
   const renderPyramidChart = async () => {
     if (!pyramidChart) return
-    // const data = await api.getLineData()
+    const resp: any = await api.getFirmLevel()
+    const data = resp?.resultList?.map((item: any) => ({ name: item.level, value: item.firmCount }))
     pyramidChart?.setOption({
       tooltip: {
         trigger: 'item',
-        formatter: '{a} <br/>{b} : {c}%'
+        formatter: '{b} : {c}'
       },
       series: [
         {
@@ -311,7 +282,7 @@ export default function DetailFC(props: DetailProps) {
           gap: 2,
           label: {
             show: true,
-            formatter: '{b}Expected'
+            formatter: '{b} {c}家'
             // position: 'inside'
           },
           labelLine: {
@@ -330,13 +301,7 @@ export default function DetailFC(props: DetailProps) {
               fontSize: 16
             }
           },
-          data: [
-            { value: 60, name: 'Visit' },
-            { value: 40, name: 'Inquiry' },
-            { value: 20, name: 'Order' },
-            { value: 80, name: 'Click' },
-            { value: 100, name: 'Show' }
-          ]
+          data: data
         }
       ]
     })
@@ -345,28 +310,22 @@ export default function DetailFC(props: DetailProps) {
   // 加载条形图数据
   const renderLineChart = async () => {
     if (!lineChart) return
-    // const data = await api.getLineData()
+    const data: any = await api.getProvinceData()
     lineChart?.setOption({
-      // title: {
-      //   text: '订单和流水走势图'
-      // },
       tooltip: {
         trigger: 'axis'
       },
-      // legend: {
-      //   data: ['订单']
-      // },
       xAxis: {
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] //data.label
+        data: data?.resultList?.map((item: any) => item.province)
       },
       yAxis: {
         type: 'value'
       },
       series: [
         {
-          name: '订单',
+          name: '省级',
           type: 'bar',
-          data: [23, 24, 18, 25, 27, 28, 25], //data.order
+          data: data?.resultList?.map((item: any) => item.firmCount),
           barWidth: '30%'
         }
       ]
@@ -376,15 +335,16 @@ export default function DetailFC(props: DetailProps) {
   // 加载空心饼图
   const renderPieChart = async () => {
     if (!pieChart1) return
-    // const data = await api.getPieCityData()
+    const resp: any = await api.getYearsData()
+    const data = resp?.resultList?.map((item: any) => ({ name: item.year, value: item.firmCount }))
     pieChart1?.setOption({
       tooltip: {
         trigger: 'item'
       },
       legend: {
-        bottom: '5%',
-        left: 'center',
-        data: ['A', 'B', 'C', 'D', 'E', 'F', 'G']
+        bottom: '2%',
+        // left: 'center',
+        data: resp?.resultList?.map((item: any) => item.year)
       },
       series: [
         {
@@ -392,26 +352,18 @@ export default function DetailFC(props: DetailProps) {
           type: 'pie',
           radius: ['40%', '50%'],
           avoidLabelOverlap: false,
-          center: ['50%', '40%'],
+          center: ['55%', '35%'],
           emphasis: {
             label: {
               show: true,
-              fontSize: '30',
+              fontSize: '20',
               fontWeight: 'bold'
             }
           },
           label: {
             formatter: '{b}\n{d}%'
           },
-          data: [
-            { value: 335, name: 'A' },
-            { value: 310, name: 'B' },
-            { value: 234, name: 'C' },
-            { value: 135, name: 'D' },
-            { value: 1548, name: 'E' },
-            { value: 23, name: 'F' },
-            { value: 45, name: 'G' }
-          ]
+          data: data
         }
       ]
     })
@@ -420,7 +372,8 @@ export default function DetailFC(props: DetailProps) {
   // 加载实心饼图
   const renderSolidPieChart = async () => {
     if (!pieChart2) return
-    // const data = await api.getPieCityData()
+    const resp: any = await api.getRegisterData()
+    const data = resp?.resultList?.map((item: any) => ({ name: item.moneyGroup, value: item.firmCount }))
     pieChart2?.setOption({
       tooltip: {
         trigger: 'item'
@@ -428,14 +381,14 @@ export default function DetailFC(props: DetailProps) {
       legend: {
         bottom: '5%',
         left: 'center',
-        data: ['A', 'B', 'C', 'D', 'E', 'F', 'G']
+        data: resp?.resultList?.map((item: any) => item.moneyGroup)
       },
       series: [
         {
           // name: '城市分布',
           type: 'pie',
           radius: '50%',
-          center: ['50%', '40%'],
+          center: ['50%', '35%'],
           emphasis: {
             label: {
               show: true,
@@ -446,19 +399,55 @@ export default function DetailFC(props: DetailProps) {
           label: {
             formatter: '{b}\n{d}%'
           },
-          data: [
-            { value: 335, name: 'A' },
-            { value: 310, name: 'B' },
-            { value: 234, name: 'C' },
-            { value: 135, name: 'D' },
-            { value: 1548, name: 'E' },
-            { value: 23, name: 'F' },
-            { value: 45, name: 'G' }
-          ]
+          data: data
         }
       ]
     })
   }
+
+  // 获取专利量数据
+  const { data: patentSort } = useRequest(
+    async () => {
+      const resp: any = await api.getPatentSort()
+      return resp
+    },
+    {
+      manual: false
+    }
+  )
+
+  // 获取企业潜力数据
+  const { data: potentialSort } = useRequest(
+    async () => {
+      const resp: any = await api.getPotentialSort()
+      return resp
+    },
+    {
+      manual: false
+    }
+  )
+
+  // 获取专利评分数据
+  const { data: rateSort } = useRequest(
+    async () => {
+      const resp: any = await api.getRateSort()
+      return resp
+    },
+    {
+      manual: false
+    }
+  )
+
+  // 获取产业链相关政策
+  const { data: industrialPolicy } = useRequest(
+    async () => {
+      const resp: any = await api.getIndustrialPolicy({ industrialChain: record.chainName })
+      return resp
+    },
+    {
+      manual: false
+    }
+  )
 
   const commonColumn = [
     {
@@ -468,7 +457,7 @@ export default function DetailFC(props: DetailProps) {
     },
     {
       title: '企业名称',
-      dataIndex: 'year'
+      dataIndex: 'firmName'
     }
   ]
 
@@ -477,7 +466,7 @@ export default function DetailFC(props: DetailProps) {
     ...commonColumn,
     {
       title: '专利数量',
-      dataIndex: 'investedNum'
+      dataIndex: 'patentCount'
     }
   ]
 
@@ -486,7 +475,7 @@ export default function DetailFC(props: DetailProps) {
     ...commonColumn,
     {
       title: '可达级别',
-      dataIndex: 'investedNum'
+      dataIndex: 'highestLevel'
     }
   ]
 
@@ -495,7 +484,7 @@ export default function DetailFC(props: DetailProps) {
     ...commonColumn,
     {
       title: '上奇评分',
-      dataIndex: 'investedNum'
+      dataIndex: 'patentRateSum'
     }
   ]
 
@@ -506,7 +495,7 @@ export default function DetailFC(props: DetailProps) {
         <Button onClick={() => setCurrent('3')}>返回</Button>
       </div>
       <div className={styles.detailStyle}>
-        <MapChart dataList={dataList} />
+        <MapChart dataList={provinceChainData?.resultList} type='chain' />
         <div className={styles.container}>
           <div className={styles.item}>
             <div className={styles.itemTitle}>全国专精特新企业区域分布</div>
@@ -545,15 +534,33 @@ export default function DetailFC(props: DetailProps) {
         <div className={styles.tableArea}>
           <div className={styles.tableItem}>
             <div className={styles.itemTitle}>授权发明专利量TOP100</div>
-            <Table columns={patentColumns} dataSource={[]} bordered={false} rowKey='id' pagination={false} />
+            <Table
+              columns={patentColumns}
+              dataSource={patentSort?.resultList}
+              bordered={false}
+              rowKey='firmName'
+              pagination={false}
+            />
           </div>
           <div className={styles.tableItem}>
             <div className={styles.itemTitle}>企业潜力TOP100</div>
-            <Table columns={latentColumns} dataSource={[]} bordered={false} rowKey='id' pagination={false} />
+            <Table
+              columns={latentColumns}
+              dataSource={potentialSort?.resultList}
+              bordered={false}
+              rowKey='firmName'
+              pagination={false}
+            />
           </div>
           <div className={styles.tableItem}>
             <div className={styles.itemTitle}>上奇评价</div>
-            <Table columns={evaColumns} dataSource={[]} bordered={false} rowKey='id' pagination={false} />
+            <Table
+              columns={evaColumns}
+              dataSource={rateSort?.resultList}
+              bordered={false}
+              rowKey='firmName'
+              pagination={false}
+            />
           </div>
         </div>
         <div className={styles.tableArea}>
@@ -583,12 +590,17 @@ export default function DetailFC(props: DetailProps) {
               </span>
             </div>
             <div className={styles.newsArea}>
-              {news?.map((item, index) => (
-                <div key={index}>
+              {industrialPolicy?.list?.map((item: any) => (
+                <div key={item.id}>
                   <div className={styles.textStyle} style={{ width: `${(Wwidth - 278) / 3}px` }} title={item.text}>
-                    {item.text}
+                    {item.policyContentSummary}
                   </div>
-                  <div className={styles.timeStyle}>{item.time}</div>
+                  <div className={styles.rightText}>
+                    <span className={styles.timeStyle} style={{ paddingRight: 10 }}>
+                      发布单位：{item.issuingAuthority}
+                    </span>
+                    <span className={styles.timeStyle}>{item.releaseDate}</span>
+                  </div>
                 </div>
               ))}
             </div>

@@ -526,7 +526,7 @@ export default function DetailFC(props: DetailProps) {
           <img src={Icon} style={{ paddingTop: 8 }} />
           <span className={styles.text}>企业交易数据</span>
         </div>
-        <MapChart dataList={provinceData} />
+        <MapChart dataList={provinceData} type='firm' />
         {/* 产品流通信息 */}
         <div className={styles.titleColor}>
           <img src={Icon} style={{ paddingTop: 8 }} />
