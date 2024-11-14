@@ -347,7 +347,7 @@ export default function DetailFC(props: any) {
             maxWidth: 120,
             formatter: function (params: any) {
               const text = infoData[params.name] // 获取地图区域名称
-              const maxLengthPerLine = 10 // 每行最大字符数
+              const maxLengthPerLine = 12 // 每行最大字符数
               const lines = []
 
               // 简单地将文本按每行最大字符数分割
@@ -355,7 +355,15 @@ export default function DetailFC(props: any) {
                 lines.push(text.slice(i, i + maxLengthPerLine))
               }
               //标签内容
-              return `${params.name}\n${lines.join('\n')}`
+              return `{title|${params.name}}\n ${lines.join('\n')}`
+            },
+            rich: {
+              title: {
+                color: '#eee',
+                align: 'center',
+                fontSize: 14,
+                fontWeight: 600
+              }
             }
           },
           lineStyle: {

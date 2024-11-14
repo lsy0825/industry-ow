@@ -36,7 +36,8 @@ enum PageKeys {
   Page10 = 'industry',
   Page11 = 'areaEco',
   Page12 = 'product',
-  Page13 = 'firmCompete'
+  Page13 = 'firmCompete',
+  Page14 = '9'
 }
 
 const items = [
@@ -48,7 +49,7 @@ const items = [
       { label: '企业', key: '2' },
       { label: '产业链', key: '3' },
       { label: '政策', key: '6' },
-      { label: '产品', key: '2' }
+      { label: '产品', key: '9' }
     ]
   },
   {
@@ -112,7 +113,8 @@ export default function LoginFC() {
     [PageKeys.Page10]: <IndustryAnalyse />,
     [PageKeys.Page11]: <AreaEco />,
     [PageKeys.Page12]: <ProductMarket />,
-    [PageKeys.Page13]: <FirmCompete />
+    [PageKeys.Page13]: <FirmCompete />,
+    [PageKeys.Page14]: <Enterprise setCurrent={setCurrent} />
   }
 
   const onClickMenu = () => {
