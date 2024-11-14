@@ -20,6 +20,7 @@ import IndustryAnalyse from './fullDimension/industryAnalyse'
 import AreaEco from './fullDimension/areaEco'
 import ProductMarket from './fullDimension/productMarket'
 import FirmCompete from './fullDimension/firmCompete'
+import AnalysisTools from './components/analysisTools'
 
 const { Header, Content } = Layout
 
@@ -104,7 +105,7 @@ export default function LoginFC() {
     [PageKeys.Page1]: <Home setCurrent={setCurrent} />,
     [PageKeys.Page2]: <Enterprise setCurrent={setCurrent} />,
     [PageKeys.Page3]: <Industry setCurrent={setCurrent} />,
-    [PageKeys.Page4]: <div>敬请期待...</div>,
+    [PageKeys.Page4]: <AnalysisTools />,
     [PageKeys.Page5]: <WhitePaper />,
     [PageKeys.Page6]: <Policy />,
     [PageKeys.Page7]: <IndustryDetail record={rowIndustry} setCurrent={setCurrent} />,
