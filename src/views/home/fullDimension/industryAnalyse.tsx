@@ -30,7 +30,6 @@ export default function IndustryAnalyse() {
   // }, [])
 
   const handleClick = (fieldsValue: any) => {
-    console.log(1111, fieldsValue)
     setIsShow(true)
   }
   return (
@@ -56,7 +55,6 @@ export default function IndustryAnalyse() {
       </Form>
       {isShow && (
         <div>
-          {' '}
           <Paragraph>
             <Text strong>根据西安交通大学管理学院供应链产业链数据平台分析可得出</Text>
           </Paragraph>

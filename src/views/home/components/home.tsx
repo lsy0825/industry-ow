@@ -1,9 +1,7 @@
-import { Button, Carousel, Input, Row, Col } from 'antd'
-import Home1 from '@/assets/home1.jpg'
-import Home2 from '@/assets/home2.jpg'
-import Home3 from '@/assets/home3.jpg'
-import Home4 from '@/assets/home4.jpg'
-import Home5 from '@/assets/home5.jpg'
+import { Carousel, Input } from 'antd'
+import Home1 from '@/assets/CarouselImg1.png'
+import Home2 from '@/assets/CarouselImg2.png'
+import Home3 from '@/assets/CarouselImg3.png'
 import logo1 from '@/assets/logo1.png'
 import logo2 from '@/assets/logo2.png'
 import logo3 from '@/assets/logo3.png'
@@ -15,7 +13,7 @@ import { useStore } from '@/store'
 
 const { Search } = Input
 
-const imgMap = [Home1, Home2, Home3, Home4, Home5]
+const imgMap = [Home1, Home2, Home3]
 
 const contentStyle: React.CSSProperties = {
   height: '100%',
@@ -26,8 +24,6 @@ const contentStyle: React.CSSProperties = {
 }
 
 const HomeFC: React.FC<HomeProps> = ({ setCurrent }) => {
-  const { getEnterValue } = useStore()
-
   // 数据动态
   const { data: dataDynamics } = useRequest(
     async () => {
@@ -83,11 +79,17 @@ const HomeFC: React.FC<HomeProps> = ({ setCurrent }) => {
             <span className={styles.link1} onClick={() => setCurrent('industry')}>
               产业链全景与多维分析
             </span>
-            <span className={styles.link}>区域经济动态与资源整合</span>
+            <span className={styles.link} onClick={() => setCurrent('areaEco')}>
+              区域经济动态与资源整合
+            </span>
           </div>
           <div style={{ width: 590 }}>
-            <span className={styles.link2}>产品市场竞争与供应链流向</span>
-            <span className={styles.link}>企业竞争力与上下游协同</span>
+            <span className={styles.link2} onClick={() => setCurrent('product')}>
+              产品市场竞争与供应链流向
+            </span>
+            <span className={styles.link} onClick={() => setCurrent('firmCompete')}>
+              企业竞争力与上下游协同
+            </span>
           </div>
         </div>
         <div className={styles.dataAct}>

@@ -1,4 +1,4 @@
-import { Button, message, Popconfirm, Typography } from 'antd'
+import { Button, Input, message, Popconfirm, Select, Typography } from 'antd'
 import styles from './index.module.less'
 import Icon from '@/assets/detailIcon.svg'
 import ChainChart from '../charts/chainChart'
@@ -192,6 +192,21 @@ export default function WhitePaperFC() {
 
   return (
     <div className={styles.detailStyle}>
+      <div className={styles.searchArea}>
+        <Select
+          style={{ minWidth: 300 }}
+          // onChange={handleChange}
+          options={[
+            { value: '标题', label: '标题' },
+            { value: '主题', label: '主题' },
+            { value: '作者', label: '作者' },
+            { value: '关键词/摘要', label: '关键词/摘要' }
+          ]}
+          placeholder='请选择'
+        />
+        <Input style={{ minWidth: 300, margin: '0 24px' }} placeholder='请输入' />
+        <Button>搜索</Button>
+      </div>
       {/* 金融产业链 */}
       <div className={styles.titleColor}>
         <img src={Icon} style={{ paddingTop: 8 }} />

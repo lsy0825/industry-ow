@@ -244,6 +244,10 @@ export default function DetailFC(props: any) {
             fontSize: 12,
             offset: [2, 0],
             align: 'left'
+            // formatter: function (params: any) {
+            //   //标签内容
+            //   return `${params.name}000`
+            // }
           },
           itemStyle: {
             areaColor: '#e5f7ff' // 地图图形颜色 #fff
@@ -294,7 +298,7 @@ export default function DetailFC(props: any) {
         columns={type === 'firm' ? corDealColumns : chainColumns}
         dataSource={dataList}
         bordered
-        rowKey={'id' || 'registeredProvince'}
+        rowKey={type === 'firm' ? 'id' : 'registeredProvince'}
         pagination={false}
         style={{ width: '100%', marginLeft: 24 }}
       />

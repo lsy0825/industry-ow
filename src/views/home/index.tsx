@@ -17,6 +17,9 @@ import IndustryDetail from './components/industryDetail'
 import Infomation from './components/infomation'
 import WhitePaper from './components/whitePaper'
 import IndustryAnalyse from './fullDimension/industryAnalyse'
+import AreaEco from './fullDimension/areaEco'
+import ProductMarket from './fullDimension/productMarket'
+import FirmCompete from './fullDimension/firmCompete'
 
 const { Header, Content } = Layout
 
@@ -30,7 +33,10 @@ enum PageKeys {
   Page7 = '7',
   Page8 = '8',
   Page9 = 'info',
-  Page10 = 'industry'
+  Page10 = 'industry',
+  Page11 = 'areaEco',
+  Page12 = 'product',
+  Page13 = 'firmCompete'
 }
 
 const items = [
@@ -41,7 +47,8 @@ const items = [
     children: [
       { label: '企业', key: '2' },
       { label: '产业链', key: '3' },
-      { label: '政策', key: '6' }
+      { label: '政策', key: '6' },
+      { label: '产品', key: '2' }
     ]
   },
   {
@@ -51,7 +58,7 @@ const items = [
       { label: '产业链全景与多维分析', key: 'industry' },
       { label: '区域经济动态与资源整合', key: 'areaEco' },
       { label: '产品市场竞争与供应链流向', key: 'product' },
-      { label: '企业竞争力与上下游协同', key: 'enterprise' }
+      { label: '企业竞争力与上下游协同', key: 'firmCompete' }
     ]
   },
   { key: '4', label: '分析工具' },
@@ -102,7 +109,10 @@ export default function LoginFC() {
     [PageKeys.Page7]: <IndustryDetail record={rowIndustry} setCurrent={setCurrent} />,
     [PageKeys.Page8]: <FirmDetail record={rowFirm} setCurrent={setCurrent} />,
     [PageKeys.Page9]: <Infomation />,
-    [PageKeys.Page10]: <IndustryAnalyse />
+    [PageKeys.Page10]: <IndustryAnalyse />,
+    [PageKeys.Page11]: <AreaEco />,
+    [PageKeys.Page12]: <ProductMarket />,
+    [PageKeys.Page13]: <FirmCompete />
   }
 
   const onClickMenu = () => {

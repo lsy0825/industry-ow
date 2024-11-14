@@ -9,10 +9,26 @@ import Info7 from '@/assets/info7.png'
 import Info8 from '@/assets/info8.png'
 import Info9 from '@/assets/info9.png'
 import Info10 from '@/assets/info10.png'
+import { Button, Input, Select } from 'antd'
 
 export default function InfoFC() {
   return (
     <div className={styles.info}>
+      <div className={styles.searchArea}>
+        <Select
+          style={{ minWidth: 300 }}
+          // onChange={handleChange}
+          options={[
+            { value: '标题', label: '标题' },
+            { value: '主题', label: '主题' },
+            { value: '作者', label: '作者' },
+            { value: '关键词/摘要', label: '关键词/摘要' }
+          ]}
+          placeholder='请选择'
+        />
+        <Input style={{ minWidth: 300, margin: '0 24px' }} placeholder='请输入' />
+        <Button>搜索</Button>
+      </div>
       <div style={{ borderBottom: '1px solid #ccc' }}>
         <img src={Info1} width='50%' height='50%' />
         <div className={styles.text}>
