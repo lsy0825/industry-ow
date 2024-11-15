@@ -40,9 +40,6 @@ export default function AreaEco() {
       {isShow && (
         <div>
           <Paragraph>
-            <Text strong>根据西安交通大学管理学院供应链产业链数据平台分析可得出</Text>
-          </Paragraph>
-          <Paragraph>
             <Text strong>
               1. <Text underline>西安</Text> 在 <Text underline>新能源汽车</Text> 区域内企业数据的资源分布
             </Text>

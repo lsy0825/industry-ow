@@ -56,9 +56,6 @@ export default function ProductMarket() {
       {isShow && (
         <div>
           <Paragraph>
-            <Text strong>根据西安交通大学管理学院供应链产业链数据平台分析可得出</Text>
-          </Paragraph>
-          <Paragraph>
             <Text strong>
               1. <Text underline>新能源汽车</Text> 细分产业在 <Text underline>汽车产业</Text> 的供应链流分析
             </Text>

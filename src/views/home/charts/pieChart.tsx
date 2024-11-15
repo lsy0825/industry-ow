@@ -3,7 +3,7 @@ import styles from './index.module.less'
 import { useCharts } from '@/hook/useCharts'
 
 export default function PieChartFC(props: any) {
-  const { legend, pieData } = props
+  const { legend, pieData, title } = props
 
   // 初始化实心饼图
   const [pieRef, pieChart] = useCharts()
@@ -16,6 +16,10 @@ export default function PieChartFC(props: any) {
   const renderSolidPieChart = async () => {
     if (!pieChart) return
     pieChart?.setOption({
+      title: {
+        text: title || '',
+        left: 'left'
+      },
       tooltip: {
         trigger: 'item'
       },

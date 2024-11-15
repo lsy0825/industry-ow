@@ -505,8 +505,43 @@
 .info {
   padding: 24px;
   background-color: #fff;
-  .text {
-    text-indent: 2em;
-    line-height: 32px;
+
+  .articleArea {
+    display: flex;
+    cursor: pointer;
+    background-color: #faf9f9;
+    border-radius: 5px;
+    &:hover {
+      box-shadow: 0px 10px 16px 0px rgba(20, 66, 204, 0.1);
+    }
+    .text {
+      font-size: 16px;
+      margin-left: 24px;
+      font-weight: 600;
+    }
+  }
+}
+.infoText {
+  text-indent: 2em;
+  line-height: 32px;
+}
+.productMenu {
+  padding: 24px;
+  background-color: #fff;
+  .top {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .titleColor {
+    height: 35px;
+    background-color: #ecf5ff;
+    margin-bottom: 12px;
+    position: relative;
+    .text {
+      position: absolute;
+      top: 6px;
+      left: 16px;
+    }
   }
 }

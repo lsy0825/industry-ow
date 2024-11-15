@@ -56,9 +56,6 @@ export default function IndustryAnalyse() {
       {isShow && (
         <div>
           <Paragraph>
-            <Text strong>根据西安交通大学管理学院供应链产业链数据平台分析可得出</Text>
-          </Paragraph>
-          <Paragraph>
             <Text strong>
               1. <Text underline>鲲云科技</Text> 在 <Text underline>智慧工厂</Text> 行业产业链图谱中的位置
             </Text>

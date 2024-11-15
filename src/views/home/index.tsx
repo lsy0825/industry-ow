@@ -21,6 +21,7 @@ import AreaEco from './fullDimension/areaEco'
 import ProductMarket from './fullDimension/productMarket'
 import FirmCompete from './fullDimension/firmCompete'
 import AnalysisTools from './components/analysisTools'
+import ProductMenu from './components/productMenu'
 
 const { Header, Content } = Layout
 
@@ -115,7 +116,7 @@ export default function LoginFC() {
     [PageKeys.Page11]: <AreaEco />,
     [PageKeys.Page12]: <ProductMarket />,
     [PageKeys.Page13]: <FirmCompete />,
-    [PageKeys.Page14]: <Enterprise setCurrent={setCurrent} />
+    [PageKeys.Page14]: <ProductMenu />
   }
 
   const onClickMenu = () => {
