@@ -197,10 +197,11 @@ export default function WhitePaperFC() {
           style={{ minWidth: 300 }}
           // onChange={handleChange}
           options={[
-            { value: '标题', label: '标题' },
+            { value: '报告编号', label: '报告编号' },
             { value: '主题', label: '主题' },
-            { value: '作者', label: '作者' },
-            { value: '关键词/摘要', label: '关键词/摘要' }
+            { value: '摘要', label: '摘要' },
+            { value: '关键词', label: '关键词' },
+            { value: '单位', label: '单位' }
           ]}
           placeholder='请选择'
         />
@@ -209,7 +210,8 @@ export default function WhitePaperFC() {
       </div>
       {/* 金融产业链 */}
       <div className={styles.titleColor}>
-        <img src={Icon} style={{ paddingTop: 8 }} />
+        {/* <img src={Icon} style={{ paddingTop: 8 }} /> */}
+        <div className={styles.colorBar}></div>
         <span className={styles.text}>金融产业链</span>
       </div>
       <Paragraph style={{ textIndent: '2em' }}>
@@ -275,7 +277,8 @@ export default function WhitePaperFC() {
       </Popconfirm>
       {/* 宠物行业产业链 */}
       <div className={styles.titleColor}>
-        <img src={Icon} style={{ paddingTop: 8 }} />
+        {/* <img src={Icon} style={{ paddingTop: 8 }} /> */}
+        <div className={styles.colorBar}></div>
         <span className={styles.text}>宠物行业产业链</span>
       </div>
       <Paragraph style={{ textIndent: '2em' }}>
@@ -348,7 +351,8 @@ export default function WhitePaperFC() {
       </Popconfirm>
       {/* 储能电池行业产业链 */}
       <div className={styles.titleColor}>
-        <img src={Icon} style={{ paddingTop: 8 }} />
+        {/* <img src={Icon} style={{ paddingTop: 8 }} /> */}
+        <div className={styles.colorBar}></div>
         <span className={styles.text}>储能电池行业产业链</span>
       </div>
       <Paragraph style={{ textIndent: '2em' }}>
@@ -386,7 +390,8 @@ export default function WhitePaperFC() {
       </Popconfirm>
       {/* 大数据行业产业链 */}
       <div className={styles.titleColor}>
-        <img src={Icon} style={{ paddingTop: 8 }} />
+        {/* <img src={Icon} style={{ paddingTop: 8 }} /> */}
+        <div className={styles.colorBar}></div>
         <span className={styles.text}>大数据行业产业链</span>
       </div>
       <Paragraph style={{ textIndent: '2em' }}>
@@ -459,7 +464,8 @@ export default function WhitePaperFC() {
       </Popconfirm>
       {/* 低空经济行业产业链 */}
       <div className={styles.titleColor}>
-        <img src={Icon} style={{ paddingTop: 8 }} />
+        {/* <img src={Icon} style={{ paddingTop: 8 }} /> */}
+        <div className={styles.colorBar}></div>
         <span className={styles.text}>低空经济行业产业链</span>
       </div>
       <Paragraph style={{ textIndent: '2em' }}>低空经济作为一个新兴领域，正逐步走进大众视野。</Paragraph>
@@ -493,7 +499,8 @@ export default function WhitePaperFC() {
       </Popconfirm>
       {/* 光伏电池产业链 */}
       <div className={styles.titleColor}>
-        <img src={Icon} style={{ paddingTop: 8 }} />
+        {/* <img src={Icon} style={{ paddingTop: 8 }} /> */}
+        <div className={styles.colorBar}></div>
         <span className={styles.text}>光伏电池产业链</span>
       </div>
       <Paragraph style={{ textIndent: '2em' }}>
@@ -518,7 +525,8 @@ export default function WhitePaperFC() {
       </Popconfirm>
       {/* 新材料产业链 */}
       <div className={styles.titleColor}>
-        <img src={Icon} style={{ paddingTop: 8 }} />
+        {/* <img src={Icon} style={{ paddingTop: 8 }} /> */}
+        <div className={styles.colorBar}></div>
         <span className={styles.text}>新材料产业链</span>
       </div>
       <Paragraph style={{ textIndent: '2em' }}>
@@ -552,7 +560,8 @@ export default function WhitePaperFC() {
       </Popconfirm>
       {/* 智能制造产业链 */}
       <div className={styles.titleColor}>
-        <img src={Icon} style={{ paddingTop: 8 }} />
+        {/* <img src={Icon} style={{ paddingTop: 8 }} /> */}
+        <div className={styles.colorBar}></div>
         <span className={styles.text}>智能制造产业链</span>
       </div>
       <Paragraph style={{ textIndent: '2em' }}>

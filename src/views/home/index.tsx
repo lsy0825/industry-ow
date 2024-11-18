@@ -126,11 +126,18 @@ export default function LoginFC() {
 
   return (
     <Layout>
-      <Header style={{ display: 'flex', alignItems: 'center', background: '#fff' }}>
+      <Header
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          background: 'linear-gradient(270deg, #2C22E5 0%, #791CB5 100%)',
+          color: '#fff'
+        }}
+      >
         <img src={Logo} width={170} height={50} />
         <span className={styles.title}>产业链供应链数据平台</span>
         <Menu
-          theme='light'
+          theme='dark'
           mode='horizontal'
           defaultSelectedKeys={['1']}
           items={items}
@@ -138,16 +145,16 @@ export default function LoginFC() {
           onClick={onClick}
           selectedKeys={[current]}
         />
-        <span style={{ display: 'flex', alignItems: 'center' }}>
+        <span className={styles.logout} style={{ display: 'flex', alignItems: 'center' }}>
           {/* <img src={Avatar} width={25} height={25} className={styles.avatarStyle} /> */}
-          <Button type='text' onClick={onClickMenu}>
+          <Button type='link' onClick={onClickMenu}>
             <span>{userInfo?.nickname}</span>【退出】
           </Button>
           <span className={styles.user}>互动反馈</span>
           <span>中英文</span>
         </span>
       </Header>
-      <Content style={{ padding: '0 48px' }}>
+      <Content style={{ padding: '0 48px', background: '#fff' }}>
         <div
           style={{
             // minHeight: 742,

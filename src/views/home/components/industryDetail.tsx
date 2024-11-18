@@ -528,7 +528,8 @@ export default function DetailFC(props: DetailProps) {
         </div>
         {/* 榜单 */}
         <div className={styles.titleColor}>
-          <img src={Icon} style={{ paddingTop: 8 }} />
+          {/* <img src={Icon} style={{ paddingTop: 8 }} /> */}
+          <div className={styles.colorBar}></div>
           <span className={styles.text}>榜单</span>
         </div>
         <div className={styles.tableArea}>

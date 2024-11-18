@@ -9,11 +9,57 @@ import Info7 from '@/assets/info7.png'
 import Info8 from '@/assets/info8.png'
 import Info9 from '@/assets/info9.png'
 import Info10 from '@/assets/info10.png'
-import { Button, Input, Modal, Select } from 'antd'
+import { Button, Input, Menu, Modal, Select, Tabs } from 'antd'
 import { useCallback, useState } from 'react'
 
 export default function InfoFC() {
   const [isModalOpen, setIsModalOpen] = useState({ isOpen: false, type: '' })
+
+  const items = [
+    {
+      key: '1',
+      label: '产业链资讯',
+      children: (
+        <div>
+          <div
+            className={styles.articleArea}
+            onClick={() => setIsModalOpen({ isOpen: true, type: '1' })}
+            style={{ marginBottom: 36 }}
+          >
+            <img src={Info1} width='50%' height='50%' />
+            <span className={styles.text}>
+              “重点产业链韧性与安全水平提升”研讨会暨国家社科基金重大项目“大宗商品产业链供应链韧性与安全水平评估及对策研究”开题报告会成功举办
+            </span>
+          </div>
+          <div
+            className={styles.articleArea}
+            onClick={() => setIsModalOpen({ isOpen: true, type: '2' })}
+            style={{ marginBottom: 36 }}
+          >
+            <img src={Info5} width='50%' height='50%' />
+            <span className={styles.text}>报告：中国产业链韧性全球第二，人才资本与创新投入仍需加强</span>
+          </div>
+          <div
+            className={styles.articleArea}
+            onClick={() => setIsModalOpen({ isOpen: true, type: '3' })}
+            style={{ marginBottom: 36 }}
+          >
+            <img src={Info6} width='50%' height='50%' />
+            <span className={styles.text}>
+              陕西光子产业持续“追光”形成“聚链成群”效应 2024硬科技创新大会光子产业峰会在西安举行
+            </span>
+          </div>
+          <div className={styles.articleArea} onClick={() => setIsModalOpen({ isOpen: true, type: '4' })}>
+            <img src={Info10} width='50%' height='50%' />
+            <span className={styles.text}>我国首个覆盖全产业链的铁矿石大数据平台正式发布</span>
+          </div>
+        </div>
+      )
+    },
+    { key: '2', label: '产品资讯' },
+    { key: '3', label: '企业资讯' },
+    { key: '4', label: '政策资讯' }
+  ]
 
   const content: any = useCallback((key: string) => {
     switch (key) {
@@ -133,24 +179,11 @@ export default function InfoFC() {
         break
     }
   }, [])
+
   return (
     <div className={styles.info}>
-      {/* <div className={styles.searchArea}>
-        <Select
-          style={{ minWidth: 300 }}
-          // onChange={handleChange}
-          options={[
-            { value: '标题', label: '标题' },
-            { value: '主题', label: '主题' },
-            { value: '作者', label: '作者' },
-            { value: '关键词/摘要', label: '关键词/摘要' }
-          ]}
-          placeholder='请选择'
-        />
-        <Input style={{ minWidth: 300, margin: '0 24px' }} placeholder='请输入' />
-        <Button>搜索</Button>
-      </div> */}
-      <div
+      <Tabs tabPosition='left' items={items} />
+      {/* <div
         className={styles.articleArea}
         onClick={() => setIsModalOpen({ isOpen: true, type: '1' })}
         style={{ marginBottom: 36 }}
@@ -181,7 +214,7 @@ export default function InfoFC() {
       <div className={styles.articleArea} onClick={() => setIsModalOpen({ isOpen: true, type: '4' })}>
         <img src={Info10} width='50%' height='50%' />
         <span className={styles.text}>我国首个覆盖全产业链的铁矿石大数据平台正式发布</span>
-      </div>
+      </div> */}
       <Modal
         open={isModalOpen.isOpen}
         footer={null}

@@ -7,7 +7,14 @@ import locale from 'antd/es/locale/zh_CN'
 
 function App() {
   return (
-    <ConfigProvider locale={locale}>
+    <ConfigProvider
+      locale={locale}
+      theme={{
+        token: {
+          colorPrimary: '#791CB5 '
+        }
+      }}
+    >
       <AntdApp>
         <AntdGlobal />
         <RouterProvider router={router} />

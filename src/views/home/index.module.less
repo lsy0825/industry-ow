@@ -5,13 +5,35 @@
   padding: 0 63px 0 15px;
 }
 .user {
-  padding: 0 16px 0 0 ;
+  padding: 0 16px 0 0;
 }
 .logout {
-  padding-right: 24px;
+  :global {
+    :where(.css-fa6a0h).ant-btn-link {
+      color: #fff;
+    }
+    :where(.css-dev-only-do-not-override-fa6a0h).ant-btn {
+      color: #fff;
+    }
+  }
 }
 :global {
-  :where(.css-dev-only-do-not-override-12jzuas).ant-menu-light .ant-menu-item-disabled, :where(.css-dev-only-do-not-override-12jzuas).ant-menu-light>.ant-menu .ant-menu-item-disabled, :where(.css-dev-only-do-not-override-12jzuas).ant-menu-light .ant-menu-submenu-disabled, :where(.css-dev-only-do-not-override-12jzuas).ant-menu-light>.ant-menu .ant-menu-submenu-disabled {
+  :where(.css-fa6a0h).ant-menu .ant-menu-item-disabled,
+  :where(.css-fa6a0h).ant-menu .ant-menu-submenu-disabled {
     cursor: default;
+  }
+  :where(.css-dev-only-do-not-override-fa6a0h).ant-menu .ant-menu-item-disabled,
+  :where(.css-dev-only-do-not-override-fa6a0h).ant-menu .ant-menu-submenu-disabled {
+    cursor: default;
+  }
+  :where(.css-fa6a0h).ant-menu-dark,
+  :where(.css-fa6a0h).ant-menu-dark > .ant-menu {
+    background: none;
+    color: #fff;
+  }
+  :where(.css-dev-only-do-not-override-fa6a0h).ant-menu-dark,
+  :where(.css-dev-only-do-not-override-fa6a0h).ant-menu-dark > .ant-menu {
+    background: none;
+    color: #fff;
   }
 }

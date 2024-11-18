@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Col, Row } from 'antd'
 import styles from './index.module.less'
-import Icon from '@/assets/detailIcon.svg'
 
 export default function CommonDetailFC(props: any) {
   const { title } = props

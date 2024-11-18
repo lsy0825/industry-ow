@@ -196,7 +196,7 @@ export default function AnalysisTools() {
             </Descriptions.Item>
           ))}
         </Descriptions>
-        <Divider style={{ borderColor: '#1677ff' }} />
+        <Divider style={{ borderColor: '#791db6' }} />
       </div>
     )
   }, [])

@@ -15,31 +15,32 @@
     font-size: 12px;
     color: #7f7f7f;
   }
-  :global {
-    :where(.css-dev-only-do-not-override-12jzuas).ant-spin-nested-loading .ant-spin-container {
-      max-height: 400px;
-      overflow: auto;
-    }
-  }
+  // :global {
+  //   :where(.css-dev-only-do-not-override-12jzuas).ant-spin-nested-loading .ant-spin-container {
+  //     max-height: 400px;
+  //     overflow: auto;
+  //   }
+  // }
 }
 .homeStyle {
   background: #fff;
   padding: 24px;
-  :global {
-    :where(.css-dev-only-do-not-override-12jzuas).ant-carousel .slick-dots-bottom {
-      bottom: 24px;
-    }
-  }
+  // :global {
+  //   :where(.css-dev-only-do-not-override-12jzuas).ant-carousel .slick-dots-bottom {
+  //     bottom: 24px;
+  //   }
+  // }
   .hotTopic {
-    border: 1px solid #d7d7d7;
+    // border: 1px solid #d7d7d7;
     border-radius: 5px;
     height: 296px;
     margin-top: 24px;
     padding: 10px 12px;
+    background-color: #f9f7fc;
     .topicTitle {
       font-weight: 600;
       font-size: 18px;
-      color: #1677ff;
+      color: #791db6;
     }
     .text {
       margin: 24px 48px 0 48px;
@@ -50,7 +51,7 @@
       margin-left: 48px;
       cursor: pointer;
       &:hover {
-        color: #1677ff;
+        color: #791db6;
       }
     }
   }
@@ -60,10 +61,16 @@
     height: 48px;
     text-align: center;
     line-height: 48px;
-    border: 1px solid #d7d7d7;
+    // border: 1px solid #d7d7d7;
     border-radius: 5px;
-    color: #1677ff;
+    color: #791db6;
     font-weight: 600;
+    background-color: #f9f7fc;
+    cursor: pointer;
+    &:hover {
+      background: linear-gradient(0deg, #f9f0ff 0%, #ffffff 100%), #ffffff;
+      box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.15);
+    }
   }
   .link1 {
     .link;
@@ -74,15 +81,16 @@
     margin-right: 16px;
   }
   .dataAct {
-    border: 1px solid #d7d7d7;
+    // border: 1px solid #d7d7d7;
     border-radius: 5px;
     margin-left: 48px;
     width: 100%;
     padding: 10px 12px;
+    background-color: #f9f7fc;
     .dataTitle {
       font-weight: 600;
       font-size: 18px;
-      color: #1677ff;
+      color: #791db6;
     }
     .dataText {
       margin: 8px 24px 0;
@@ -101,8 +109,9 @@
   display: flex;
   justify-content: space-between;
   background: #fff;
-  margin-bottom: 16px;
-  padding: 12px 24px;
+  padding-bottom: 16px;
+  margin: 12px 24px;
+  border-bottom: 1px solid #d8d8d8;
   .detailText {
     font-size: 16px;
     font-weight: 600;
@@ -119,13 +128,20 @@
 
   .titleColor {
     height: 35px;
-    background-color: #ecf5ff;
+    background-color: #f9f7fc;
     margin-bottom: 12px;
     position: relative;
     .text {
       position: absolute;
       top: 6px;
       left: 16px;
+    }
+    .colorBar {
+      background-color: #791db6;
+      height: 18px;
+      width: 5px;
+      position: absolute;
+      top: 8px;
     }
   }
   .titleStyle {
@@ -274,7 +290,7 @@
           padding-left: 12px;
         }
         .moreText {
-          color: #1677ff;
+          color: #791db6;
           padding-right: 12px;
           cursor: pointer;
         }
@@ -313,13 +329,13 @@
         width: 100%;
         line-height: 48px;
         text-align: center;
-        background-color: #409eff;
+        background-color: #bd40ff;
         color: #fff;
         font-size: 20px;
         font-weight: 600;
       }
       .itemText {
-        border: 2px dashed #409eff;
+        border: 2px dashed #bd40ff;
         border-radius: 25px;
         margin-top: 10px;
         display: flex;
@@ -335,14 +351,14 @@
         }
         .text1 {
           .commonText;
-          background: #9ccbf7;
+          background: #eaa0f9;
           margin-top: 10px;
           font-size: 16px;
           font-weight: 600;
         }
         .text2 {
           .commonText;
-          background: #dbeaf8;
+          background: #fde1fd;
         }
         .commomText3 {
           display: grid;
@@ -359,7 +375,7 @@
           height: 36px;
           line-height: 36px;
           text-align: center;
-          background: #f2f7fb;
+          background: #fbf2fa;
           width: 100%;
         }
         .text5 {
@@ -435,34 +451,34 @@
     .commonIcon;
     background: url('../../../assets/normal5.svg') center/cover no-repeat;
   }
-  :global {
-    :where(.css-dev-only-do-not-override-12jzuas).ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-      background-color: #409eff;
-      padding: 10px;
-      color: #fff;
-      width: 100px;
-      height: 100px;
-    }
-    :where(.css-dev-only-do-not-override-12jzuas).ant-tabs .ant-tabs-tab-btn {
-      background-color: #f2f2f2;
-      color: #409eff;
-      padding: 10px;
-      width: 100px;
-      height: 100px;
-    }
-    :where(.css-dev-only-do-not-override-12jzuas).ant-tabs-left > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab {
-      margin: 0;
-    }
-    :where(.css-dev-only-do-not-override-12jzuas).ant-tabs-left
-      > .ant-tabs-content-holder
-      > .ant-tabs-content
-      > .ant-tabs-tabpane {
-      padding: 24px 24px 0 24px;
-    }
-    :where(.css-dev-only-do-not-override-12jzuas).ant-tabs .ant-tabs-tab .anticon {
-      margin-right: 0;
-    }
-  }
+  // :global {
+  // :where(.css-dev-only-do-not-override-12jzuas).ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  //   background-color: #409eff;
+  //   padding: 10px;
+  //   color: #fff;
+  //   width: 100px;
+  //   height: 100px;
+  // }
+  // :where(.css-dev-only-do-not-override-12jzuas).ant-tabs .ant-tabs-tab-btn {
+  //   background-color: #f2f2f2;
+  //   color: #409eff;
+  //   padding: 10px;
+  //   width: 100px;
+  //   height: 100px;
+  // }
+  // :where(.css-dev-only-do-not-override-12jzuas).ant-tabs-left > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab {
+  //   margin: 0;
+  // }
+  // :where(.css-dev-only-do-not-override-12jzuas).ant-tabs-left
+  //   > .ant-tabs-content-holder
+  //   > .ant-tabs-content
+  //   > .ant-tabs-tabpane {
+  //   padding: 24px 24px 0 24px;
+  // }
+  // :where(.css-dev-only-do-not-override-12jzuas).ant-tabs .ant-tabs-tab .anticon {
+  //   margin-right: 0;
+  // }
+  // }
   .cardTitle {
     font-size: 16px;
     font-weight: 600;
@@ -489,7 +505,7 @@
   padding: 24px;
   .titleColor {
     height: 35px;
-    background-color: #ecf5ff;
+    background-color: #f9f7fc;
     margin-bottom: 12px;
     position: relative;
     .text {
@@ -505,18 +521,30 @@
 .info {
   padding: 24px;
   background-color: #fff;
-
+  :global {
+    :where(.css-fa6a0h).ant-tabs > .ant-tabs-nav,
+    :where(.css-fa6a0h).ant-tabs > div > .ant-tabs-nav {
+      background: #f8f6fb;
+    }
+    :where(.css-dev-only-do-not-override-fa6a0h).ant-tabs > .ant-tabs-nav,
+    :where(.css-dev-only-do-not-override-fa6a0h).ant-tabs > div > .ant-tabs-nav {
+      background: #f8f6fb;
+    }
+  }
   .articleArea {
     display: flex;
     cursor: pointer;
     background-color: #faf9f9;
     border-radius: 5px;
     &:hover {
-      box-shadow: 0px 10px 16px 0px rgba(20, 66, 204, 0.1);
+      background: linear-gradient(0deg, #f9f0ff 0%, #ffffff 100%), #ffffff;
+      box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.15);
+      color: #791db6;
     }
     .text {
       font-size: 16px;
-      margin-left: 24px;
+      // margin-left: 24px;
+      padding: 16px;
       font-weight: 600;
     }
   }
@@ -535,13 +563,20 @@
   }
   .titleColor {
     height: 35px;
-    background-color: #ecf5ff;
+    background-color: #f9f7fc;
     margin-bottom: 12px;
     position: relative;
     .text {
       position: absolute;
       top: 6px;
       left: 16px;
+    }
+    .colorBar {
+      background-color: #791db6;
+      height: 18px;
+      width: 5px;
+      position: absolute;
+      top: 8px;
     }
   }
 }

@@ -468,7 +468,8 @@ export default function DetailFC(props: DetailProps) {
       <div className={styles.detailStyle}>
         {/* 基本信息 */}
         <div className={styles.titleColor}>
-          <img src={Icon} style={{ paddingTop: 8 }} />
+          {/* <img src={Icon} style={{ paddingTop: 8 }} /> */}
+          <div className={styles.colorBar}></div>
           <span className={styles.text}>基本信息</span>
         </div>
         <Descriptions title={null} column={4} style={{ marginBottom: 16 }}>
@@ -491,7 +492,8 @@ export default function DetailFC(props: DetailProps) {
         </Descriptions>
         {/* 财务数据 */}
         <div className={styles.titleColor}>
-          <img src={Icon} style={{ paddingTop: 8 }} />
+          {/* <img src={Icon} style={{ paddingTop: 8 }} /> */}
+          <div className={styles.colorBar}></div>
           <span className={styles.text}>财务数据</span>
         </div>
         <div className={styles.chart}>
@@ -523,13 +525,15 @@ export default function DetailFC(props: DetailProps) {
         </div>
         {/* 企业交易数据 */}
         <div className={styles.titleColor}>
-          <img src={Icon} style={{ paddingTop: 8 }} />
+          {/* <img src={Icon} style={{ paddingTop: 8 }} /> */}
+          <div className={styles.colorBar}></div>
           <span className={styles.text}>企业交易数据</span>
         </div>
         <MapChart dataList={provinceData} type='firm' />
         {/* 产品流通信息 */}
         <div className={styles.titleColor}>
-          <img src={Icon} style={{ paddingTop: 8 }} />
+          {/* <img src={Icon} style={{ paddingTop: 8 }} /> */}
+          <div className={styles.colorBar}></div>
           <span className={styles.text}>产品流通信息</span>
         </div>
         <Card style={{ marginBottom: 16 }}>
@@ -537,7 +541,8 @@ export default function DetailFC(props: DetailProps) {
         </Card>
         {/* 企业专利信息 */}
         <div className={styles.titleColor}>
-          <img src={Icon} style={{ paddingTop: 8 }} />
+          {/* <img src={Icon} style={{ paddingTop: 8 }} /> */}
+          <div className={styles.colorBar}></div>
           <span className={styles.text}>企业专利信息</span>
         </div>
         <Table
@@ -564,7 +569,8 @@ export default function DetailFC(props: DetailProps) {
         />
         {/* 关联产业链数据 */}
         <div className={styles.titleColor}>
-          <img src={Icon} style={{ paddingTop: 8 }} />
+          {/* <img src={Icon} style={{ paddingTop: 8 }} /> */}
+          <div className={styles.colorBar}></div>
           <span className={styles.text}>关联产业链数据</span>
         </div>
         <Tabs
@@ -580,7 +586,8 @@ export default function DetailFC(props: DetailProps) {
           })}
         />
         <div className={styles.titleColor}>
-          <img src={Icon} style={{ paddingTop: 8 }} />
+          {/* <img src={Icon} style={{ paddingTop: 8 }} /> */}
+          <div className={styles.colorBar}></div>
           <span className={styles.text}>产业相关政策信息</span>
         </div>
         <CommonPolicyList

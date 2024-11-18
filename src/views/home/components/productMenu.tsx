@@ -48,17 +48,20 @@ export default function ProductMenu() {
         <Button>搜索</Button>
       </div>
       <div className={styles.titleColor}>
-        <img src={Icon} style={{ paddingTop: 8 }} />
+        {/* <img src={Icon} style={{ paddingTop: 8 }} /> */}
+        <div className={styles.colorBar}></div>
         <span className={styles.text}>玩具产业 品牌分布</span>
       </div>
       <img src={Toy} />
       <div className={styles.titleColor}>
-        <img src={Icon} style={{ paddingTop: 8 }} />
+        {/* <img src={Icon} style={{ paddingTop: 8 }} /> */}
+        <div className={styles.colorBar}></div>
         <span className={styles.text}>玩具产业 企业数量趋势</span>
       </div>
       <BarChart xdata={xdata} ydata={ydata} yname='家' title='2015-2024年中国玩具生产企业新增注册数量（单位：家）' />
       <div className={styles.titleColor}>
-        <img src={Icon} style={{ paddingTop: 8 }} />
+        {/* <img src={Icon} style={{ paddingTop: 8 }} /> */}
+        <div className={styles.colorBar}></div>
         <span className={styles.text}>玩具产业 产业链结构分布</span>
       </div>
       <PieChart
@@ -67,7 +70,8 @@ export default function ProductMenu() {
         title='2015-2023年中国潮流玩具行业市场规模（单位：亿元）'
       />
       <div className={styles.titleColor}>
-        <img src={Icon} style={{ paddingTop: 8 }} />
+        {/* <img src={Icon} style={{ paddingTop: 8 }} /> */}
+        <div className={styles.colorBar}></div>
         <span className={styles.text}>玩具产业 相关政策</span>
       </div>
       <CommonPolicyList

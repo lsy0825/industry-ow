@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { Card, Table } from 'antd'
 import styles from './index.module.less'
-import Icon from '@/assets/detailIcon.svg'
 import * as echarts from 'echarts'
 import { useCharts } from '@/hook/useCharts'
 import geoJson from '@/assets/geoJson.json'
