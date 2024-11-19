@@ -40,8 +40,8 @@ export default function FirmCompete() {
           xdata={xdata}
           ydata1={ydata1}
           ydata2={ydata2}
-          yname1={'出货量'}
-          yname2={'增长率'}
+          yname1={'新能源汽车出货量'}
+          yname2={'三元锂电子开发成本'}
           yAxisName1={'万辆'}
           yAxisName2={'%'}
           isSmooth={false}
