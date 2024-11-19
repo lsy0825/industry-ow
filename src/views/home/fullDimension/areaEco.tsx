@@ -60,6 +60,7 @@ export default function AreaEco() {
             yname2={'增速（%）'}
             yAxisName1={'万辆'}
             yAxisName2={'%'}
+            isSmooth={true}
           />
         </div>
       )}

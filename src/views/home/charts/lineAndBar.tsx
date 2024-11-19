@@ -3,7 +3,7 @@ import styles from './index.module.less'
 import { useCharts } from '@/hook/useCharts'
 
 export default function BarChartFC(props: any) {
-  const { xdata, ydata1, ydata2, yname1, yname2, yAxisName1, yAxisName2 } = props
+  const { xdata, ydata1, ydata2, yname1, yname2, yAxisName1, yAxisName2, isSmooth } = props
 
   // 初始化柱折图
   const [rdInvestRef, rdInvestChart] = useCharts()
@@ -47,14 +47,21 @@ export default function BarChartFC(props: any) {
           name: yname1,
           type: 'bar',
           yAxisIndex: 0,
-          data: ydata1
+          data: ydata1,
+          label: {
+            show: true
+          }
         },
         {
           name: yname2,
           type: 'line',
-          smooth: true,
+          smooth: isSmooth,
           yAxisIndex: 1,
-          data: ydata2
+          data: ydata2,
+          label: {
+            show: true,
+            formatter: '{c} %'
+          }
         }
       ]
     })

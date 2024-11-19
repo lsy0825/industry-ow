@@ -116,6 +116,12 @@ export default function RotationBar(props: any) {
       legend: {
         data: ['供应风险', '生产风险', '物流风险', '市场需求风险']
       },
+      grid: {
+        left: '3%',
+        right: '8%',
+        bottom: '3%',
+        containLabel: true
+      },
       xAxis: [
         {
           type: 'category',

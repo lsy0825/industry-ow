@@ -43,7 +43,7 @@ enum PageKeys {
 }
 
 const items = [
-  { key: '1', label: '平台概况' },
+  { key: '1', label: '首页' },
   {
     key: 'data',
     label: '数据',

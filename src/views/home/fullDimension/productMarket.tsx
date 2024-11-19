@@ -68,6 +68,7 @@ export default function ProductMarket() {
             yname2={'新能源汽车渗透率（%）'}
             yAxisName1={'万辆'}
             yAxisName2={'%'}
+            isSmooth={true}
           />
           <LineAndBar
             xdata={xdata}
@@ -77,6 +78,7 @@ export default function ProductMarket() {
             yname2={'新能源汽车渗透率（%）'}
             yAxisName1={'万辆'}
             yAxisName2={'%'}
+            isSmooth={true}
           />
           <Paragraph>
             <Text strong>
