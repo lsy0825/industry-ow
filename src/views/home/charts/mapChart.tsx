@@ -300,6 +300,7 @@ export default function DetailFC(props: any) {
         rowKey={type === 'firm' ? 'id' : 'registeredProvince'}
         pagination={false}
         style={{ width: '100%', marginLeft: 24 }}
+        scroll={{ x: 'calc(300px + 50%)' }}
       />
     </div>
   )

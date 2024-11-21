@@ -1,9 +1,17 @@
-import { Descriptions, Divider } from 'antd'
-import { useCallback } from 'react'
+import { Button, Descriptions, Divider, Form, Input } from 'antd'
+import { useCallback, useEffect, useState } from 'react'
 import styles from './index.module.less'
+import { useCharts } from '@/hook/useCharts'
+import SpecialBarChart from '../charts/specialBarChart'
 
 export default function AnalysisTools() {
-  const objValues: Record<string, Array<{ label: string; children: string }>> = {
+  const [isShow, setIsShow] = useState(false)
+
+  const handleClick = (fieldsValue: any) => {
+    setIsShow(true)
+  }
+
+  const objValues: Record<string, Array<{ label: string; children: any }>> = {
     产业链全景分析工具: [
       {
         label: '功能',
@@ -15,8 +23,29 @@ export default function AnalysisTools() {
       },
       {
         label: '案例',
-        children:
-          '一家跨国汽车零部件制造商关注某个新兴市场的政策风险。该工具实时监控新兴市场的政策变化，一旦有新的关税政策出台或其他市场波动，立即向企业发出预警，帮助企业及时调整供应链和市场策略。'
+        children: (
+          <div>
+            <Form
+              layout='inline'
+              initialValues={{ factor: '2021年印度关税政策调整', impactFirm: 'BOSCH' }}
+              onFinish={handleClick}
+              style={{ marginBottom: 24 }}
+            >
+              <Form.Item label='影响因子' name='factor'>
+                <Input disabled />
+              </Form.Item>
+              <Form.Item label='影响企业' name='impactFirm'>
+                <Input disabled />
+              </Form.Item>
+              <Form.Item>
+                <Button type='primary' htmlType='submit'>
+                  确定
+                </Button>
+              </Form.Item>
+            </Form>
+            {isShow && <SpecialBarChart />}
+          </div>
+        )
       }
     ],
     风险预警与监控工具: [
@@ -191,7 +220,7 @@ export default function AnalysisTools() {
       <div>
         <Descriptions column={1} bordered title={title} style={{ marginBottom: 24 }}>
           {items?.map((item: any) => (
-            <Descriptions.Item label={item.label} key={item.label}>
+            <Descriptions.Item label={item.label} key={item.label} labelStyle={{ width: '110px' }}>
               {item.children}
             </Descriptions.Item>
           ))}

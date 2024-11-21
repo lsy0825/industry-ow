@@ -507,6 +507,7 @@ export default function DetailFC(props: DetailProps) {
             rowKey='id'
             pagination={false}
             style={{ width: '100%', marginLeft: 24 }}
+            scroll={{ x: 'calc(380px + 50%)' }}
           />
         </div>
         <div className={styles.rdText}>研发投入</div>
@@ -521,6 +522,7 @@ export default function DetailFC(props: DetailProps) {
             rowKey='id'
             pagination={false}
             style={{ width: '100%', marginLeft: 24 }}
+            scroll={{ x: 'calc(215px + 50%)' }}
           />
         </div>
         {/* 企业交易数据 */}
@@ -566,6 +568,7 @@ export default function DetailFC(props: DetailProps) {
             }
           }}
           style={{ width: '100%', marginBottom: 16 }}
+          scroll={{ x: 'calc(800px + 50%)' }}
         />
         {/* 关联产业链数据 */}
         <div className={styles.titleColor}>

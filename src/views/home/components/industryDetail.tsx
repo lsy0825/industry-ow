@@ -453,11 +453,13 @@ export default function DetailFC(props: DetailProps) {
     {
       title: '排行',
       dataIndex: 'No',
-      render: (text: unknown, row: unknown, index: number) => index + 1 //+(searchValue.page-1)*searchValue.pageSize
+      render: (text: unknown, row: unknown, index: number) => index + 1, //+(searchValue.page-1)*searchValue.pageSize
+      width: '20%'
     },
     {
       title: '企业名称',
-      dataIndex: 'firmName'
+      dataIndex: 'firmName',
+      width: '50%'
     }
   ]
 
@@ -466,7 +468,8 @@ export default function DetailFC(props: DetailProps) {
     ...commonColumn,
     {
       title: '专利数量',
-      dataIndex: 'patentCount'
+      dataIndex: 'patentCount',
+      width: '30%'
     }
   ]
 
@@ -475,7 +478,8 @@ export default function DetailFC(props: DetailProps) {
     ...commonColumn,
     {
       title: '可达级别',
-      dataIndex: 'highestLevel'
+      dataIndex: 'highestLevel',
+      width: '30%'
     }
   ]
 
@@ -484,7 +488,8 @@ export default function DetailFC(props: DetailProps) {
     ...commonColumn,
     {
       title: '上奇评分',
-      dataIndex: 'patentRateSum'
+      dataIndex: 'patentRateSum',
+      width: '30%'
     }
   ]
 
